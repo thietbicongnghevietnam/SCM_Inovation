@@ -1,0 +1,200 @@
+﻿using FreeLayout.App_Code;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace FreeLayout.QCC
+{
+    public partial class UploadPhthalate : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        public DataTable dt1 = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            dt = DataConn.StoreFillDS("Get_mater_phthalate", System.Data.CommandType.StoredProcedure);
+        }
+
+
+        protected void ImportFromExcel(object sender, EventArgs e)
+        {
+            // CHECK IF A FILE HAS BEEN SELECTED.
+            if ((FileUpload.HasFile))
+            {
+
+                if (!Convert.IsDBNull(FileUpload.PostedFile) &
+                    FileUpload.PostedFile.ContentLength > 0)
+                {
+                    //tam thoi rao cho nay lai. them moi thi update  ==> xoa het xu dung lenh nay
+                    //DataConn.Execute_NonSQL("truncate table [FREE_LOCATION].[dbo].[DM_Mater_Reability];");
+
+                    //FIRST, SAVE THE SELECTED FILE IN THE ROOT DIRECTORY.
+                    FileUpload.SaveAs(Server.MapPath(".") + "\\" + FileUpload.FileName);
+
+                    SqlBulkCopy oSqlBulk = null;
+
+                    // SET A CONNECTION WITH THE EXCEL FILE.
+                    OleDbConnection myExcelConn = new OleDbConnection
+                        ("Provider=Microsoft.ACE.OLEDB.12.0; " +
+                            "Data Source=" + Server.MapPath(".") + "\\" + FileUpload.FileName +
+                            ";Extended Properties=Excel 12.0;");
+                    try
+                    {
+                        myExcelConn.Open();
+
+                        // GET DATA FROM EXCEL SHEET.
+                        OleDbCommand objOleDB =
+                            new OleDbCommand("SELECT *FROM [Sheet1$]", myExcelConn);
+
+                        // READ THE DATA EXTRACTED FROM THE EXCEL FILE.
+                        OleDbDataReader objBulkReader = null;
+                        objBulkReader = objOleDB.ExecuteReader();
+
+                        // SET THE CONNECTION STRING.
+                        string sCon = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                            "Initial Catalog=FREE_LOCATION;User Id=sa;Password=Psnvdb2013;" +
+                            "Connect Timeout=30;";
+
+                        using (SqlConnection con = new SqlConnection(sCon))
+                        {
+                            con.Open();
+                            // FINALLY, LOAD DATA INTO THE DATABASE TABLE.
+                            oSqlBulk = new SqlBulkCopy(con);
+                            oSqlBulk.DestinationTableName = "DM_Phthalate"; // TABLE NAME.
+                            oSqlBulk.WriteToServer(objBulkReader);
+                        }
+
+                        lblConfirm.Text = "DATA IMPORTED SUCCESSFULLY.";
+                        lblConfirm.Attributes.Add("style", "color:green");
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Thành công!');", true);
+
+                        //File.Delete(Server.MapPath(".") + "\\" + FileUpload.FileName); // DELETE THE FILE upload len.
+
+                        //load grid
+                        dt = DataConn.StoreFillDS("Get_mater_phthalate", System.Data.CommandType.StoredProcedure);
+                        //LoadData();
+                    }
+                    catch (Exception ex)
+                    {
+
+                        lblConfirm.Text = ex.Message;
+                        lblConfirm.Attributes.Add("style", "color:red");
+
+                    }
+                    finally
+                    {
+                        // CLEAR.
+                        oSqlBulk.Close();
+                        oSqlBulk = null;
+                        myExcelConn.Close();
+                        myExcelConn = null;
+                    }
+                }
+            }
+        }
+
+        protected void btnDownloadClick(Object sender, EventArgs e)
+        {
+            try
+            {
+                string fileName = "mauupload_phathalate.xlsx";
+                string fileExtension = ".xlsx";
+
+                // Set Response.ContentType
+                Response.ContentType = GetContentType(fileExtension);
+
+                // Append header
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+                // Write the file to the Response
+                Response.TransmitFile(Server.MapPath("~/Textfile/" + fileName));
+                Response.End();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private string GetContentType(string fileExtension)
+        {
+            if (string.IsNullOrEmpty(fileExtension))
+                return string.Empty;
+
+            string contentType = string.Empty;
+            switch (fileExtension)
+            {
+                case ".htm":
+                case ".html":
+                    contentType = "text/HTML";
+                    break;
+                case ".csv":
+                case ".txt":
+                    contentType = "text/plain";
+                    break;
+
+                case ".doc":
+                case ".rtf":
+                case ".docx":
+                    contentType = "Application/msword";
+                    break;
+
+                case ".xls":
+                case ".xlsx":
+                    contentType = "Application/x-msexcel";
+                    break;
+
+                case ".jpg":
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    break;
+
+                case ".gif":
+                    contentType = "image/GIF";
+                    break;
+
+                case ".pdf":
+                    contentType = "application/pdf";
+                    break;
+            }
+            return contentType;
+        }
+
+        protected void btnfindmater(Object sender, EventArgs e)
+        {
+            try
+            {
+                string mahang = txt_mahang.Text.ToString();
+                if (mahang == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, you do not chosen material !'); ", true);
+                    dt = DataConn.StoreFillDS("Get_mater_phthalate", System.Data.CommandType.StoredProcedure);
+                    txt_mahang.Focus();
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Get_mater_phthalate_search", System.Data.CommandType.StoredProcedure, mahang);
+                    if (dt.Rows[0][0].ToString() == "0")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('No Mater Data!'); ", true);
+                        dt = DataConn.StoreFillDS("Get_mater_phthalate", System.Data.CommandType.StoredProcedure);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
+
+    }
+}

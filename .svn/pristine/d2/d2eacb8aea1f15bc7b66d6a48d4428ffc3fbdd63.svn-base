@@ -1,0 +1,130 @@
+﻿using FreeLayout.App_Code;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace FreeLayout
+{
+    public partial class Main : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt1 = new DataTable();
+        public DataTable dt2 = new DataTable();
+        public DataTable dt3 = new DataTable();
+        public DataTable dt4 = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            //string date = Request.Form[datepicker.UniqueID];
+            if (Request.QueryString["material"] is null)
+            {
+                mahang.Text = "";
+            }
+            else
+            {
+                string _material = Request.QueryString["material"];
+                mahang.Text = _material;
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "search_material2();", true);
+            }
+            dt1 = DataConn.StoreFillDS("Get_Position_MCS_All", System.Data.CommandType.StoredProcedure);
+            dt2 = DataConn.StoreFillDS("Get_Position_MCS_All2", System.Data.CommandType.StoredProcedure);
+            dt3 = DataConn.StoreFillDS("Get_Position_MCS_All3", System.Data.CommandType.StoredProcedure);
+            dt4 = DataConn.StoreFillDS("Get_Position_MCS_All4", System.Data.CommandType.StoredProcedure);
+            //if (Request.QueryString["material"] != "")
+            //{                
+            //    dt1 = DataConn.StoreFillDS("Get_Position_MCS_All", System.Data.CommandType.StoredProcedure);
+            //    dt2 = DataConn.StoreFillDS("Get_Position_MCS_All2", System.Data.CommandType.StoredProcedure);
+            //    dt3 = DataConn.StoreFillDS("Get_Position_MCS_All3", System.Data.CommandType.StoredProcedure);
+            //    dt4 = DataConn.StoreFillDS("Get_Position_MCS_All4", System.Data.CommandType.StoredProcedure);
+            //    string _material = Request.QueryString["material"];
+            //    mahang.Text = _material;
+            //}
+            //else
+            //{
+            //    dt1 = DataConn.StoreFillDS("Get_Position_MCS_All", System.Data.CommandType.StoredProcedure);
+            //    dt2 = DataConn.StoreFillDS("Get_Position_MCS_All2", System.Data.CommandType.StoredProcedure);
+            //    dt3 = DataConn.StoreFillDS("Get_Position_MCS_All3", System.Data.CommandType.StoredProcedure);
+            //    dt4 = DataConn.StoreFillDS("Get_Position_MCS_All4", System.Data.CommandType.StoredProcedure);
+            //}
+        }
+
+        //public void bttLogout_Click(object sender, EventArgs e)
+        //{
+        //    Session.Clear();
+        //    Session.Abandon();
+        //    Session.RemoveAll();
+        //}
+
+        //protected void bttSearch_Click(object sender, EventArgs e)
+        //{
+        //    string dt = Request.Form[datepicker.UniqueID];
+            
+        //    //dt_gr = DataConn.SQLFillDS("pro_gr_mcs_control1", CommandType.StoredProcedure, dt);
+        //    dt1 = DataConn.StoreFillDS("Get_Position_MCS_All", System.Data.CommandType.StoredProcedure);
+        //    dt2 = DataConn.StoreFillDS("Get_Position_MCS_All2", System.Data.CommandType.StoredProcedure);
+        //    dt3 = DataConn.StoreFillDS("Get_Position_MCS_All3", System.Data.CommandType.StoredProcedure);
+        //    dt4 = DataConn.StoreFillDS("Get_Position_MCS_All4", System.Data.CommandType.StoredProcedure);
+        //}
+
+
+        [WebMethod]
+        public static string GetMaHang(string vitri)
+        {         
+            String daresult = null;
+            DataTable yourDatable = new DataTable();
+            DataSet ds = new DataSet();
+
+            yourDatable = DataConn.StoreFillDS("Get_List_Material_MCS", System.Data.CommandType.StoredProcedure, vitri);
+
+            DataTable dt2 = new DataTable();
+            dt2 = yourDatable.Copy();
+
+            ds.Tables.Add(dt2);
+            daresult = DataSetToJSON(ds);          
+            return daresult;
+
+        }
+
+        public static string DataSetToJSON(DataSet ds)
+        {           
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            foreach (DataTable dt in ds.Tables)
+            {
+                object[] arr = new object[dt.Rows.Count + 1];
+
+                for (int i = 0; i <= dt.Rows.Count - 1; i++)
+                {
+                    arr[i] = dt.Rows[i].ItemArray;
+                }
+
+                //dict.Add(dt.TableName, arr);
+                dict.Add(dt.TableName, arr);
+            }
+
+            JavaScriptSerializer json = new JavaScriptSerializer();
+            return json.Serialize(dict);
+        }
+
+        [WebMethod]
+        public static string Checkmahang(string mahang)
+        {
+            DataTable dt = new DataTable();           
+
+            dt = DataConn.StoreFillDS("Get_Position_MCS", System.Data.CommandType.StoredProcedure, mahang);          
+
+            DataTable dt2 = new DataTable();
+            dt2 = dt.Copy();
+
+            String daresult = null;
+            DataSet ds = new DataSet();
+            ds.Tables.Add(dt2);
+            daresult = DataSetToJSON(ds);           
+            return daresult;
+        }
+    }
+}

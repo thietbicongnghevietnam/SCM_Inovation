@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using FreeLayout.App_Code;
+using System.Web.Services;
+using System.IO;
+using System.Net;
+using System.Data;
+using System.Diagnostics;
+
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Web.Script.Serialization;
+
+namespace FreeLayout.QCC
+{
+    public partial class ReportDailyForm : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            datepicker4.Value = DateTime.Now.ToString("dd-MM-yyyy");
+            datepicker5.Value = DateTime.Now.ToString("dd-MM-yyyy");
+            loaddata();
+        }
+
+        protected void Search_Date_Click_4(object sender, EventArgs e)
+        {           
+            string _date = Request.Form[datepicker4.UniqueID];
+            string _dateto = Request.Form[datepicker5.UniqueID];
+
+            string nam = _date.Substring(6, 4);
+            string thang = _date.Substring(3, 2);
+            string ngay = _date.Substring(0, 2);
+            string datefrom = nam + "-" + thang + "-" + ngay;
+
+            string nam2 = _dateto.Substring(6, 4);
+            string thang2 = _dateto.Substring(3, 2);
+            string ngay2 = _dateto.Substring(0, 2);
+            string dateto = nam2 + "-" + thang2 + "-" + ngay2;
+
+            //dt = DataConn.StoreFillDS("Pro_Report_Daily_QC_fromto", System.Data.CommandType.StoredProcedure, datefrom, dateto);
+            dt = DataConn.StoreFillDS("Pro_Report_Daily_QC_fromto_sum", System.Data.CommandType.StoredProcedure, datefrom, dateto);
+            datepicker4.Value = ngay + "-" + thang + "-" + nam;
+            datepicker5.Value = ngay2 + "-" + thang2 + "-" + nam2;
+
+        }
+        protected void loaddata() { 
+            
+
+            string _date2 = DateTime.Now.ToString("yyyy-MM-dd");
+            //dt = DataConn.StoreFillDS("Pro_Report_Daily_QC", System.Data.CommandType.StoredProcedure, _date2);  //old
+            dt = DataConn.StoreFillDS("Pro_Report_Daily_QC_sum", System.Data.CommandType.StoredProcedure, _date2);
+
+
+
+        }
+
+        
+
+
+
+    }
+}

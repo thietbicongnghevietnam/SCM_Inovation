@@ -1,0 +1,143 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using FreeLayout.App_Code;
+using System.Web.Script.Serialization;
+using System.Web.Services;
+using System.IO;
+using System.Net;
+
+namespace FreeLayout.QCC
+{
+    public partial class DailyMaterial : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        string exportTo = "";
+        public static string[] lst_keep_refresh;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            exportTo = File.ReadAllText(Server.MapPath("~/TextFile/kitting_droplist.txt"));
+            
+            if (!IsPostBack)
+            {
+                List<string> lst = exportTo.Split(',').ToList();
+                dr_TypeChek.DataSource = lst;
+                dr_TypeChek.DataBind();
+            }
+
+            dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            
+        }
+
+        //protected void bttnpdf_Click(object sender, EventArgs e)
+        //{
+        //    string _path = test.InnerHtml;
+        //    //string FilePath = Server.MapPath("~/TextFile/letter_sakurai.pdf");
+        //    string FilePath = Server.MapPath(_path);
+        //    //Response.ContentType = "application/pdf";
+        //    //Response.WriteFile(FilePath);
+        //    WebClient User = new WebClient();
+        //    Byte[] FileBuffer = User.DownloadData(FilePath);
+        //    if (FileBuffer != null)
+        //    {
+        //        Response.ContentType = "application/pdf";
+        //        Response.AddHeader("content-length", FileBuffer.Length.ToString());
+        //        Response.BinaryWrite(FileBuffer);
+        //    }
+        //}
+        
+
+
+        [WebMethod]
+        public static string getdocumentWI(string material)
+        {
+            String path = "";
+            DataTable dt = new DataTable();
+            dt = DataConn.StoreFillDS("Pro_getdocumentWI", System.Data.CommandType.StoredProcedure, material);
+            //if (dt.Rows.Count > 0)
+            if (dt.Rows[0][0].ToString() == "0")
+            {
+                path = "Chua co document WI!";
+            }
+            //truong hop khong co 
+            else
+            {
+                path = dt.Rows[0][0].ToString();
+            }
+
+            return path;
+        }
+
+        [WebMethod]
+        protected void BtnFinish(object sender, EventArgs e)
+        {
+            DataTable dt2 = new DataTable();
+            string _id = ID2.Text.ToString();
+            string _material = Material2.Text.ToString();
+            string kq = "";            
+            if (RadioButton1.Checked == true)
+            {
+                kq = "OK";
+            }
+            if (RadioButton2.Checked == true)
+            {
+                kq = "NG";
+            }
+            object[] obj = new object[] { _id, _material, kq };
+            dt2 = DataConn.StoreFillDS("Pro_Finish_Check_QC", System.Data.CommandType.StoredProcedure, _id, _material, kq);
+
+            if (dt2.Rows[0][0].ToString()=="1")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Thành công!');", true);
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+            }           
+        }
+
+        [WebMethod]
+        protected void BtnAddClick(object sender, EventArgs e)
+        {
+            DataTable dt1 = new DataTable();
+            string _id = idcheck.Text;
+            string _location = location.Text;
+            string _qty = Qty.Text;
+            string _invoice = Invoice.Text;
+            string typecheck = dr_TypeChek.Text;
+            //string userid = "";
+            object[] obj = new object[] { _id, material.Text, _location, _qty, _invoice };
+
+            if (typecheck == "==Select==")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Bạn phải chọn các bước check!'); ", true);
+                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "alert('Ban phai chon loai check');", true);
+                //"alert('FiveDot File uploaded successfully');
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                dt1 = DataConn.StoreFillDS("check_status_update_QC", System.Data.CommandType.StoredProcedure, _id, _location, _qty, _invoice, typecheck);
+                //int status = DataConn.ExecuteStoreInt("pro_user_add", CommandType.StoredProcedure, obj);
+                if (dt1.Rows[0][0].ToString() == "1")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Thành công!');", true);
+                    dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+                }
+            }
+            
+        }
+
+    }
+}

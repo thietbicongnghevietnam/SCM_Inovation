@@ -1,0 +1,97 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReportNomarlForm.aspx.cs" Inherits="FreeLayout.QCC.ReportNomarlForm" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Report Nomarl Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        #table1 {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 30%;
+        }
+            #table1 td, #table1 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            
+    </style>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <div class="container">
+            <h3>TRANSFER REQUEST (Nomal)</h3>
+            <br />
+            <table id="table1">
+                <tr>
+                    <td>Issue Date</td>
+                    <td>Datetime Now</td>
+                    <td>Others</td>
+                </tr>
+            </table>            
+            <br />
+            <table id="table2">
+                <tr>
+                    <td>Issue Date</td>
+                    <td>Datetime Now</td>                    
+                </tr>
+            </table>            
+            <br />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Sloc</th>
+                        <th>Part no</th>
+                        <th>Issue Qty</th>
+                        <th>Real Qty.</th>
+                        <th>Recv.Sloc</th>
+                        <th>Reason</th>
+                        <th>Invoice</th>
+                        <th>Deliverry</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </form>
+</body>
+</html>

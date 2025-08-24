@@ -1,0 +1,42 @@
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\FreeLayout.dll.config
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\FreeLayout.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\FreeLayout.pdb
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\csc.exe
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\csc.exe.config
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\csc.rsp
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\csi.exe
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\csi.rsp
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\System.AppContext.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\System.Collections.Immutable.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\System.Diagnostics.StackTrace.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\System.IO.FileSystem.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\System.IO.FileSystem.Primitives.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\System.Reflection.Metadata.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\vbc.exe
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\vbc.exe.config
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\vbc.rsp
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\VBCSCompiler.exe
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\roslyn\VBCSCompiler.exe.config
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\obj\Release\FreeLayout.csproj.CoreCompileInputs.cache
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\obj\Release\FreeLayout.csproj.CopyComplete
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\obj\Release\FreeLayout.dll
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\obj\Release\FreeLayout.pdb
+E:\He thong\Minh 2020\Thang 8.2021\Free loacation mcs web\FreeLayout\obj\Release\FreeLayout.csprojAssemblyReference.cache
+H:\Desktops\code suport 2020\Asset management\Free loacation ISD\FreeLayout\bin\FreeLayout.dll.config
+H:\Desktops\code suport 2020\Asset management\Free loacation ISD\FreeLayout\bin\FreeLayout.dll
+H:\Desktops\code suport 2020\Asset management\Free loacation ISD\FreeLayout\bin\FreeLayout.pdb
+H:\Desktops\code suport 2020\Asset management\Free loacation ISD\FreeLayout\obj\Release\FreeLayout.dll
+H:\Desktops\code suport 2020\Asset management\Free loacation ISD\FreeLayout\obj\Release\FreeLayout.pdb
+H:\Desktops\code suport 2020\Asset management\Free loacation ISD\FreeLayout\obj\Release\FreeLayout.csprojResolveAssemblyReference.cache

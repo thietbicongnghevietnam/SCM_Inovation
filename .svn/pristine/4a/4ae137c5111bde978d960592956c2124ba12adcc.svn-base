@@ -1,0 +1,105 @@
+﻿using FreeLayout.App_Code;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+
+
+namespace FreeLayout.QCC
+{
+    public partial class ReportQCC : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void Timer1_Tick(object sender, EventArgs e)
+        {
+            //StockPrice.Text = GetStockPrice();
+            //TimeOfPrice.Text = DateTime.Now.ToLongTimeString();
+            string _bophan = "QCC";
+            string _subject = "Gui bao cao QCC";
+            string _path = "http://10.92.184.24:8096/QCC/Normalinspection.aspx";
+            sentEmail(_bophan, _subject, _path);
+
+        }
+
+        public static string GetHostName()
+        {
+            String envi = System.Environment.MachineName;
+            String[] arr = envi.Split('-');
+            return arr[arr.Length - 1];
+        }
+        public void sentEmail(string GroupID, string subject, string _path)
+        {
+            try
+            {
+                //DataSet ds = bs.getDSEmailByGroupID(GroupID);
+                dt = DataConn.StoreFillDS("Get_Email_QC", System.Data.CommandType.StoredProcedure);
+                if (dt.Rows.Count > 0)
+                {
+                    StringBuilder body = new StringBuilder();
+                    body.Append("Dear All,");
+                    body.Append("<br/>");
+                    String message = String.Empty;
+
+                    String row1 = "Link Report: <b> " + _path + " </b>";
+                    body.Append("<br/>");
+                    body.Append(row1);
+                    body.Append("<br/>");
+                    body.Append("Sent from " + GetHostName());
+
+                    //xu ly o day la 11h30 phut se phai gui mai
+                    //if (dateTime.Hour == 16 && dateTime.Minute == 35)
+                    DateTime dateTime = DateTime.Now;
+                    if (dateTime.Hour == 12 && dateTime.Minute == 30)
+                    {
+                        System.Net.Mail.SmtpClient objClient = new System.Net.Mail.SmtpClient("157.8.1.131");
+                        subject = subject.Replace('\r', ' ').Replace('\n', ' ');
+                        System.Net.Mail.MailAddress mail = new System.Net.Mail.MailAddress("psnv.isg@vn.panasonic.com", "Test QCC report");
+                        System.Net.Mail.MailMessage objMessage = new System.Net.Mail.MailMessage();
+
+                        objMessage.From = mail;
+                        objMessage.Subject = subject;
+                        objMessage.Body = body.ToString();
+                        //Attachment data = new Attachment(filepath,MediaTypeNames.Application.Octet);
+                        // your path may look like Server.MapPath("~/file.ABC")
+                        // objMessage.Attachments.Add(data);
+                        objMessage.IsBodyHtml = true;
+                        string mail_cc = "";
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            mail_cc += dt.Rows[i]["Email"].ToString().Trim() + ",";
+                        }
+                        if (mail_cc != "")
+                        {
+                            mail_cc = mail_cc.Substring(0, mail_cc.Length - 1);
+                        }
+                        mail_cc = mail_cc.Replace('\r', ' ').Replace('\n', ' ');
+                        objMessage.To.Add(mail_cc);
+
+                        Console.WriteLine(mail_cc);
+                        objClient.Send(objMessage);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+    }
+}

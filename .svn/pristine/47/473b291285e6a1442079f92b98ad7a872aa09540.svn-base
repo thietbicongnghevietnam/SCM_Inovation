@@ -1,0 +1,276 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReportRoshForm.aspx.cs" Inherits="FreeLayout.QCC.ReportRoshForm" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Report Test Rosh Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+
+    <style>
+        #table1 {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 30%;
+            float: left;
+            margin-bottom: 20px;
+        }
+
+            #table1 td, #table1 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+        #table2 {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 30%;
+            float: left;
+            margin-left: 400px;
+            margin-bottom: 20px;
+        }
+
+            #table2 td, #table1 th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+    </style>
+
+    <link href="/Exportexcel/bootstrap.min.css" rel="stylesheet" />
+    <script src="/Exportexcel/jquery.min.js"></script>
+    <script src="/Exportexcel/bootstrap.bundle.min.js"></script>
+    <script src="/Exportexcel/jquery.table2excel.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#exporttable").click(function (e) {
+                var table = $("#htmltable");
+                if (table && table.length) {
+                    $(table).table2excel({
+                        exclude: ".noExl",
+                        name: "Excel Document Name",
+                        filename: "BBBootstrap" + new Date().toISOString().replace(/[\-\:\.]/g, "") + ".xlsx",
+                        fileext: ".xlsx",
+                        exclude_img: true,
+                        exclude_links: true,
+                        exclude_inputs: true,
+                        preserveColors: false
+                    });
+                }
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <div class="container">
+            <div style="margin-top: 20px;">
+                <h1>Report Rosh Form</h1>
+                <div class="col-sm-12" style="margin-top: 10px; margin-bottom: 10px;">
+                    <b>Issue Date :</b><input type="text" id="datepicker" runat="server">
+                    <button class="btn btn-primary" type="submit" runat="server" onserverclick="Search_roshdate_Click">
+                        <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container" id="container">
+            <%--<div class="row">--%>
+            <h3>TRANSFER REQUEST (Nomal)</h3>
+            <br />
+            <div>
+                <table id="table1">
+                    <tr>
+                        <td>Issue Date</td>
+                        <td><%=DateTime.Now.ToString("dd-MM-yyyy") %></td>
+                        <td>Others</td>
+                    </tr>
+                    <tr>
+                        <td>Slip No.</td>
+                        <td>Dect</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Tran. Code</td>
+                        <td>MB1B</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Movement Type</td>
+                        <td>311</td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <table style="border-collapse: collapse; width: 30.4846%; height: 132px; margin-left: 600px;" border="1">
+                    <tbody>
+                        <tr style="height: 31px;">
+                            <td style="width: 102.412%; height: 31px; text-align: center;" colspan="4">Department</td>
+                        </tr>
+                        <tr style="height: 31px;">
+                            <td style="height: 31px; width: 48.9227%; text-align: center;" colspan="2">Issued by</td>
+                            <td style="height: 31px; width: 53.4889%; text-align: center;" colspan="2">Approved by</td>
+                        </tr>
+                        <tr style="height: 70px;">
+                            <td style="width: 48.9227%; height: 70px;" colspan="2">&nbsp;</td>
+                            <td style="width: 53.4889%; height: 70px;" colspan="2">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <br />
+            <%--<table id="table2">
+                <tr>
+                    <td>Slip No.</td>
+                    <td>category : Dect</td>                    
+                </tr>
+            </table>   --%>
+            <br />
+            <table class="table table-bordered" id="htmltable">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Sloc</th>
+                        <th>Part no</th>
+                        <th>Issue Qty</th>
+                        <th>Recv.Sloc</th>
+                        <th>Reason</th>
+                        <th>Invoice</th>
+                        <th>Deliverry</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%int i = 0; %>
+                     <%foreach (System.Data.DataRow rows in dtrosh.Rows)
+                        {%>
+                    <%i++;%>
+                    <tr>
+                        <td><%=i %></td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[1].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td></td>
+                        <td><%=rows[10].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td></td>
+                    </tr>
+                    <%} %>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 50px;">
+                <table style="border-collapse: collapse; width: 42.7557%; height: 162px; float: left" border="1">
+                    <tbody>
+                        <tr style="height: 32px;">
+                            <td style="width: 107.114%; height: 23px; text-align: center;" colspan="4"><strong>MCS</strong></td>
+                        </tr>
+                        <tr style="height: 35px;">
+                            <td style="width: 49.7861%; height: 24px; text-align: center;" colspan="2"><strong>Checked by</strong></td>
+                            <td style="width: 57.328%; height: 24px; text-align: center;" colspan="2"><strong>Approved by</strong></td>
+                        </tr>
+                        <tr style="height: 89px;">
+                            <td style="width: 49.7861%; height: 89px;" colspan="2">&nbsp;</td>
+                            <td style="width: 57.328%; height: 89px;" colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr style="height: 30px;">
+                            <td style="width: 49.7861%; height: 26px;" colspan="2">Date :</td>
+                            <td style="width: 57.328%; height: 26px;" colspan="2">Date :</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="border-collapse: collapse; width: 28.2759%; height: 162px; float: left; margin-left: 210px;" border="1">
+                    <tbody>
+                        <tr style="height: 24px;">
+                            <td style="width: 100%; height: 24px; text-align: center;"><strong>Input</strong></td>
+                        </tr>
+                        <tr style="height: 103px;">
+                            <td style="width: 100%; height: 103px;">&nbsp;</td>
+                        </tr>
+                        <tr style="height: 24px;">
+                            <td style="width: 100%; height: 24px;">Date:&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="container" style="margin-top: 50px;">
+            <input class="btn btn-primary" type="button" onclick="printDiv('container')" value="print" />
+            <input class="btn btn-primary" type="button" value="Export" id="exporttable" />
+        </div>
+
+    </form>
+
+    <script src="/plugins/jquery/jquery-ui.js"></script>
+    <script type="text/javascript">
+
+        function printDiv(container) {
+            //if (document.getElementById("status") != null) {
+            //    var idPost = document.getElementById("status").innerHTML;
+            //}
+            var printContents = document.getElementById(container).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+
+
+
+        $(function () {
+            var onlyDate, today = new Date();
+            var dateNewFormat = '';
+
+            onlyDate = today.getDate();
+            if (onlyDate.toString().length == 2) {
+
+                dateNewFormat = onlyDate;
+            }
+            else {
+                dateNewFormat = '0' + onlyDate;
+            }
+
+            dateNewFormat = dateNewFormat + '-';
+
+            if (today.getMonth().length == 2) {
+
+                dateNewFormat += (today.getMonth() + 1);
+            }
+            else {
+                dateNewFormat += '0' + (today.getMonth() + 1);
+            }
+
+            dateNewFormat = dateNewFormat + '-' + today.getFullYear();
+            //dateNewFormat = today.getFullYear() + '-';
+
+            $('#datepicker').val(dateNewFormat);
+
+            $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        });
+    </script>
+
+
+</body>
+</html>

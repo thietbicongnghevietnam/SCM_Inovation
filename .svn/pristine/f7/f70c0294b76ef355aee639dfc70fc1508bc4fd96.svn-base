@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using FreeLayout.App_Code;
+using System.Web.Services;
+using System.IO;
+using System.Net;
+using System.Data;
+using System.Diagnostics;
+
+namespace FreeLayout.QCC
+{
+    public partial class RoshInspection : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        public DataTable dtfilter = new DataTable();
+        public DataTable dtcate = new DataTable();
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                //doan nay khong can vi type check display theo mater
+                //List<string> lst = exportTo.Split(',').ToList();
+                //dr_TypeChek.DataSource = lst;
+                //dr_TypeChek.DataBind();
+
+                dtfilter = DataConn.StoreFillDS("Get_filter_cate", System.Data.CommandType.StoredProcedure);
+                DataRow newRow = dtfilter.NewRow();
+                newRow["NameFilter"] = "==select==";
+                dtfilter.Rows.InsertAt(newRow, 0);
+                dr_filter_qc.DataSource = dtfilter;
+                dr_filter_qc.DataBind();
+
+                dtcate = DataConn.StoreFillDS("Get_filter_cate2", System.Data.CommandType.StoredProcedure);
+                DataRow newRow2 = dtcate.NewRow();
+                newRow2["NameFilter"] = "==select==";
+                dtcate.Rows.InsertAt(newRow2, 0);
+                dr_filter_cate.DataSource = dtcate;
+                dr_filter_cate.DataBind();
+            }
+
+            dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+        }
+
+
+
+
+    }
+}

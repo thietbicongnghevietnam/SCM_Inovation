@@ -1,0 +1,25 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReportQCC.aspx.cs" Inherits="FreeLayout.QCC.ReportQCC" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Report QCC</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            test gui mail
+            <br />
+            <asp:ScriptManager ID="ScriptManger1" runat="Server">
+            </asp:ScriptManager>
+
+            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick" Interval="60000">
+            </asp:Timer>
+
+            <%--10000 - 10S--%>
+            <%--60000 - 1phut--%>
+        </div>
+    </form>
+</body>
+</html>

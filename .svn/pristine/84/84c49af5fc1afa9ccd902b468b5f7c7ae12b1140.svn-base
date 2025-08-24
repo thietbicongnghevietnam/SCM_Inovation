@@ -1,0 +1,901 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Main.aspx.cs" Inherits="FreeLayout.Main" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Free Location | PSNV</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css" />
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
+    <style>
+        .left {
+            float: left;
+        }
+
+        .right {
+            float: right;
+        }
+
+        .sans-serif {
+            font-family: Helvetica, san-serif;
+        }
+
+        .p-table {
+            display: grid;
+            grid-gap: 2px;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(10, 1fr);
+
+            @media(min-width: 772px) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @media(min-width: 992px) {
+                grid-template-columns: repeat(18, 65px);
+            }
+        }
+
+        @-webkit-keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        @-moz-keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        @-o-keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        @keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        .unit {
+            border: 2px solid black;
+            border-radius: 0px 4px 4px 4px;
+            cursor: cell;
+            display: flex;
+            flex-direction: column;
+            padding: 0px;
+            text-align: center;
+            position: relative;
+            min-height: 68px;
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-right: 50px;
+        }
+
+            .unit:hover {
+                background-color: yellowgreen;
+                /*color: lightyellow;//#008080*/
+                color: #008080;
+                z-index: 1;
+                animation: scale 0.5s ease-in-out forwards;
+            }
+
+        .symbol {
+            max-height: 120px;
+            .type-number .name
+
+        {
+            font-size: 15px;
+            margin-top: 10px;
+            margin-bottom: 17px;
+        }
+
+        .author-year {
+            font-size: 9px;
+        }
+
+        }
+
+        .type-number {
+            margin-bottom: 5px
+        }
+
+        .attributes {
+            line-height: 1.2;
+            font-size: 25px;
+        }
+
+        .number {
+            font-size: 9px;
+        }
+
+        .letter {
+            font-size: 32px;
+            line-height: 0.9;
+            margin-top: 3px;
+        }
+
+        .name {
+            font-size: 6px;
+            margin-bottom: 8px;
+            margin-top: 0px;
+        }
+
+        .author-year {
+            bottom: 0px;
+            font-size: 3.5px;
+            padding-bottom: 5px;
+            position: relative;
+            text-align: left;
+            .author
+
+        {
+            position: absolute;
+            bottom: 0px;
+            line-height: 1;
+        }
+
+        .year {
+            position: absolute;
+            bottom: -1px;
+            right: 0px;
+        }
+
+        }
+
+
+        @keyframes scale {
+            0% {
+                transform: scale(1,1);
+            }
+
+            10% {
+                transform: scale(1.1,.9);
+                box-shadow: rgba(0, 0, 0, 0.3) 1px 2px 3px 1px;
+            }
+
+            30% {
+                transform: scale(1.9,2.1);
+                box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 3px 1px;
+            }
+
+            50% {
+                transform: scale(2,2)
+            }
+
+            57% {
+                transform: scale(2,2);
+                box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px 1px;
+            }
+
+            64% {
+                transform: scale(2,2)
+            }
+
+            100% {
+                transform: scale(2,2);
+                box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 7px 1px;
+            }
+        }
+    </style>
+
+
+    <style type="text/css">
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            filter: alpha(opacity=70);
+            -moz-opacity: 0.7;
+            -khtml-opacity: 0.7;
+            opacity: 0.7;
+            z-index: 100;
+            display: none;
+        }
+
+        .content a {
+            text-decoration: none;
+        }
+
+        .popup {
+            width: 100%;
+            margin: 0 auto;
+            display: none;
+            position: fixed;
+            z-index: 101;
+        }
+
+        .content {
+            min-width: 600px;
+            width: 600px;
+            min-height: 150px;
+            margin: 100px auto;
+            background: #f3f3f3;
+            position: relative;
+            z-index: 103;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px #000;
+        }
+
+            .content p {
+                clear: both;
+                color: #555555;
+                text-align: justify;
+            }
+
+                .content p a {
+                    color: #d91900;
+                    font-weight: bold;
+                }
+
+            .content .x {
+                float: right;
+                height: 35px;
+                left: 22px;
+                position: relative;
+                top: -25px;
+                width: 34px;
+            }
+
+                .content .x:hover {
+                    cursor: pointer;
+                }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        #t01 {
+            width: 100%;
+            background-color: #f1f1c1;
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <%--   <script src="plugins/jquery/jquery.datetimepicker.js"></script>--%>
+
+    <script type='text/javascript'>      
+        $(function () {
+            var overlay = $('<div id="overlay"></div>');
+            $('.close').click(function () {
+                $('.popup').hide();
+                overlay.appendTo(document.body).remove();
+                return false;
+            });
+            $('.x').click(function () {
+                $('.popup').hide();
+                overlay.appendTo(document.body).remove();
+                return false;
+            });
+            $('.click').click(function () {
+                overlay.show();
+                overlay.appendTo(document.body);
+                $('.popup').show();
+                return false;
+            });
+
+        });
+
+        function ShowPopUp(vitri) {
+            var overlay = $('<div id="overlay"></div>');
+            overlay.show();
+            overlay.appendTo(document.body);
+            $.ajax({
+                type: "POST",
+                url: "Main.aspx/GetMaHang",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ 'vitri': vitri }),
+                dataType: "json",
+                success: function (data) {
+                    $('#t01 tbody tr').remove();
+
+                    var objdata = $.parseJSON(data.d);
+                    for (var i = 0; i < objdata['Table'].length - 1; i++) {
+                        $("#t01 tbody ").append("<tr><td>" + objdata['Table'][i][0] + "</td><td>" + objdata['Table'][i][1] + "</td><td>" + objdata['Table'][i][2] + "</td></tr>");
+                    }
+                    $('.popup').show();
+                },
+                complete: function () {
+                },
+                failure: function (jqXHR, textStatus, errorThrown) {
+                    alert("Status: " + jqXHR.status + "; Error: " + jqXHR.responseText); // Display error message  
+                }
+            });
+            return false;
+        }
+
+        $(function () {
+            $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        });
+
+    </script>
+    <!--//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css-->
+    <%-- <link rel="stylesheet" href="#">--%>
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/jquery-ui.css" />
+
+</head>
+
+<body>
+
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="Main.aspx" class="nav-link">Trang chủ</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="../QCC/DailyMaterial.aspx" target="_blank" class="nav-link">Normal inspection </a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" target="_blank" class="nav-link">RoHS inspection </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Upload Mater</a>
+                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
+                    <li><a href="../QCC/UploadWI.aspx" target="_blank" class="dropdown-item">Upload WI Document</a></li> 
+                    <li><a href="../QCC/UploadReability.aspx" target="_blank" class="dropdown-item">Upload mater Reliability</a></li>
+                    <li class="dropdown-divider"></li>
+                    
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Report</a>
+                <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
+                    <li><a href="../QCC/ReportMCS.aspx" target="_blank" class="dropdown-item">Report MCS </a></li>  
+                    <li><a href="../QCC/ReportQCC.aspx" target="_blank" class="dropdown-item">Report QCC</a></li>
+                    <li class="dropdown-divider"></li>                    
+                </ul>
+            </li>
+
+
+            <%--<li class="nav-item d-none d-sm-inline-block">
+                <a href="../QCC/UploadWI.aspx" class="nav-link">Upload WI </a>
+            </li>--%>
+            <%--<li class="nav-item d-none d-sm-inline-block">
+                <a href="../QCC/ReportQCC.aspx" class="nav-link">Report QCC </a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="../QCC/ReportMCS.aspx" class="nav-link">Report MCS </a>
+            </li>--%>
+        </ul>
+
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+
+            <!-- Notifications Dropdown Menu -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <i class="fa fa-user"></i>User <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="#"><i class="far fa-id-badge"></i>Profile </a>
+                    </li>
+                    <li>
+                        <%--<a href="/QCC/LoginQCC.aspx" id="btn_logout" onserverclick="bttLogout_Click">--%>
+                        <a href="#" id="btn_logout">
+                            <i class="fas fa-sign-out-alt"></i>Logout</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </nav>
+
+
+    <form id="form1" runat="server">
+        <div style="width: 100%; margin-top: 10px;">
+
+            <div style="width: 20%; float: left; margin-right: 5px; margin-left: 5px;">
+                <span style="float: left"><b>Material Input:</b></span>
+                <span style="float: left; margin-left: 5px; margin-right: 3px;">
+                    <asp:TextBox ID="mahang" type="text" Width="200" name="mahang" runat="server" CssClass="form-control"></asp:TextBox>
+                </span>
+                <%--<button type="submit" class="btn btn-primary" id="search_qc">Find</button>--%>
+            </div>
+
+            <div style="width: 20%; float: left; margin-right: 5px;">
+                <span><b>Material Code : </b><span id="inner"></span></span>
+                <br />
+                <span><b>Location : </b><span id="showvitri"></span></span>
+
+            </div>
+
+            <div style="width: 40%; float: left;">
+
+                <%-- <p>
+                    Date:
+                    <input type="text" id="datepicker" runat="server">
+                    <button class="btn btn-primary" type="button" runat="server" onserverclick="bttSearch_Click">
+                        <i class="fa fa-fw fa-lg fa-search"></i>Search</button>
+                </p>--%>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <br />
+
+
+        <div>
+            <div class='popup'>
+                <div class='content'>
+                    <p>
+                        Material Indicate on Location
+                        <br />
+                        <table id="t01">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Material Code</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                        <a href='' class='close'>CLOSE</a>
+                    </p>
+                </div>
+            </div>
+
+            <%System.Data.DataView view3 = new System.Data.DataView(dt3);
+                System.Data.DataTable distinctLoc3;
+                distinctLoc3 = view3.ToTable(true, "vitri");
+
+                System.Data.DataView view2 = new System.Data.DataView(dt2);
+                System.Data.DataTable distinctLoc2;
+                distinctLoc2 = view2.ToTable(true, "vitri");
+
+                System.Data.DataView view = new System.Data.DataView(dt1);
+                System.Data.DataTable distinctLoc;
+                distinctLoc = view.ToTable(true, "vitri");
+
+                System.Data.DataView view4 = new System.Data.DataView(dt4);
+                System.Data.DataTable distinctLoc4;
+                distinctLoc4 = view4.ToTable(true, "vitri");
+
+
+                int i = 1;
+                string mahang = "";
+                string ttcheck = "";
+            %>
+            <%--<div class="row" style="width:100%">--%>
+
+            <div class="row" style="width: 100%">
+                <div style="width: 30%">
+                    <div class="col-md-12">
+                        <!-- general form elements disabled -->
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">FREE LOCATION 3</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div style="width: 100%">
+
+                                        <div style="width: 30%; height: auto; float: left">
+
+                                            <div class="row row-cols-1" style="width: 60%; float: right">
+                                                <%foreach (System.Data.DataRow rows1 in distinctLoc4.Rows)
+                                                    {%>
+                                                <%foreach (System.Data.DataRow row1 in dt4.Rows)
+                                                    {%>
+                                                <%-- <%if (row1[4].ToString()=="waiting")
+                                                            {%>                                                                                                                                                                                                                                      
+                                                                <% ttcheck = "waiting"; %>  
+                                                            <%}%>--%>
+
+                                                <%if (row1[1].ToString() == rows1[0].ToString())
+                                                    {%>
+                                                <% mahang = mahang + row1[0].ToString();  %>
+                                                <% ttcheck = ttcheck + row1[4].ToString();  %>
+                                                <%}%>
+                                                <%}%>
+                                                <div class="col">
+                                                    <div id='<%=rows1[0].ToString() +"_"+ mahang %>' class="unit card_<%=i %>" style="border: 1px solid black" onclick="return ShowPopUp('<%=rows1[0].ToString() %>')">
+                                                        <%--<div class="card bg-white" style="border:1px solid black" onclick="return ShowPopUp('<%=rows1[0].ToString() %>')">--%>
+                                                        <%--mau sac ---https://getbootstrap.com/docs/4.0/utilities/colors/--%>
+                                                        <%--color: white;mix-blend-mode: multiply;--%>
+                                                        <div class="">
+
+                                                            <h6 style="font-size: 6px;"><%=ttcheck %></h6>
+                                                            <h7><%=rows1[0].ToString() %></h7>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <%i++; %>
+                                                <% mahang = "";  %>
+                                                <% ttcheck = ""; %>
+                                                <%}%>
+
+                                                <div style="width: 30%; height: 100px; background-color: lightgray">
+                                                    SMT scan line 
+                                                </div>
+
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="row row-cols-3" style="width: 60%; float: right">
+                                            <%foreach (System.Data.DataRow rows1 in distinctLoc3.Rows)
+                                                {%>
+                                            <%foreach (System.Data.DataRow row1 in dt3.Rows)
+                                                {%>
+                                            <%if (row1[1].ToString() == rows1[0].ToString())
+                                                {%>
+                                            <% mahang = mahang + row1[0].ToString();  %>
+                                            <% ttcheck = ttcheck + row1[4].ToString();  %>
+                                            <%}%>
+                                            <%}%>
+                                            <div class="col">
+                                                <div id='<%=rows1[0].ToString() +"_"+ mahang %>' class="unit card_<%=i %>" style="border: 1px solid black" onclick="return ShowPopUp('<%=rows1[0].ToString() %>')">
+                                                    <div class="">
+                                                        <h6 style="font-size: 6px;"><%=ttcheck %></h6>
+                                                        <h7><%=rows1[0].ToString() %></h7>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <%i++; %>
+                                            <% mahang = "";  %>
+                                            <% ttcheck = ""; %>
+                                            <%}%>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="width: 25%">
+                    <div class="col-md-12">
+                        <!-- general form elements disabled -->
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">FREE LOCATION 2</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="row row-cols-4">
+                                        <%foreach (System.Data.DataRow rows1 in distinctLoc2.Rows)
+                                            {%>
+                                        <%foreach (System.Data.DataRow row1 in dt2.Rows)
+                                            {%>
+                                        <%if (row1[1].ToString() == rows1[0].ToString())
+                                            {%>
+                                        <% mahang = mahang + row1[0].ToString();  %>
+                                        <% ttcheck = ttcheck + row1[4].ToString();  %>
+                                        <%}%>
+                                        <%}%>
+                                        <div class="col">
+                                            <div id='<%=rows1[0].ToString() +"_"+ mahang %>' class="unit card_<%=i %>" style="border: 1px solid black" onclick="return ShowPopUp('<%=rows1[0].ToString() %>')">
+                                                <div class="">
+                                                    <h6 style="font-size: 6px;"><%=ttcheck %></h6>
+                                                    <h7><%=rows1[0].ToString() %></h7>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%i++; %>
+                                        <% mahang = "";  %>
+                                        <% ttcheck = ""; %>
+                                        <%}%>
+                                    </div>
+                                    <%--</div>--%>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+
+                    </div>
+                </div>
+                <div style="width: 35%">
+                    <div class="col-md-12">
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">FREE LOCATION 1</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="row row-cols-6">
+                                        <%foreach (System.Data.DataRow rows in distinctLoc.Rows)
+                                            {%>
+                                        <%foreach (System.Data.DataRow row in dt1.Rows)
+                                            {%>
+                                        <%if (row[1].ToString() == rows[0].ToString())
+                                            {%>
+                                        <% mahang = mahang + row[0].ToString();  %>
+                                        <% ttcheck = ttcheck + row[4].ToString();  %>
+                                        <%}%>
+                                        <%}%>
+
+                                        <div class="col">
+                                            <div id='<%=rows[0].ToString() +"_"+ mahang %>' class="unit card_<%=i %>" style="border: 1px solid black" onclick="return ShowPopUp('<%=rows[0].ToString() %>')">
+                                                <div>
+                                                    <%--http  concurrently.dev/2018/09/16/css-tao-chu-trong-suot-don-gian.html--%>
+                                                    <%-- tao chu trong suot--%>
+                                                    <%--<h6 style="font-size:6px; color: white;mix-blend-mode: multiply;"><%=ttcheck %></h6>--%>
+                                                    <h7><%=rows[0].ToString()%></h7>
+                                                    <%--<h6 style="font-size:6px; color: white;mix-blend-mode: multiply;" class="test_<%=i %>"><%=ttcheck %></h6>--%>
+                                                    <h6 style="font-size: 6px;" class="test_<%=i %>"><%=ttcheck %></h6>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <%i++; %>
+                                        <% mahang = "";  %>
+                                        <% ttcheck = ""; %>
+                                        <%}%>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width: 10%">
+                    <img src="..\Models\Congvao.JPG" class="img-fluid img-thumbnail" style="width: 150px; margin-top: 150px" alt="Cong vao">
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <script type="text/javascript"> 
+
+                $(document).ready(function () {
+                    $(".unit").each(function (index, value) {
+                        debugger;
+                        var i = index + 1;
+                        var h6 = this.innerText;
+                        if (h6.search(/checked/) >= 0) {
+                            //da check
+                            $(".card_" + i).css("background-color", "#00CC33");
+                            $(".test_" + i).text("checked");
+                        }
+                        if (h6.search(/finished/) >= 0) {
+                            //da check
+                            $(".card_" + i).css("background-color", "#00CC33");
+                            $(".test_" + i).text("finished");
+                        }
+                        else if (h6.search(/waiting/) >= 0) {
+                            //cho check
+                            $(".card_" + i).css("background-color", "#FFFF00");
+                            $(".test_" + i).text("waiting");
+                        }
+                        else if (h6.search(/nothing/) >= 0) {
+                            //khong co hang
+                            $(".card_" + i).css("background-color", "#FFFAFA");
+                            $(".test_" + i).text("nothing");
+                        }
+                        else {
+                            //khong co hang
+                            $(".card_" + i).css("background-color", "#FFFAFA");
+                        }
+                    });
+
+                });
+
+
+                function ShowPopup() {
+                    $("#lardgeModal").modal("show");
+                }
+
+                $("#mahang").keyup(function () {
+                    search_material();
+                });
+                //$("#search_qc").click(function () {
+                //    search_material();
+                //})
+
+                function search_material() {
+                    var str = $('#mahang').val();
+                    if (str != '') {
+                        $.ajax({
+                            type: "POST",
+                            url: "Main.aspx/Checkmahang",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify({ 'mahang': str }),
+                            dataType: "json",
+                            success: function (data) {
+                                var objdata = $.parseJSON(data.d);
+                                var _vitri = objdata['Table'][0][0];
+                                if (_vitri === 0) {
+                                    alert('Material Not exists !!!');
+                                    $(".unit").css({
+                                        'backgroundColor': 'white', 'color': 'black',
+
+                                        'font - size': '14px',
+                                        'font - weight': 'bold',
+                                        '- webkit - animation': 'my 0ms',
+                                        '-moz - animation': 'my 0ms ',
+                                        '-o - animation': 'my 0ms ',
+                                        'animation': 'my 0ms '
+
+                                    });
+
+                                } else {
+                                    debugger;
+                                    $(".unit").each(function () {
+                                        var i = $(this).attr("id");
+
+                                        if (i.split('_')[1].search(str) > -1) {
+                                            $(this).css({
+                                                'backgroundColor': 'red', 'color': 'Green',
+                                                'font - size': '14px',
+                                                'font - weight': 'bold',
+                                                '- webkit - animation': 'my 700ms infinite',
+                                                '-moz - animation': 'my 700ms infinite',
+                                                '-o - animation': 'my 700ms infinite',
+                                                'animation': 'my 700ms infinite'
+                                            });
+                                        } else {
+                                            $(this).css({
+                                                'backgroundColor': 'white', 'color': 'black',
+                                                'font - size': '14px',
+                                                'font - weight': 'bold',
+                                                '- webkit - animation': 'my 0ms',
+                                                '-moz - animation': 'my 0ms ',
+                                                '-o - animation': 'my 0ms ',
+                                                'animation': 'my 0ms '
+
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        //$(".unit").css({
+                        //    'backgroundColor': 'white', 'color': 'black',
+                        //    'font - size': '14px',
+                        //    'font - weight': 'bold',
+                        //    '- webkit - animation': 'my 0ms',
+                        //    '-moz - animation': 'my 0ms ',
+                        //    '-o - animation': 'my 0ms ',
+                        //    'animation': 'my 0ms '
+
+                        //});
+                        //window.location.href = "Good_Receive_MCS.aspx?documentNo=" + $.trim($("#MainContent_txt_doc").val());
+                        window.location.href = "Main.aspx";
+                    }
+                    $("#inner").text(str);
+                }
+
+
+
+            </script>
+        </div>
+    </form>
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+
+    <%--<script src="Scripts/jquery.datetimepicker.js"></script>--%>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });      
+</script>
+
+    <!--https://code.jquery.com/ui/1.12.1/jquery-ui.js -->
+    <%--<script src="#"></script>--%>
+    <script src="plugins/jquery/jquery-ui.js"></script>
+    <script>
+        var onlyDate, today = new Date();
+        var dateNewFormat = '';
+
+        onlyDate = today.getDate();
+        if (onlyDate.toString().length == 2) {
+
+            dateNewFormat = onlyDate;
+        }
+        else {
+            dateNewFormat = '0' + onlyDate;
+        }
+
+        dateNewFormat = dateNewFormat + '-';
+
+        if (today.getMonth().length == 2) {
+
+            dateNewFormat += (today.getMonth() + 1);
+        }
+        else {
+            dateNewFormat += '0' + (today.getMonth() + 1);
+        }
+
+        dateNewFormat = dateNewFormat + '-' + today.getFullYear();
+        //dateNewFormat = today.getFullYear() + '-';
+
+        $('#datepicker').val(dateNewFormat);
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,963 @@
+﻿using System;
+using System.Web.UI;
+
+using FreeLayout.App_Code;
+using System.Web.Services;
+using System.IO;
+using System.Net;
+using System.Data;
+using System.Diagnostics;
+
+namespace FreeLayout.QCC
+{
+    public partial class Normalinspection : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        public DataTable dtfilter = new DataTable();
+        public DataTable dtcate = new DataTable();
+        string exportTo = "";
+        public static string[] lst_keep_refresh;
+
+        
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            //exportTo = File.ReadAllText(Server.MapPath("~/TextFile/kitting_droplist.txt"));
+            if (!IsPostBack)
+            {
+                //doan nay khong can vi type check display theo mater
+                //List<string> lst = exportTo.Split(',').ToList();
+                //dr_TypeChek.DataSource = lst;
+                //dr_TypeChek.DataBind();
+
+                //dtfilter = DataConn.StoreFillDS("Get_filter_cate", System.Data.CommandType.StoredProcedure);
+                //DataRow newRow = dtfilter.NewRow();
+                //newRow["NameFilter"] = "==select==";
+                //dtfilter.Rows.InsertAt(newRow, 0);
+                //dr_filter_qc.DataSource = dtfilter;
+                //dr_filter_qc.DataBind();
+
+                dtcate = DataConn.StoreFillDS("Get_filter_cate2", System.Data.CommandType.StoredProcedure);
+                DataRow newRow2 = dtcate.NewRow();
+                newRow2["NameFilter"] = "==select==";
+                dtcate.Rows.InsertAt(newRow2, 0);
+                dr_filter_cate.DataSource = dtcate;
+                dr_filter_cate.DataBind();
+            }
+            datepicker.Value = DateTime.Now.ToString("dd-MM-yyyy");
+
+            string _cate = Request.QueryString["cate"];
+            DataTable dtfiltercate = new DataTable();
+
+            if (_cate != null || _cate =="")
+            {
+                dtfiltercate = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                if (dtfiltercate.Rows.Count > 0)
+                {
+                    dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                    dr_filter_cate.Text = Request.QueryString["cate"];
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Check again mater!','Error'); ", true);
+                    dr_filter_cate.Text = Request.QueryString["cate"];
+                }
+
+            }            
+            else
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+           
+        }
+
+        protected void Search_Date_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            string _checkpartno = Request.Form["check_partno_search"];
+            string _partno = partno_search.Value.ToString();
+            if (_checkpartno == "on")
+            {
+                //loc theo ma
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+
+                //dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                dt = DataConn.StoreFillDS("Get_mater_list_QC_partno", System.Data.CommandType.StoredProcedure, _partno);
+                datepicker.Value = ngay + "-" + thang + "-" + nam;
+                
+            }
+            else
+            {
+                //loc theo ngay
+                if (_date == "")
+                {
+                    dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                }
+                else
+                {
+                    string nam = _date.Substring(6, 4);
+                    string thang = _date.Substring(3, 2);
+                    string ngay = _date.Substring(0, 2);
+                    string _date2 = nam + "-" + thang + "-" + ngay;
+
+                    //dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                    dt = DataConn.StoreFillDS("Get_mater_list_QC_date", System.Data.CommandType.StoredProcedure, _date2);
+                    datepicker.Value = ngay + "-" + thang + "-" + nam;
+                }
+            }
+
+            
+        }
+
+        protected void Filter_All_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+
+                Response.Redirect("Normalinspection.aspx");
+
+                //dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                //dr_filter_cate.Text = "==select==";
+                //dt = DataConn.StoreFillDS("Get_mater_list_QC_date", System.Data.CommandType.StoredProcedure, _date2);
+            }
+        }
+
+        protected void Filter_Checking_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            string _cate = dr_filter_cate.Text;
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+                string typefilter = "checking";
+
+                //dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2,typefilter);
+                if (_cate == "==select==")
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC_Cate", System.Data.CommandType.StoredProcedure, _date2, typefilter, _cate);
+                }
+            }
+        }
+
+        protected void Filter_Wating_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            string _cate = dr_filter_cate.Text;
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+                string typefilter = "wating";
+
+                if (_cate == "==select==")
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC_Cate", System.Data.CommandType.StoredProcedure, _date2, typefilter, _cate);
+                }
+
+                
+            }
+        }
+
+        protected void Filter_Finished_OK_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            string _cate = dr_filter_cate.Text;
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+                string typefilter = "finished_ok";
+
+                //dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                if (_cate == "==select==")
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC_Cate", System.Data.CommandType.StoredProcedure, _date2, typefilter, _cate);
+                }
+            }
+        }
+
+        protected void Filter_Finished_NG_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            string _cate = dr_filter_cate.Text;
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+                string typefilter = "finished_ng";
+
+                //dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                if (_cate == "==select==")
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC_Cate", System.Data.CommandType.StoredProcedure, _date2, typefilter, _cate);
+                }
+            }
+        }
+
+        protected void Filter_Delete_Check_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            string _cate = dr_filter_cate.Text;
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+                string typefilter = "delete_check";
+
+                //dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                if (_cate == "==select==")
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Filter_Inspection_QC_Cate", System.Data.CommandType.StoredProcedure, _date2, typefilter, _cate);
+                }
+            }
+        }
+
+        //protected void Filter_Urgent_Click(object sender, EventArgs e)
+        //{
+        //    string _date = Request.Form[datepicker.UniqueID];
+        //    //09-08-2021
+        //    if (_date == "")
+        //    {
+        //        dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+        //    }
+        //    else
+        //    {
+        //        string nam = _date.Substring(6, 4);
+        //        string thang = _date.Substring(3, 2);
+        //        string ngay = _date.Substring(0, 2);
+        //        string _date2 = nam + "-" + thang + "-" + ngay;
+        //        string typefilter = "urgent";
+
+        //        dt = DataConn.StoreFillDS("Filter_Inspection_QC", System.Data.CommandType.StoredProcedure, _date2, typefilter);
+        //    }
+        //}
+
+        //protected void openfile_Click(object sender, EventArgs e)
+        //{
+        //    DataTable dt_path = new DataTable();
+        //    string filePath = "";
+        //    //string filePath = "G:\\IT\\12.Personal\\letter_sakurai.pdf";  ==> hien tai chi mo duoc file .pdf
+        //    //string filePath = "G:\\IT\\12.Personal\\zqv031.XLS";
+        //    string _mateial = material.Text.ToString();
+        //    dt_path = DataConn.StoreFillDS("Get_path_WI_document", System.Data.CommandType.StoredProcedure, _mateial);
+
+        //    if (dt_path.Rows[0][0].ToString() == "1")
+        //    {
+        //        //string filePath = @"G:\IT\02.Request Form\01.Account Authorization(Infrastructure team).xlsx";
+        //        filePath = dt_path.Rows[0][1].ToString();
+        //        var path = Server.MapPath("~/TextFile/path.txt");
+        //        System.IO.File.WriteAllText(path, filePath);
+        //        Process process = new Process();
+        //        //chuong trinh win map duoc o thi chay test????
+        //        //copy vao tablet fix chuong trinh chay tro vao duong dan tren tablet??? test
+        //        process.StartInfo.FileName = @"C:\ReadPathQC\QCAPP.exe";
+        //        //process.StartInfo.FileName = @"C:\ReadPathQC\QCAPP.exe";
+        //        //process.StartInfo.FileName = @"C:\ReadPathQC\WindowsFormsApplication1.exe";
+        //        //Process.Start(@"C:\ReadPathQC\QCAPP.exe");
+        //        process.StartInfo.Arguments = "if any";
+        //        process.Start();
+        //        process.WaitForExit();
+        //        process.Close();
+        //    }
+        //    else
+        //    {
+        //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check information!!!'); ", true);
+        //    }                        
+        //}
+
+        //protected void bttnpdf_Click(object sender, EventArgs e)
+        //{
+        //    string _path = test.InnerHtml;
+        //    //string FilePath = Server.MapPath("~/TextFile/letter_sakurai.pdf");
+        //    string FilePath = Server.MapPath(_path);
+        //    //Response.ContentType = "application/pdf";
+        //    //Response.WriteFile(FilePath);
+        //    WebClient User = new WebClient();
+        //    Byte[] FileBuffer = User.DownloadData(FilePath);
+        //    if (FileBuffer != null)
+        //    {
+        //        Response.ContentType = "application/pdf";
+        //        Response.AddHeader("content-length", FileBuffer.Length.ToString());
+        //        Response.BinaryWrite(FileBuffer);
+        //    }
+        //}
+
+        private string ReturnExtension(string fileExtension)
+        {
+            switch (fileExtension)
+            {
+                case ".htm":
+                case ".html":
+                case ".log":
+                    return "text/HTML";
+                case ".txt":
+                    return "text/plain";
+                case ".doc":
+                    return "application/ms-word";
+                case ".tiff":
+                case ".tif":
+                    return "image/tiff";
+                case ".asf":
+                    return "video/x-ms-asf";
+                case ".avi":
+                    return "video/avi";
+                case ".zip":
+                    return "application/zip";
+                case ".xls":
+                case ".XLS":
+                    return "application/vnd.ms-excel";
+                case ".csv":
+                    return "application/vnd.ms-excel";
+                case ".xlsx":                
+                    return "application/vnd.ms-excel";
+                case ".gif":
+                    return "image/gif";
+                case ".jpg":
+                case "jpeg":
+                    return "image/jpeg";
+                case ".bmp":
+                    return "image/bmp";
+                case ".wav":
+                    return "audio/wav";
+                case ".mp3":
+                    return "audio/mpeg3";
+                case ".mpg":
+                case "mpeg":
+                    return "video/mpeg";
+                case ".rtf":
+                    return "application/rtf";
+                case ".asp":
+                    return "text/asp";
+                case ".pdf":
+                    return "application/pdf";
+                case ".fdf":
+                    return "application/vnd.fdf";
+                case ".ppt":
+                case ".pptx":
+                    return "application/mspowerpoint";
+                case ".dwg":
+                    return "image/vnd.dwg";
+                case ".msg":
+                    return "application/msoutlook";
+                case ".xml":
+                case ".sdxl":
+                    return "application/xml";
+                case ".xdp":
+                    return "application/vnd.adobe.xdp+xml";
+                default:
+                    return "application/octet-stream";
+            }
+        }
+
+        [WebMethod]
+        public static string getdocumentWI(string material)
+        {
+            String path = "";
+            DataTable dt = new DataTable();
+            dt = DataConn.StoreFillDS("Pro_getdocumentWI", System.Data.CommandType.StoredProcedure, material);
+            //if (dt.Rows.Count > 0)
+            if (dt.Rows[0][0].ToString() == "0")
+            {
+                path = "Chua co document WI!";
+            }
+            //truong hop khong co 
+            else
+            {
+                path = dt.Rows[0][0].ToString();
+            }
+
+            return path;
+        }
+
+        [WebMethod]
+        protected void BtnFinish(object sender, EventArgs e)
+        {
+            DataTable dt2 = new DataTable();
+            DataTable dtuser = new DataTable();
+
+            string _id = ID2.Text.ToString();
+            string _material = Material2.Text.ToString();
+            string qty_NG = _QTYNG.Text.ToString();
+            string loi_NG = namemistake.Text.ToString();
+
+            string _remark = txtremark.Text.ToString();
+
+            string qty_sample = qtysample3.Text.ToString();
+            string qty_test = qtytest3.Text.ToString();
+
+
+            string userid = txtuserfinished.Text.ToString();
+
+            string kq = "";
+            if (RadioButton1.Checked == true)
+            {
+                kq = "OK";
+            }
+            if (RadioButton2.Checked == true)
+            {
+                kq = "NG";
+            }
+            //object[] obj = new object[] { _id, _material, kq };
+            if (qty_NG == "0")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('Qty must greater 0!!!'); ", true);
+            }
+            else
+            {
+                //kiem tra user ***
+                if (userid == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not input infor!'); ", true);
+                }
+                else
+                {
+                    //check user co trong bang user khong?
+                    dtuser = DataConn.StoreFillDS("Pro_CheckUser_QC", System.Data.CommandType.StoredProcedure, userid);
+                    if (dtuser.Rows[0][0].ToString() == "1")
+                    {
+                        if (qty_sample =="" || qty_sample=="0")
+                        {
+                            //truong hop chon vao hang bi chia dua ra thong bao => chon dung pallet
+                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check Qty Sample!'); ", true);
+                            txtuserfinished.Text = "";
+                        }
+                        else
+                        {
+                            // save finished -> R3
+                            dt2 = DataConn.StoreFillDS("Pro_Finish_Check_QC", System.Data.CommandType.StoredProcedure, _id, _material, kq, qty_NG, loi_NG, userid, _remark);
+                            if (dt2.Rows[0][0].ToString() == "1")
+                            {
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Successful!!!');", true);
+                                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                txtuserfinished.Text = "";
+                            }
+                            else if (dt2.Rows[0][0].ToString() == "2")
+                            {
+                                //truong hop nay xac nhan voi QC*** ==> edit them phan hien thi so luong NG tren form ==> fix ok
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Edit QTY NG Successful!!!');", true);
+                                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                txtuserfinished.Text = "";
+                            }
+                            else
+                            {
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+                                txtuserfinished.Text = "";
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not exists!'); ", true);
+                        txtuserfinished.Text = "";
+                    }                   
+                }                
+            }           
+        }
+
+        [WebMethod]
+        public static string checkreturnMCS(string _id)
+        {
+            String thongbao = "";
+            DataTable dt4 = new DataTable();
+            dt4 = DataConn.StoreFillDS("Pro_check_returnMCS", System.Data.CommandType.StoredProcedure, _id);
+
+            if (dt4.Rows[0][0].ToString()=="1")
+            {
+                thongbao = "OK";
+            }
+            else
+            {
+                thongbao = "NG";
+            }
+
+            return thongbao;
+        }
+
+        [WebMethod]
+        public static string getQTYNG(string _id)
+        {
+            String thongbao = "";
+            DataTable dt4 = new DataTable();
+            dt4 = DataConn.StoreFillDS("Pro_getQTYNG", System.Data.CommandType.StoredProcedure, _id);
+
+            if (dt4.Rows[0][0].ToString() == "1")
+            {
+                thongbao = "OK"+","+dt4.Rows[0][1].ToString()+","+ dt4.Rows[0][2].ToString();
+            }
+            else
+            {
+                thongbao = "NG";
+            }
+
+            return thongbao;
+        }
+
+        [WebMethod]
+        public static string checkcombine_qty(string _id)
+        {
+            String thongbao = "";
+            DataTable dt4 = new DataTable();
+            dt4 = DataConn.StoreFillDS("checkcombine_qty", System.Data.CommandType.StoredProcedure, _id);
+
+            if (dt4.Rows[0][0].ToString() == "1")
+            {
+                //thongbao = "OK";
+                thongbao = "OK" + "," + dt4.Rows[0][1].ToString() + "," + dt4.Rows[0][2].ToString();
+                //thongbao = "OK" + "," + dt4.Rows[0][1].ToString() + "," + dt4.Rows[0][2].ToString();
+            }
+            else
+            {
+                thongbao = "NG" + "," + dt4.Rows[0][1].ToString();
+            }
+
+            return thongbao;
+        }
+
+
+        [WebMethod]
+        public static string getQTYCheck(string _id)
+        {
+            String thongbao = "";
+            DataTable dt4 = new DataTable();
+            dt4 = DataConn.StoreFillDS("Pro_getQTYCheck", System.Data.CommandType.StoredProcedure, _id);
+
+            if (dt4.Rows[0][0].ToString() == "1")
+            {
+                thongbao = "OK" + "," + dt4.Rows[0][1].ToString() + "," + dt4.Rows[0][2].ToString();
+            }
+            else
+            {
+                thongbao = "NG";
+            }
+
+            return thongbao;
+        }
+
+        public void BtnRemoveItem(object sender, EventArgs e)
+        {
+            string _id = ID4.Text.ToString();
+            string userid = txtuseridxoa.Text.ToString();
+            DataTable dt5 = new DataTable();
+            DataTable dtuser = new DataTable();
+
+            if (userid == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not input infor!'); ", true);
+            }
+            else
+            {
+                //check user co trong bang user khong?
+                dtuser = DataConn.StoreFillDS("Pro_CheckUser_QC", System.Data.CommandType.StoredProcedure, userid);
+                if (dtuser.Rows[0][0].ToString()=="1")
+                {
+                    ////user eixsts mater
+                    dt5 = DataConn.StoreFillDS("Pro_Remove_Item", System.Data.CommandType.StoredProcedure, _id, userid);
+                    if (dt5.Rows[0][0].ToString() == "1")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+                        dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                        txtuseridxoa.Text = "";
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Item haved deleted! (not check)'); ", true);
+                        txtuseridxoa.Text = "";
+                    }
+                }
+                else
+                {
+                    //user not eixsts
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not exists!'); ", true);
+                    txtuseridxoa.Text = "";
+                }               
+            }                        
+        }
+
+
+        [WebMethod]
+        public static string GetNormalCheck(string material)
+        {
+            String thongbao = "";
+            DataTable dt3 = new DataTable();
+            dt3 = DataConn.StoreFillDS("Pro_getmater_normalcheck", System.Data.CommandType.StoredProcedure, material);
+            if (dt3.Rows[0][0].ToString() == "1")
+            {
+                thongbao = dt3.Rows[0][0].ToString()+","+dt3.Rows[0][1].ToString(); //"Check Reliability Testing !";
+            }
+            else if (dt3.Rows[0][0].ToString() == "2")
+            {
+                thongbao = dt3.Rows[0][0].ToString() + "," + dt3.Rows[0][1].ToString(); ;// "Have WI document!";
+            }
+            else
+            {
+                //hang check binh thuong khong co mater.
+                thongbao = "Not document!";
+            }
+            return thongbao;
+        }
+
+
+        [WebMethod]
+        public static string getcategogy(string _cate)
+        {
+            String thongbao = "";
+            DataTable dt3 = new DataTable();
+            dt3 = DataConn.StoreFillDS("Pro_getcategogy", System.Data.CommandType.StoredProcedure, _cate);
+            if (dt3.Rows[0][0].ToString() == "1")
+            {
+                thongbao = "OK";
+            }
+            else
+            {
+                thongbao = "NG";
+            }
+                return thongbao;
+        }
+
+        //[WebMethod]
+        //public static string checkinvoiceall(string idcheck)
+        //{
+        //    String thongbao = "";
+        //    DataTable dt3 = new DataTable();
+        //    dt3 = DataConn.StoreFillDS("Pro_checkinvoiceall", System.Data.CommandType.StoredProcedure, idcheck);
+        //    if (dt3.Rows[0][0].ToString() == "1")
+        //    {
+        //        thongbao = "OK";
+                
+        //    }
+        //    else
+        //    {
+        //        thongbao = "NG";
+        //    }
+        //    return thongbao;
+        //}
+
+        protected void BtnReturnMCS(object sender, EventArgs e)
+        {
+            DataTable dtcheck = new DataTable();
+            string _id = ID3.Text;
+            string _material = material3.Text;
+            string _locationstock = storageMCS.Text;
+
+            dtcheck = DataConn.StoreFillDS("Return_stock_MCS", System.Data.CommandType.StoredProcedure, _id, _material, _locationstock);
+            if (dtcheck.Rows[0][0].ToString()== "1")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+                dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Item has returned Stock MCS!'); ", true);
+            }
+
+        }
+
+
+        //[WebMethod]
+        protected void BtnAddClick(object sender, EventArgs e)
+        {            
+            DataTable dt1 = new DataTable();
+            DataTable dtuser = new DataTable();
+
+            string _id = idcheck.Text.ToString();
+            string _location = location.Text.ToString();
+            string _qty = Qtysmaple.Text.ToString();
+            string _qtytest = Qtytest.Text.ToString();
+            string _invoice = Invoice.Text.ToString();
+
+            string _material = material.Text.ToString();
+
+            string _cate = dr_filter_cate.Text;
+            //string typecheck = dr_TypeChek.Text;            
+            //object[] obj = new object[] { _id, material.Text, _location, _qty, _invoice };
+
+            string userid = txtusercheck.Text.ToString();
+
+            if (userid == "")
+            {
+                //****
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not input infor!'); ", true);
+            }
+            else
+            {
+                //check user co trong bang user khong?
+                dtuser = DataConn.StoreFillDS("Pro_CheckUser_QC", System.Data.CommandType.StoredProcedure, userid);
+                if (dtuser.Rows[0][0].ToString() == "1")
+                {
+                    string type_combine = "";
+                    //check xem ma do co phai hang WI document hay khong?
+                    DataTable dt2 = new DataTable();
+                    dt2 = DataConn.StoreFillDS("Get_path_WI_document", System.Data.CommandType.StoredProcedure, _material);
+                    if (dt2.Rows[0][0].ToString() == "1")
+                    {
+                        //check hang co combine so luong hay khong                        
+                        DataTable dt4 = new DataTable();
+                        dt4 = DataConn.StoreFillDS("checkcombine_qty", System.Data.CommandType.StoredProcedure, _id);
+                        if (dt4.Rows[0][0].ToString() == "1")
+                        {
+                            //hang bi chia ra nhieu pallet                                
+                            if (idcombine.Checked == true)
+                            {
+                                type_combine = "1"; //update all
+                            }
+                            else
+                            {
+                                type_combine = "0"; //one by one
+                            }
+
+                            dt1 = DataConn.StoreFillDS("check_status_update_QC_combine", System.Data.CommandType.StoredProcedure, _id, _location, _qty, _invoice, _qtytest, userid,type_combine);
+                            if (dt1.Rows[0][0].ToString() == "1")
+                            {
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+                                if (_cate != "==select==")
+                                {
+                                    dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                                    dr_filter_cate.Text = Request.QueryString["cate"];
+                                    txtusercheck.Text = "";
+                                }
+                                else
+                                {
+                                    dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                    txtusercheck.Text = "";
+                                }
+                            }
+                            else
+                            {
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+                                txtusercheck.Text = "";
+                            }
+
+                        }
+                        else
+                        {
+                            dt1 = DataConn.StoreFillDS("check_status_update_QC", System.Data.CommandType.StoredProcedure, _id, _location, _qty, _invoice, _qtytest, userid);
+                            if (dt1.Rows[0][0].ToString() == "1")
+                            {
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+                                if (_cate != "==select==")
+                                {
+                                    dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                                    dr_filter_cate.Text = Request.QueryString["cate"];
+                                    txtusercheck.Text = "";
+                                }
+                                else
+                                {
+                                    dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                    txtusercheck.Text = "";
+                                }
+                            }
+                            else
+                            {
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+                                txtusercheck.Text = "";
+                            }
+                        }
+                      
+                    }
+                    else
+                    {
+                        //hang issue out sang SAP -> bat buoc phai nhap QTY test -> QC xac nhan khong can nhap QTY_test van pass qua
+                        if (_qtytest == "" || _qty == "" || _qty == "0")
+                        {
+                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('Fail, You must to input QTY!!!'); ", true);
+                        }
+                        else
+                        {
+                            //check hang co combine so luong hay khong                            
+                            DataTable dt4 = new DataTable();
+                            dt4 = DataConn.StoreFillDS("checkcombine_qty", System.Data.CommandType.StoredProcedure, _id);
+                            if (dt4.Rows[0][0].ToString() == "1")
+                            {
+                                //hang bi chia ra nhieu pallet                                
+                                if (idcombine.Checked == true)
+                                {
+                                    type_combine = "1"; //update all
+                                }
+                                else
+                                {
+                                    type_combine = "0"; //one by one
+                                }
+
+
+                                dt1 = DataConn.StoreFillDS("check_status_update_QC_combine", System.Data.CommandType.StoredProcedure, _id, _location, _qty, _invoice, _qtytest, userid,type_combine);
+                                if (dt1.Rows[0][0].ToString() == "1")
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Add New Success!!!');", true);
+                                    if (_cate != "==select==")
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                                        dr_filter_cate.Text = Request.QueryString["cate"];
+                                        txtusercheck.Text = "";
+                                    }
+                                    else
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                        txtusercheck.Text = "";
+                                    }
+                                }
+                                else if (dt1.Rows[0][0].ToString() == "2")
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Update QTY Success!!!');", true);
+                                    if (_cate != "==select==")
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                                        dr_filter_cate.Text = Request.QueryString["cate"];
+                                        txtusercheck.Text = "";
+                                    }
+                                    else
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                        txtusercheck.Text = "";
+                                    }
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+                                    txtusercheck.Text = "";
+                                }
+
+                            }
+                            else
+                            {
+                                dt1 = DataConn.StoreFillDS("check_status_update_QC", System.Data.CommandType.StoredProcedure, _id, _location, _qty, _invoice, _qtytest, userid);
+                                if (dt1.Rows[0][0].ToString() == "1")
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Add New Success!!!');", true);
+                                    if (_cate != "==select==")
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                                        dr_filter_cate.Text = Request.QueryString["cate"];
+                                        txtusercheck.Text = "";
+                                    }
+                                    else
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                        txtusercheck.Text = "";
+                                    }
+
+                                }
+                                else if (dt1.Rows[0][0].ToString() == "2")
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Update QTY Success!!!');", true);
+                                    if (_cate != "==select==")
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC_filtercate", System.Data.CommandType.StoredProcedure, _cate);
+                                        dr_filter_cate.Text = Request.QueryString["cate"];
+                                        txtusercheck.Text = "";
+                                    }
+                                    else
+                                    {
+                                        dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+                                        txtusercheck.Text = "";
+                                    }
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG!!!'); ", true);
+                                    txtusercheck.Text = "";
+                                }
+                            }
+
+                           
+                        }
+                    }
+                }
+                else
+                {
+                    //khong ton tai user mater
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not exists!'); ", true);
+                    txtusercheck.Text = "";
+                }
+
+            }
+
+             
+            
+
+            //if (typecheck == "==Select==")
+            //{
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Bạn phải chọn các bước check!'); ", true);
+            //    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "alert('Ban phai chon loai check');", true);
+            //    //"alert('FiveDot File uploaded successfully');
+            //    dt = DataConn.StoreFillDS("Get_mater_list_QC", System.Data.CommandType.StoredProcedure);
+            //}
+            //else
+            //{
+            //}
+
+        }
+
+    }
+}

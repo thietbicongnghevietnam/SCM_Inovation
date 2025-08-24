@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\SCM Inovation\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{26FE7D17-56B0-4455-9E9C-7F31B2AE5913}|FreeLayout\\SCMInovation.csproj|C:\\SCM Inovation\\freelayout\\frmvanningdatescm.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{26FE7D17-56B0-4455-9E9C-7F31B2AE5913}|FreeLayout\\SCMInovation.csproj|solutionrelative:freelayout\\frmvanningdatescm.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{26FE7D17-56B0-4455-9E9C-7F31B2AE5913}|FreeLayout\\SCMInovation.csproj|c:\\scm inovation\\freelayout\\frmvanningdatescm.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{26FE7D17-56B0-4455-9E9C-7F31B2AE5913}|FreeLayout\\SCMInovation.csproj|solutionrelative:freelayout\\frmvanningdatescm.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frmVanningDateSCM.aspx.cs",
+              "DocumentMoniker": "C:\\SCM Inovation\\FreeLayout\\frmVanningDateSCM.aspx.cs",
+              "RelativeDocumentMoniker": "FreeLayout\\frmVanningDateSCM.aspx.cs",
+              "ToolTip": "C:\\SCM Inovation\\FreeLayout\\frmVanningDateSCM.aspx.cs",
+              "RelativeToolTip": "FreeLayout\\frmVanningDateSCM.aspx.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAiwDAAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-23T13:56:01.373Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "frmVanningDateSCM.aspx",
+              "DocumentMoniker": "C:\\SCM Inovation\\FreeLayout\\frmVanningDateSCM.aspx",
+              "RelativeDocumentMoniker": "FreeLayout\\frmVanningDateSCM.aspx",
+              "ToolTip": "C:\\SCM Inovation\\FreeLayout\\frmVanningDateSCM.aspx",
+              "RelativeToolTip": "FreeLayout\\frmVanningDateSCM.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-08-23T13:56:01.398Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

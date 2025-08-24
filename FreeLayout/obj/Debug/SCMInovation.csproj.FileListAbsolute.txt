@@ -1,0 +1,14 @@
+F:\SCM Inovation\SCM Inovation\FreeLayout\bin\FreeLayout.dll.config
+F:\SCM Inovation\SCM Inovation\FreeLayout\bin\FreeLayout.dll
+F:\SCM Inovation\SCM Inovation\FreeLayout\bin\FreeLayout.pdb
+F:\SCM Inovation\SCM Inovation\FreeLayout\obj\Debug\SCMInovation.csproj.AssemblyReference.cache
+F:\SCM Inovation\SCM Inovation\FreeLayout\obj\Debug\SCMInovation.csproj.CoreCompileInputs.cache
+F:\SCM Inovation\SCM Inovation\FreeLayout\obj\Debug\FreeLayout.dll
+F:\SCM Inovation\SCM Inovation\FreeLayout\obj\Debug\FreeLayout.pdb
+C:\SCM Inovation\FreeLayout\obj\Debug\SCMInovation.csproj.AssemblyReference.cache
+C:\SCM Inovation\FreeLayout\obj\Debug\SCMInovation.csproj.CoreCompileInputs.cache
+C:\SCM Inovation\FreeLayout\obj\Debug\FreeLayout.dll
+C:\SCM Inovation\FreeLayout\obj\Debug\FreeLayout.pdb
+C:\SCM Inovation\FreeLayout\bin\FreeLayout.dll.config
+C:\SCM Inovation\FreeLayout\bin\FreeLayout.dll
+C:\SCM Inovation\FreeLayout\bin\FreeLayout.pdb

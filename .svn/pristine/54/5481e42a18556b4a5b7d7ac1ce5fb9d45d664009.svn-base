@@ -1,0 +1,44 @@
+﻿using FreeLayout.App_Code;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace FreeLayout.QCC
+{
+    public partial class ReportRoshForm : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dtrosh = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            dtrosh = DataConn.StoreFillDS("Get_Report_Rosh", System.Data.CommandType.StoredProcedure);
+        }
+
+        protected void Search_roshdate_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            //09-08-2021
+            if (_date == "")
+            {
+                dtrosh = DataConn.StoreFillDS("Get_Report_Rosh", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+
+                //dt = DataConn.StoreFillDS("Get_Report_Normal_date", System.Data.CommandType.StoredProcedure);
+                dtrosh = DataConn.StoreFillDS("Get_Report_Rosh_date", System.Data.CommandType.StoredProcedure, _date2);
+            }
+        }
+
+
+
+    }
+}

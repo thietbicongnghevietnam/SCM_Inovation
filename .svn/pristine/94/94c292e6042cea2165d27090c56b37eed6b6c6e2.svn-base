@@ -1,0 +1,416 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RoshInspection.aspx.cs" Inherits="FreeLayout.QCC.RoshInspection" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Rosh Inspection</title>
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
+
+    <link rel="stylesheet" href="/plugins/toastr/toastr.css" />
+    <%--<link rel="stylesheet" href="/plugins/toastr/toastr.min.css" />--%>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/toastr/toastr.js"></script>
+
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="card">
+            <div class="card-header">
+                <h1>Material list to check for Rosh Inspection</h1>
+                <%--class="card-title"--%>
+                <div class="col-sm-12">
+                    Delivery Date:
+                                    <input type="text" id="datepicker" runat="server">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
+
+
+                    <button type="button" class="btn" style="margin-left: 50px; background-color: #EEEEEE">
+                        Checking
+                    </button>
+                    <button type="button" class="btn" style="margin-left: 20px; background-color: #FFFF99">
+                        Waiting
+                    </button>
+                    <button type="button" class="btn" style="margin-left: 20px; background-color: #66FF33">
+                        Finished
+                    </button>
+
+                    <button type="button" class="btn" style="margin-left: 20px; background-color: red">
+                        Urgent
+                    </button>
+                </div>
+
+                <div class="col-md-1" style="float: left">
+                    <div class="form-group">
+                        <label for="Group">Filter Item Status</label>
+                        <asp:DropDownList ID="dr_filter_qc" runat="server"
+                            AppendDataBoundItems="true"
+                            DataTextField="NameFilter"
+                            DataValueField="NameFilter"
+                            CssClass="custom-select custom-select-sm form-control form-control-sm">
+                        </asp:DropDownList>
+                    </div>
+                </div>
+
+                <div class="col-md-1" style="float: left">
+                    <div class="form-group">
+                        <label for="Group">Filter Category</label>
+                        <asp:DropDownList ID="dr_filter_cate" runat="server"
+                            AppendDataBoundItems="true"
+                            DataTextField="NameFilter"
+                            DataValueField="NameFilter"
+                            CssClass="custom-select custom-select-sm form-control form-control-sm">
+                        </asp:DropDownList>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+           <div class="row">
+
+            <table id="example1" class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Lot date</th>
+                        <th>Invoice</th>
+                        <th>Vendor Name</th>
+                        <th>Category</th>
+                        <th>Part No</th>
+                        <th>Lot Q'ty</th>
+                        <th>Receiving Time MCS</th>
+                        <th>QC-check Time</th>
+                        <th>Check OK Time</th>
+                        <th>Free location (Pallet)</th>
+                        <%-- <th>Storing time</th>--%>
+                        <th>Location store</th>
+                        <th>Remark</th>
+
+                        <th>Mode</th>
+                        <th>Level</th>
+                        <th>Sample position</th>
+                        <th>Q'ty Sampling</th>
+
+                        <th>Testing kind</th>
+                        <th>Q'ty test</th>
+                        <th>IQC Checking sittuation</th>
+                        <th>Qty NG</th>
+                        <th>Defect</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <%--<th></th>--%>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%int i = 0; %>
+                    <%foreach (System.Data.DataRow rows in dt.Rows)
+                        {%>
+                    <%i++;%>
+
+
+                    <%if (rows[13].ToString() == "pending")
+                        {%>
+                    <%if (rows[15].ToString() == "Urgent")
+                        {%>
+                    <tr style="background-color: #EEEEEE">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td>cate</td>
+                        <td><%=rows[1].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%-- <td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %><i class="far fa-bell"></i></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+                        <td>
+                            <a href="#" title="Check item"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" title="Finished">
+                                <i class="fas fa-save"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" title="Remove check"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <%-- <td>
+                            <a href="#" title="return stock MCS"><i class="fas fa-sync-alt" ></i></a>
+                        </td>--%>
+                    </tr>
+                    <%} %>
+                    <%else
+                        { %>
+                    <tr style="background-color: #EEEEEE">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td>cate</td>
+                        <td><%=rows[1].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+                        <td>
+                            <a href="#" title="Check item"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" title="Finished" ><i class="fas fa-save"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" title="Remove check"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <%-- <td>
+                            <a href="#" title="return stock MCS"><i class="fas fa-sync-alt" ></i></a>
+                        </td>--%>
+                    </tr>
+                    <%} %>
+                    <%} %>
+
+                    <%else if (rows[13].ToString() == "finished")
+                        {%>
+                    <tr style="background-color: #66FF33">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td>cate</td>
+                        <td><%=rows[1].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+                        <td>
+                            <a href="#" title="Check item"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" title="Finished"><i class="fas fa-save"></i></a>
+                        </td>
+                        <td>
+                            <a href="#" title="Remove check"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <%-- <td>
+                            <a href="#" title="return stock MCS" onclick="openEditModal3('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[27].ToString() %>')">
+                                <i class="fas fa-sync-alt" ></i>
+                            </a>
+                        </td>--%>
+                    </tr>
+                    <%} %>
+
+                    <%else
+                        {%>
+                    <%if (rows[15].ToString() == "Urgent")
+                        {%>
+                    <tr style="background-color: #FF0000">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td>cate</td>
+                        <td><a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%-- <td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %><i class="far fa-bell"></i></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+                        <td>
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" >
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" title="Finished">
+                                <i class="fas fa-save"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" title="Remove check" ><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <%--<td>
+                            <a href="#" title="return stock MCS"><i class="fas fa-sync-alt" ></i></a>
+                        </td>--%>
+                    </tr>
+                    <%} %>
+                    <%else
+                        { %>
+                    <tr style="background-color: #FFFF99">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td>cate</td>
+                        <td><a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+                        <td>
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" >
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" title="Finished">
+                                <i class="fas fa-save"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" title="Remove check" ><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <%--<td>
+                            <a href="#" title="return stock MCS"><i class="fas fa-sync-alt" ></i></a>
+                        </td>--%>
+                    </tr>
+
+                    <%} %>
+
+
+                    <%} %>
+
+
+
+                    <%} %>
+                </tbody>
+            </table>
+        </div>
+
+
+    </form>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/dist/js/adminlte.min.js"></script>
+    <script src="/dist/js/demo.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                //"order": [[7, "desc"]],
+                "pageLength": 50
+                //"ordering": true,
+                //"paging": true,
+                //"lengthChange": false,
+                //"searching": false,
+                //"info": true,                    
+            });
+        });
+
+    </script>
+
+    <script src="/plugins/jquery/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var onlyDate, today = new Date();
+            var dateNewFormat = '';
+
+            onlyDate = today.getDate();
+            if (onlyDate.toString().length == 2) {
+
+                dateNewFormat = onlyDate;
+            }
+            else {
+                dateNewFormat = '0' + onlyDate;
+            }
+
+            dateNewFormat = dateNewFormat + '-';
+
+            if (today.getMonth().length == 2) {
+
+                dateNewFormat += (today.getMonth() + 1);
+            }
+            else {
+                dateNewFormat += '0' + (today.getMonth() + 1);
+            }
+
+            dateNewFormat = dateNewFormat + '-' + today.getFullYear();
+            //dateNewFormat = today.getFullYear() + '-';
+
+            $('#datepicker').val(dateNewFormat);
+
+            $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        });
+    </script>
+
+</body>
+</html>

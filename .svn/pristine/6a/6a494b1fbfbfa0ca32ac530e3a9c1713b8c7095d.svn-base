@@ -1,0 +1,105 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PrintpartcardQC.aspx.cs" Inherits="FreeLayout.QCC.PrintpartcardQC" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
+
+    <link rel="stylesheet" href="/plugins/toastr/toastr.css" />
+    <%--<link rel="stylesheet" href="/plugins/toastr/toastr.min.css" />--%>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <%--<script src="/plugins/toastr/toastr.js"></script>--%>
+
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+
+            <div class="row" style="width: 100%">
+
+                <div class="row">
+
+                    <%int i = 0; %>
+                    <%foreach (System.Data.DataRow rows in dt.Rows)
+                        {%>
+                    <%i++;%>
+
+                    <div class="row-cols-12">
+
+                        <table style="border-collapse: collapse; width: 90%; height: 196px; margin-left: 30px; margin-right: 20px;" border="1">
+                            <tbody>
+                                <tr style="height: 20px;">
+                                    <td style="width: 11.1654%; height: 31px; text-align: center"><b><%=i %></b></td>
+                                    <td style="width: 43.8501%; height: 31px;" colspan="2">Part card( RoHS)</td>
+                                    <td style="width: 41.1556%; height: 31px;" colspan="2">Số Điểm Đo:</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 11.1654%; height: 26px;">Part No</td>
+                                    <td style="width: 85.0057%; height: 26px; text-align: center" colspan="4">&nbsp;<b><%= rows[0].ToString() %></b></td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 11.1654%; height: 24px;">Name</td>
+                                    <td style="width: 85.0057%; height: 24px; text-align: center" colspan="4">&nbsp;<b><%= rows[4].ToString() %></b></td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 11.1654%; height: 23px;">Invoice</td>
+                                    <td style="width: 85.0057%; height: 23px;  text-align: center" colspan="4">&nbsp;<b><%= rows[1].ToString() %></b></td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 11.1654%; height: 21px;">Supplier</td>
+                                    <td style="width: 85.0057%; height: 21px;  text-align: center" colspan="4">&nbsp;<b><%= rows[2].ToString() %></b></td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 28.7218%; height: 22px;" colspan="2">Q'ty : <%= rows[5].ToString() %></td>
+                                    <td style="width: 67.4493%; height: 22px; text-align: left;" colspan="3">Ng&agrave;y lấy mẫu: &hellip;.../.../...</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 55.0155%; height: 25px;" colspan="3">Chờ ph&acirc;n t&iacute;ch GC/ECD đến ng&agrave;y:</td>
+                                    <td style="width: 26.8643%; height: 25px;" colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr style="height: 20px;">
+                                    <td style="width: 11.1654%; height: 24px;"><%= rows[3].ToString() %> - Phthalate</td>
+                                    <td style="width: 17.5564%; height: 24px;">&nbsp;</td>
+                                    <td style="width: 26.2937%; height: 24px;">ID:</td>
+                                    <td style="width: 41.1556%; height: 24px; text-align: center;" colspan="2">Old part</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <br />
+
+                    </div>
+
+                    <%} %>
+                </div>
+
+                <div class="row" style="margin-top: 50px; margin-left:100px;">
+                    <%--<input id="btnPrint" name="btnPrint" type="button" value="Print" onclick="window.print()" class="btn btn-primary" />--%>
+                   <%-- <input id="btnPrint" name="btnPrint" type="button" value="Print" class="btn btn-primary" />--%>
+                </div>
+
+            </div>
+
+
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                window.addEventListener("load", window.print());
+            })
+            //$('#btnPrint').click(function () {
+            //    window.addEventListener("load", window.print());
+            //});
+
+        </script>
+
+    </form>
+</body>
+</html>

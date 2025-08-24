@@ -1,0 +1,490 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UploadReability.aspx.cs" Inherits="FreeLayout.QCC.UploadReability" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Upload Master List</title>
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
+
+    <link rel="stylesheet" href="/plugins/toastr/toastr.css" />
+    <%--<link rel="stylesheet" href="/plugins/toastr/toastr.min.css" />--%>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/toastr/toastr.js"></script>
+
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <div style="margin-top: 10px; margin-left: 30px; margin-right: 30px; width: auto; height: auto;">
+            <div class="card-header">
+                <h1>Upload Master List (Reliablility testing & WI Document)</h1>
+            </div>
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Add New!</h3>
+                </div>
+                <p>
+                    <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
+                </p>
+
+                <!-- import file excel -->
+                <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
+                <div style="font: 14px Verdana; float: right">
+                    <%--<p style="margin-top: 20px; margin-left: 20px;">
+                        Select a file to upload:
+                        <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
+                    </p>--%>
+                    <p>
+                        <asp:FileUpload ID="FileUpload1" runat="server" />
+                        <asp:Button ID="Button1" Text="Upload Mater" OnClick="Upload" runat="server" class="btn btn-primary float-right" />
+                    </p>
+
+                    <p style="margin-top: 20px; margin-left: 20px;">
+                        <%--<input type="button" onserverclick="ImportFromExcel" value="Import data to Excel" runat="server" class="btn btn-primary" />--%>
+
+                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" onserverclick="btnDownloadClick" runat="server">
+                            <i class="fas fa-download"></i>Dowload template file
+                        </button>
+                    </p>
+                    <p>
+                        <asp:Label ID="Label1" runat="server"></asp:Label>
+                    </p>
+
+                </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+                <span style="float: left"><b>Material Input :</b></span>
+                <span style="float: left; margin-left: 5px; margin-right: 3px;">
+                    <asp:TextBox ID="txt_mahang" type="text" Width="200" name="mahang" runat="server" CssClass="form-control"></asp:TextBox>
+                </span>
+                <button type="submit" class="btn btn-primary" style="margin-left: 20px;" id="search_mahang" onserverclick="btnfindmater" runat="server">Find material</button>
+            </div>
+
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            <table id="example1" class="table table-bordered">
+                                <thead>
+                                    <tr role="row">
+                                        <th>ID</th>
+                                        <th>Partno</th>
+                                        <th>Plan</th>
+                                        <th>Cate</th>
+                                        <th>Vendor</th>
+                                        <th>Type check</th>
+                                        <th>WeightofJIG</th>
+                                        <th>TotalCycles</th>
+                                        <th>SamplePosition</th>
+                                        <th>WIdocument</th>
+                                        <th>Levelchecking</th>
+                                        <th>RohsGroup</th>
+                                        <th>RoshQtychecking</th>
+                                        <th>RoshMaking</th>
+                                        <th>Modechecking</th>
+                                        <th>Qtytesting</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%foreach (System.Data.DataRow rows in dt.Rows)
+                                        {%>
+                                    <tr role="row">
+                                        <td><%=rows[0].ToString() %></td>
+                                        <td><%=rows[3].ToString() %></td>
+                                        <td><%=rows[1].ToString() %></td>
+                                        <td><%=rows[2].ToString() %></td>
+                                        <td><%=rows[5].ToString() %></td>
+                                        <td><%=rows[7].ToString() %></td>
+                                        <td><%=rows[8].ToString() %></td>
+                                        <td><%=rows[9].ToString() %></td>
+                                        <td><%=rows[10].ToString() %></td>
+                                        <td><%=rows[11].ToString() %></td>
+                                        <td><%=rows[12].ToString() %></td>
+                                        <td><%=rows[13].ToString() %></td>
+                                        <td><%=rows[14].ToString() %></td>
+                                        <td><%=rows[15].ToString() %></td>
+                                        <td><%=rows[18].ToString() %></td>
+                                        <td><%=rows[19].ToString() %></td>
+                                        <td>
+                                            <a class="btn btn-info btn-sm" href="#" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>',
+                                                '<%= rows[3].ToString() %>',
+                                                '<%= rows[2].ToString() %>',
+                                                '<%= rows[5].ToString() %>',
+                                                '<%= rows[8].ToString() %>',
+                                                '<%= rows[9].ToString() %>',
+                                                '<%= rows[10].ToString() %>',
+                                                '<%= rows[7].ToString() %>',
+                                                '<%= rows[12].ToString() %>',                                                
+                                                '<%= rows[13].ToString() %>',
+                                                '<%= rows[14].ToString() %>',
+                                                '<%= rows[15].ToString() %>',
+                                                '<%= rows[18].ToString() %>',
+                                                '<%= rows[1].ToString() %>',
+                                                '<%= rows[19].ToString() %>')">
+                                                <i class="fas fa-pencil-alt"></i>
+                                                Edit
+                                            </a>
+                                            <a href="#" class="btn btn-info btn-sm" title="delete item" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[3].ToString() %>')"><i class="far fa-trash-alt"></i>Delete</a>
+                                        </td>
+                                    </tr>
+
+                                    <% } %>
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Partno</th>
+                                        <th>Plan</th>
+                                        <th>Cate</th>
+                                        <th>Vendor</th>
+                                        <th>Type check</th>
+                                        <th>WeightofJIGr</th>
+                                        <th>TotalCycles</th>
+                                        <th>SamplePosition</th>
+                                        <th>WIdocument</th>
+                                        <th>Levelchecking</th>
+                                        <th>RohsGroup</th>
+                                        <th>RoshQtychecking</th>
+                                        <th>RoshMaking</th>
+                                        <th>Modelchecking</th>
+                                        <th>Qtytesting</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Edit Mater Reliability!</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="idcheck" CssClass="form-control" placeholder="ID" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="material" CssClass="form-control" placeholder="Material" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Cate</label>
+                                        <asp:TextBox ID="cate" CssClass="form-control" placeholder="Category" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Vendor</label>
+                                        <asp:TextBox ID="vendor" CssClass="form-control" placeholder="Vendor" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">WeightofJIG</label>
+                                        <asp:TextBox ID="txtweightofjig" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">TotalCycles</label>
+                                        <asp:TextBox ID="txttotalcycles" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">SamplePosition</label>
+                                        <asp:TextBox ID="txtsampleposition" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Group">Type check</label>
+                                        <asp:DropDownList ID="Drop_typecheck" runat="server"
+                                            AppendDataBoundItems="true"
+                                            DataTextField="Typecheck"
+                                            DataValueField="Typecheck"
+                                            CssClass="custom-select custom-select-sm form-control form-control-sm">
+                                        </asp:DropDownList>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">RohsGroup</label>
+                                        <asp:TextBox ID="rohsgroup" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">RoshQtychecking</label>
+                                        <asp:TextBox ID="rohsqty" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">RoshMaking</label>
+                                        <asp:TextBox ID="rohsmaking" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Levelchecking</label>
+                                        <asp:TextBox ID="levelchecking" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Mode checking</label>
+                                        <asp:TextBox ID="modechecking" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Plan</label>
+                                        <asp:TextBox ID="txt_plan" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty testing</label>
+                                        <asp:TextBox ID="txt_qtytest" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <%--<div class="col-md-6">
+                                    <div class="form-group">
+                                        
+                                    </div>
+                                </div>--%>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Path</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;">Do You want to edit? (*)</span>
+                                        <asp:TextBox ID="txtpath" CssClass="form-control" placeholder="path document" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                        <button type="button" runat="server" id="btnadd" onserverclick="SaveClick" class="btn btn-primary">
+                            <i class="fas fa-download"></i>Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="myModal2">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Do you want to delete item? </h4>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <%-- Modal footer --%>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="txtid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="txtmaterial" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">UserID</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;">You must input!(*)</span>
+                                        <asp:TextBox ID="txtuserid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                        <button type="button" runat="server" id="btndeleteitem" onserverclick="BtndeleteItem" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#txtid').prop("readonly", true);
+            $('#txtmaterial').prop("readonly", true);
+        });
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                //"order": [[0, "desc"]],
+                "order": [[0, "desc"]],
+                "pageLength": 100
+                //"ordering": true,
+                //"paging": true,
+                //"lengthChange": false,
+                //"searching": false,
+                //"info": true,                    
+            });
+        });
+
+        function openEditModal2(txt_id, txt_mahang) {
+            $("#txtid").val(txt_id);
+            $("#txtmaterial").val(txt_mahang);
+
+            $('#myModal2').modal('show');
+        }
+
+        function openEditModal(txt_id, txt_mahang, txt_cate, txt_vendor, txt_weightofjig, txt_totalcycles, txt_sampleposition, dr_typecheck, txt_levecheck, txt_rohsgroup, txt_rohsqty, txt_rohsmaking, txt_modecheck, txt_plan,txt_qtytest) {
+            $("#idcheck").val(txt_id);
+            $("#material").val(txt_mahang);
+            $("#cate").val(txt_cate);
+            $("#vendor").val(txt_vendor);
+
+            $("#txtweightofjig").val(txt_weightofjig);
+            $("#txttotalcycles").val(txt_totalcycles);
+            $("#txtsampleposition").val(txt_sampleposition);
+            $("#Drop_typecheck").val(dr_typecheck);
+
+            $("#levelchecking").val(txt_levecheck);
+            $("#modechecking").val(txt_modecheck);
+            $("#rohsgroup").val(txt_rohsgroup);
+            $("#rohsqty").val(txt_rohsqty);
+            $("#rohsmaking").val(txt_rohsmaking);
+
+            $("#txt_plan").val(txt_plan);
+            $("#txt_qtytest").val(txt_qtytest);
+
+            //$("#txtpath").val(txt_path);
+
+            var data = { material: txt_mahang };
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "UploadReability.aspx/getfulpath2",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+                    $("#txtpath").val(data.d);
+                },
+                error: function () {
+                }
+            });
+
+            $('#myModal').modal('show');
+        };
+
+
+    </script>
+
+
+</body>
+</html>

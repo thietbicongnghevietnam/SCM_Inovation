@@ -1,0 +1,103 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UploadWI.aspx.cs" Inherits="FreeLayout.QCC.UploadWI" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Upload WI QCC</title>
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
+
+    <link rel="stylesheet" href="/plugins/toastr/toastr.css" />
+    <%--<link rel="stylesheet" href="/plugins/toastr/toastr.min.css" />--%>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/toastr/toastr.js"></script>
+
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div style="margin-top: 10px; margin-left: 100px; width: 800px; height: 1000px;">
+            <div class="card-header">
+                <h1>Upload WI</h1>
+                <%--class="card-title"--%>
+            </div>
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Upload Document WI!</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Material</label>
+                        <span style="color: red; font-size: 11px; font-style: italic;">(*)</span>
+                        <input type="text" name="material" class="form-control" id="material" runat="server" placeholder="Enter material">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputFile">File input</label>
+                        <span style="color: red; font-size: 11px; font-style: italic;">(*)</span>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <%--<input type="file" class="custom-file-input" id="exampleInputFile" name="FileUpload_one">--%>
+                                <input type="file" name="FileUpload" class="custom-file-input" />
+                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                            <%--<div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>--%>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <%--<button type="submit" class="btn btn-primary">Submit</button>--%>
+                    <asp:Button ID="Button1" Text="Upload" runat="server" OnClick="Upload" />
+                </div>
+
+                <br />
+                <asp:Label ID="lblMessage" Text="File uploaded successfully." runat="server" ForeColor="Green" Visible="false" />
+
+            </div>
+
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Upload Excel file!</h3>
+                </div>
+                <p>
+                    <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
+                </p>
+
+                <!-- import file excel -->
+                <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
+                <div style="font: 14px Verdana; float: right">
+                    <p style="margin-top: 20px; margin-left: 20px;">Select a file to upload:
+                        <asp:FileUpload ID="FileUpload" Width="450px" runat="server" /></p>
+                    <p style="margin-top: 20px; margin-left: 20px;">
+                        <input type="button" onserverclick="ImportFromExcel" value="Import data to Excel" runat="server" class="btn btn-primary" />
+                        
+                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" onserverclick="btnDownloadClick" runat="server"> 
+                            <i class="fas fa-download"></i> Dowload template file
+                        </button>
+                    </p>
+                    <p>
+                        <asp:Label ID="Label1" runat="server"></asp:Label>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>

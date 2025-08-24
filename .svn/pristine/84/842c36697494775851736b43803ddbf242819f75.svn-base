@@ -1,0 +1,485 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using FreeLayout.App_Code;
+using System.Web.Script.Serialization;
+using System.Web.Services;
+using System.Net;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.OleDb;
+using System.IO;
+using System.Data.Common;
+using System.Configuration;
+
+namespace FreeLayout.QCC
+{
+    public partial class UploadReability : System.Web.UI.Page
+    {
+        //59959 ban ghi
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        public DataTable dt1 = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                BindGroupList();                
+            }
+            dt = DataConn.StoreFillDS("Get_mater_reliablity", System.Data.CommandType.StoredProcedure);
+
+        }
+
+        [WebMethod]
+        protected void BindGroupList()
+        {
+            DataTable dt2 = new DataTable();
+            dt2 = DataConn.StoreFillDS("pro_typecheck_select", CommandType.StoredProcedure);
+            Drop_typecheck.DataSource = dt2;
+            Drop_typecheck.DataBind();
+        }
+
+        public void BtndeleteItem(object sender, EventArgs e)
+        {
+            string _id = txtid.Text.ToString();
+            string userid = txtuserid.Text.ToString();
+
+            DataTable dt5 = new DataTable();
+            DataTable dtuser = new DataTable();
+            if (userid == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not input infor!'); ", true);
+            }
+            else
+            {
+                //check user co trong bang user khong?
+                dtuser = DataConn.StoreFillDS("Pro_CheckUser_QC", System.Data.CommandType.StoredProcedure, userid);
+                if (dtuser.Rows[0][0].ToString() == "1")
+                {
+                    ////user eixsts mater
+                    dt5 = DataConn.StoreFillDS("Pro_Remove_Item_mater", System.Data.CommandType.StoredProcedure, _id, userid);
+                    if (dt5.Rows[0][0].ToString() == "1")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+                        dt = DataConn.StoreFillDS("Get_mater_reliablity", System.Data.CommandType.StoredProcedure);
+                        txtuserid.Text = "";
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, You do not permission!'); ", true);
+                        txtuserid.Text = "";
+                    }
+                }
+                else
+                {
+                    //user not eixsts
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, user does not exists!'); ", true);
+                    txtuserid.Text = "";
+                }
+            }
+
+
+        }
+
+        protected void SaveClick(object sender, EventArgs e)
+        {
+            DataTable dt1 = new DataTable();
+            string _id = idcheck.Text;
+            string _material = material.Text;
+            string _cate = cate.Text;
+            string _vendor = vendor.Text;
+            string _typecheck = Drop_typecheck.Text;
+
+
+            string levelc = levelchecking.Text;
+            string modec = modechecking.Text;
+            string rohsg = rohsgroup.Text;
+            string rohsq = rohsqty.Text;
+            string rohsma = rohsmaking.Text;
+
+
+            string weightofJIG = txtweightofjig.Text;
+            string totalCycles = txttotalcycles.Text;
+            string samplePosition = txtsampleposition.Text;
+            string path_wi = txtpath.Text;
+
+            string plannew = txt_plan.Text.ToString().Trim();
+
+            dt1 = DataConn.StoreFillDS("update_mater_Reliability", System.Data.CommandType.StoredProcedure, _id, _material, _cate, _vendor, _typecheck, weightofJIG, totalCycles, samplePosition, path_wi, levelc, rohsg, rohsq, rohsma, modec, plannew);
+            if (dt1.Rows[0][0].ToString() == "1")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Successful!');", true);
+                dt = DataConn.StoreFillDS("Get_mater_reliablity", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check again!'); ", true);
+            }
+
+        }
+
+        [WebMethod]
+        public static string getfulpath2(string material)
+        {
+            String path = "";
+            DataTable dt = new DataTable();
+            dt = DataConn.StoreFillDS("Get_path_WI_document", System.Data.CommandType.StoredProcedure, material);
+            //if (dt.Rows.Count > 0)
+            if (dt.Rows[0][0].ToString() == "1")
+            {
+                path = dt.Rows[0][1].ToString();
+            }
+            //truong hop khong co 
+            else
+            {
+                path = "";
+            }
+
+            return path;
+        }
+
+        protected void btnfindmater(Object sender, EventArgs e)
+        {
+            try
+            {
+                string mahang = txt_mahang.Text.ToString();
+                if (mahang == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, you do not chosen material !'); ", true);
+                    dt = DataConn.StoreFillDS("Get_mater_reliablity", System.Data.CommandType.StoredProcedure);
+                    txt_mahang.Focus();
+                }
+                else
+                {
+                    dt = DataConn.StoreFillDS("Get_mater_reliablity_search", System.Data.CommandType.StoredProcedure, mahang);
+                    if (dt.Rows[0][0].ToString() == "0")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('No Mater Data!'); ", true);
+                        dt = DataConn.StoreFillDS("Get_mater_reliablity", System.Data.CommandType.StoredProcedure);
+                    }                    
+                }                               
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        protected void btnDownloadClick(Object sender, EventArgs e)
+        {
+            try
+            {
+                string fileName = "mauupload_reliability.xlsx";
+                string fileExtension = ".xlsx";
+
+                // Set Response.ContentType
+                Response.ContentType = GetContentType(fileExtension);
+
+                // Append header
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+                // Write the file to the Response
+                Response.TransmitFile(Server.MapPath("~/Textfile/" + fileName));
+                Response.End();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //backend
+        //protected void btnUpload_Click(object sender, EventArgs e)
+        //{
+        //    if (FileUpload1.PostedFile != null)
+        //    {
+        //        try
+        //        {
+        //            string path = string.Concat(Server.MapPath("~/Textfile/" + FileUpload1.FileName));
+        //            FileUpload1.SaveAs(path);
+        //            // Connection String to Excel Workbook  
+        //            string excelCS = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=Excel 8.0", path);
+        //            using (OleDbConnection con = new OleDbConnection(excelCS))
+        //            {
+        //                OleDbCommand cmd = new OleDbCommand("select * from [Sheet1$]", con);
+        //                con.Open();
+        //                // Create DbDataReader to Data Worksheet  
+        //                DbDataReader dr = cmd.ExecuteReader();                       
+        //                // SQL Server Connection String  
+        //                string CS = ConfigurationManager.ConnectionStrings["Data Source=192.186.128.1;Persist Security Info=False;" +
+        //                    "Initial Catalog=FREE_LOCATION;User Id=sa;Password=Psnvdb2013;" +
+        //                    "Connect Timeout=30;"].ConnectionString;
+        //                // Bulk Copy to SQL Server   
+
+        //                using (SqlConnection con1 = new SqlConnection(CS))
+        //                {
+        //                    con1.Open();
+        //                    // FINALLY, LOAD DATA INTO THE DATABASE TABLE.
+        //                    SqlBulkCopy bulkInsert = new SqlBulkCopy(CS);
+        //                    bulkInsert.DestinationTableName = "DM_Mater_Reability";
+        //                    bulkInsert.WriteToServer(dr);
+        //                }
+        //                //SqlBulkCopy bulkInsert = new SqlBulkCopy(CS);
+        //                //bulkInsert.DestinationTableName = "DM_Mater_Reability";
+        //                //bulkInsert.WriteToServer(dr);
+        //                //BindGridview();
+        //                lblConfirm.Text = "Your file uploaded successfully";
+        //                lblConfirm.ForeColor = System.Drawing.Color.Green;
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            lblConfirm.Text = "Your file not uploaded";
+        //            lblConfirm.ForeColor = System.Drawing.Color.Red;
+        //        }
+        //    }
+        //}
+
+
+        private string GetContentType(string fileExtension)
+        {
+            if (string.IsNullOrEmpty(fileExtension))
+                return string.Empty;
+
+            string contentType = string.Empty;
+            switch (fileExtension)
+            {
+                case ".htm":
+                case ".html":
+                    contentType = "text/HTML";
+                    break;
+                case ".csv":
+                case ".txt":
+                    contentType = "text/plain";
+                    break;
+
+                case ".doc":
+                case ".rtf":
+                case ".docx":
+                    contentType = "Application/msword";
+                    break;
+
+                case ".xls":
+                case ".xlsx":
+                    contentType = "Application/x-msexcel";
+                    break;
+
+                case ".jpg":
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    break;
+
+                case ".gif":
+                    contentType = "image/GIF";
+                    break;
+
+                case ".pdf":
+                    contentType = "application/pdf";
+                    break;
+            }
+            return contentType;
+        }
+
+        //protected void ImportFromExcel(object sender, EventArgs e)
+        //{
+        //    // CHECK IF A FILE HAS BEEN SELECTED.
+        //    if ((FileUpload.HasFile))
+        //    {
+
+        //        if (!Convert.IsDBNull(FileUpload.PostedFile) &
+        //            FileUpload.PostedFile.ContentLength > 0)
+        //        {
+        //            //tam thoi rao cho nay lai. them moi thi update  ==> xoa het xu dung lenh nay
+        //            //DataConn.Execute_NonSQL("truncate table [FREE_LOCATION].[dbo].[DM_Mater_Reability];");
+
+        //            //FIRST, SAVE THE SELECTED FILE IN THE ROOT DIRECTORY.
+        //            FileUpload.SaveAs(Server.MapPath(".") + "\\" + FileUpload.FileName);
+
+        //            //string[] filenames = Directory.GetFiles(Server.MapPath("~/Kitting_Plan"));
+
+        //            SqlBulkCopy oSqlBulk = null;
+
+        //            // SET A CONNECTION WITH THE EXCEL FILE.
+        //            OleDbConnection myExcelConn = new OleDbConnection
+        //                ("Provider=Microsoft.ACE.OLEDB.12.0; " +
+        //                    "Data Source=" + Server.MapPath(".") + "\\" + FileUpload.FileName +
+        //                    ";Extended Properties=Excel 12.0;");
+        //            try
+        //            {
+        //                myExcelConn.Open();
+
+        //                // GET DATA FROM EXCEL SHEET.
+        //                OleDbCommand objOleDB =
+        //                    new OleDbCommand("SELECT *FROM [Sheet1$]", myExcelConn);
+
+        //                // READ THE DATA EXTRACTED FROM THE EXCEL FILE.
+        //                OleDbDataReader objBulkReader = null;
+        //                objBulkReader = objOleDB.ExecuteReader();
+
+        //                // SET THE CONNECTION STRING.
+        //                string sCon = "Data Source=10.92.186.30;Persist Security Info=False;" +
+        //                    "Initial Catalog=FREE_LOCATION;User Id=sa;Password=Psnvdb2013;" +
+        //                    "Connect Timeout=30;";
+
+        //                using (SqlConnection con = new SqlConnection(sCon))
+        //                {
+        //                    con.Open();                            
+        //                    // FINALLY, LOAD DATA INTO THE DATABASE TABLE.
+        //                    oSqlBulk = new SqlBulkCopy(con);
+        //                    oSqlBulk.DestinationTableName = "DM_Mater_Reability"; // TABLE NAME.
+        //                    oSqlBulk.WriteToServer(objBulkReader);
+        //                }
+
+        //                lblConfirm.Text = "DATA IMPORTED SUCCESSFULLY.";
+        //                lblConfirm.Attributes.Add("style", "color:green");
+        //                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Thành công!');", true);
+
+        //                //File.Delete(Server.MapPath(".") + "\\" + FileUpload.FileName); // DELETE THE FILE upload len.
+
+        //                //load grid
+        //                dt = DataConn.StoreFillDS("Get_mater_reliablity", System.Data.CommandType.StoredProcedure);
+        //                //LoadData();
+        //            }
+        //            catch (Exception ex)
+        //            {
+
+        //                lblConfirm.Text = ex.Message;
+        //                lblConfirm.Attributes.Add("style", "color:red");
+
+        //            }
+        //            finally
+        //            {
+        //                // CLEAR.
+        //                oSqlBulk.Close();
+        //                oSqlBulk = null;
+        //                myExcelConn.Close();
+        //                myExcelConn = null;
+        //            }
+        //        }
+        //    }
+        //}
+
+       //DataConn objConnect = new DataConn();
+        protected void Upload(object sender, EventArgs e)
+        {
+            //xoa toan bo bang sau do upload lai
+            //string[] para = { };
+            //object[] objValue = { };
+            //DataTable objTb = objConnect.StoreFillDS("delete_ALLvender_No_using_SMTTool", para, objValue);
+
+            //Upload and save the file
+            string excelPath = Server.MapPath("~/Textfile/") + Path.GetFileName(FileUpload1.PostedFile.FileName);
+            FileUpload1.SaveAs(excelPath);
+
+            string conString = string.Empty;
+            string extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+
+
+            switch (extension)
+            {
+                case ".xls": //Excel 97-03
+                    conString = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
+                    break;
+                case ".xlsx": //Excel 07 or higher
+                    conString = ConfigurationManager.ConnectionStrings["Excel07+ConString"].ConnectionString;
+                    break;
+
+            }
+            conString = string.Format(conString, excelPath);
+            using (OleDbConnection excel_con = new OleDbConnection(conString))
+            {
+                excel_con.Open();
+                string sheet1 = excel_con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null).Rows[0]["TABLE_NAME"].ToString();
+                DataTable dtExcelData = new DataTable();
+
+                //[OPTIONAL]: It is recommended as otherwise the data will be considered as String by default.
+                dtExcelData.Columns.AddRange(new DataColumn[21] { new DataColumn("ID", typeof(int)),
+                new DataColumn("Plant", typeof(string)),
+                new DataColumn("Cate", typeof(string)),
+                new DataColumn("Partno", typeof(string)),
+                new DataColumn("PartName", typeof(string)),
+                new DataColumn("Levelchecking", typeof(string)),
+                new DataColumn("Vendor", typeof(string)),
+                new DataColumn("Maker", typeof(string)),
+                new DataColumn("Typecheck", typeof(string)),
+                new DataColumn("WeightofJIG", typeof(string)),
+                new DataColumn("TotalCycles", typeof(string)),
+                new DataColumn("SamplePosition", typeof(string)),
+                new DataColumn("WIdocument", typeof(string)),
+                new DataColumn("RohsGroup", typeof(string)),
+                new DataColumn("RoshQtychecking", typeof(string)),
+                new DataColumn("RoshMaking", typeof(string)),
+                new DataColumn("ModeChecking", typeof(string)),
+                new DataColumn("Dateinsert", typeof(string)),
+                new DataColumn("Userid", typeof(string)),
+                new DataColumn("useriddelete", typeof(string)),
+                new DataColumn("status", typeof(string)) });
+
+                using (OleDbDataAdapter oda = new OleDbDataAdapter("SELECT * FROM [" + sheet1 + "]", excel_con))
+                {
+                    oda.Fill(dtExcelData);
+                }
+                excel_con.Close();
+
+                string cnn1 = "Data Source=192.168.128.1;Persist Security Info=False;" +
+                            "Initial Catalog=FREE_LOCATION;User Id=sa;Password=Psnvdb2013;" +
+                            "Connect Timeout=30;";
+
+                //string consString = ConfigurationManager.ConnectionStrings[].ConnectionString;
+                using (SqlConnection con = new SqlConnection(cnn1))
+                {
+                    using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
+                    {
+                        //Set the database table name
+                        sqlBulkCopy.DestinationTableName = "dbo.DM_Mater_Reability";
+
+                        sqlBulkCopy.ColumnMappings.Add("ID", "ID");
+                        sqlBulkCopy.ColumnMappings.Add("Plant", "Plant");
+                        sqlBulkCopy.ColumnMappings.Add("Cate", "Cate");
+                        sqlBulkCopy.ColumnMappings.Add("Partno", "Partno");
+                        sqlBulkCopy.ColumnMappings.Add("PartName", "PartName");
+                        sqlBulkCopy.ColumnMappings.Add("Levelchecking", "Levelchecking");
+                        sqlBulkCopy.ColumnMappings.Add("Vendor", "Vendor");
+                        sqlBulkCopy.ColumnMappings.Add("Maker", "Maker");
+                        sqlBulkCopy.ColumnMappings.Add("Typecheck", "Typecheck");
+                        sqlBulkCopy.ColumnMappings.Add("WeightofJIG", "WeightofJIG");
+                        sqlBulkCopy.ColumnMappings.Add("TotalCycles", "TotalCycles");
+                        sqlBulkCopy.ColumnMappings.Add("SamplePosition", "SamplePosition");
+                        sqlBulkCopy.ColumnMappings.Add("WIdocument", "WIdocument");
+                        sqlBulkCopy.ColumnMappings.Add("RohsGroup", "RohsGroup");
+                        sqlBulkCopy.ColumnMappings.Add("RoshQtychecking", "RoshQtychecking");
+                        sqlBulkCopy.ColumnMappings.Add("RoshMaking", "RoshMaking");
+                        sqlBulkCopy.ColumnMappings.Add("ModeChecking", "ModeChecking");
+                        sqlBulkCopy.ColumnMappings.Add("Dateinsert", "Dateinsert");
+                        sqlBulkCopy.ColumnMappings.Add("Userid", "Userid");
+                        sqlBulkCopy.ColumnMappings.Add("useriddelete", "useriddelete");
+                        sqlBulkCopy.ColumnMappings.Add("status", "status");
+
+                        con.Open();
+                        sqlBulkCopy.WriteToServer(dtExcelData);
+                        con.Close();
+                    }
+                }
+                //loaddata();
+                //string thongbao = "Upload Thanh cong!";
+                //show java scritp
+                //ScriptManager.RegisterStartupScript(this, this.GetType(),"Message", "alert('" + thongbao + "');", true);
+
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Successful!');", true);
+
+                if (System.IO.File.Exists(excelPath))
+                {
+
+                    System.IO.File.Delete(excelPath);
+
+                }
+            }
+        }
+
+
+    }
+}

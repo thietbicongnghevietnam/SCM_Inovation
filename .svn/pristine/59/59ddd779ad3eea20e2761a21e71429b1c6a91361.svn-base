@@ -1,0 +1,1630 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Normalinspection.aspx.cs" Inherits="FreeLayout.QCC.Normalinspection" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>QC Normal Inspection</title>
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
+
+    <link rel="stylesheet" href="/plugins/toastr/toastr.css" />
+    <%--<link rel="stylesheet" href="/plugins/toastr/toastr.min.css" />--%>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/toastr/toastr.js"></script>
+
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+    <%--/plugins/fontawesome-free/css/images--%>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="card">
+            <div class="card-header">
+                <h1>Material list to check for Normal Inspection</h1>
+                <%--class="card-title"--%>
+                <div class="col-sm-12">
+                    Received Date:
+                                    <input type="text" id="datepicker" runat="server">
+
+                    <input type="checkbox" id="check_partno_search" style="width: 20px; height: 20px;" name="check_partno_search">
+                    Part No:                                    
+                                    <input type="text" id="partno_search" runat="server">
+
+                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
+                        <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
+
+                    <button type="button" class="btn" style="margin-left: 50px; background-color: #99FFFF" runat="server" onserverclick="Filter_Checking_Click">
+                        Checking
+                    </button>
+                    <button type="button" class="btn" style="margin-left: 20px; background-color: #FFFF99" runat="server" onserverclick="Filter_Wating_Click">
+                        Waiting
+                    </button>
+                    <%-- <button type="button" class="btn" style="margin-left: 20px; background-color: red" runat="server" onserverclick="Filter_Urgent_Click">
+                        Urgent
+                    </button> --%>
+                    <button type="button" class="btn" style="margin-left: 20px; background-color: #66FF33" runat="server" onserverclick="Filter_Finished_OK_Click">
+                        Finished OK
+                    </button>
+                    <button type="button" class="btn" style="margin-left: 20px; background-color: #FF0000" runat="server" onserverclick="Filter_Finished_NG_Click">
+                        Finished NG
+                    </button>
+                    <button type="button" class="btn" style="margin-left: 20px; margin-right: 20px; background-color: #FFC1C1" runat="server" onserverclick="Filter_Delete_Check_Click">
+                        Delete checking
+                    </button>
+                    <button type="button" class="btn" style="margin-left: 20px; margin-right: 20px; background-color: #EEEEEE">
+                        Not Inspection
+                    </button>
+
+                    <button type="button" class="btn btn-primary" runat="server" onserverclick="Filter_All_Click">
+                        Filter All
+                    </button>
+
+
+                </div>
+
+
+                <div class="col-md-3" style="float: left">
+                    <div class="form-group">
+                        <label for="Group">Filter Category</label>
+                        <asp:DropDownList ID="dr_filter_cate" runat="server"
+                            AppendDataBoundItems="true"
+                            DataTextField="NameFilter"
+                            DataValueField="NameFilter"
+                            CssClass="custom-select custom-select-sm form-control form-control-sm">
+                        </asp:DropDownList>
+                    </div>
+                </div>
+
+                <%--<div class="col-md-3" style="float: left">
+                        <div class="form-group">
+                            <label for="Group">Filter Item Status</label>
+                            <asp:DropDownList ID="dr_filter_qc" runat="server"
+                                AppendDataBoundItems="true"
+                                DataTextField="NameFilter"
+                                DataValueField="NameFilter"
+                                CssClass="custom-select custom-select-sm form-control form-control-sm">
+                            </asp:DropDownList>
+                        </div>
+                    </div>--%>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <table id="example1" class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Lot date</th>
+                        <th>Invoice</th>
+                        <th>Vendor Code</th>
+                        <th>Category</th>
+                        <th>Part No</th>
+                        <th>Plan</th>
+                        <th>Lot Q'ty</th>
+                        <th>Receiving Time MCS</th>
+                        <th>QC-check Time</th>
+                        <th>Check OK Time</th>
+                        <th>Free location (Pallet)</th>
+                        <%-- <th>Storing time</th>--%>
+                        <th>Location store</th>
+                        <th>Remark</th>
+                        <th>Comments</th>
+                        <th>Mode</th>
+                        <th>Level</th>
+
+                        <th>Q'ty Sampling</th>
+                        <th>Sample position</th>
+
+                        <th>Testing kind</th>
+                        <th>Q'ty test</th>
+                        <th>IQC Checking Result</th>
+                        <th>Qty NG</th>
+                        <th>Defect</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <%int i = 0; %>
+                    <%foreach (System.Data.DataRow rows in dt.Rows)
+                        {%>
+                    <%i++;%>
+
+
+                    <%if (rows[13].ToString() == "pending")
+                        {%>
+                    <%if (rows[15].ToString() == "Urgent")
+                        {%>
+                    <tr style="background-color: #99FFFF">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <%=rows[1].ToString() %><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','1')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <a href="#" title="Finished" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','0','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>')">
+                                <i style="width: 60px;" class="fas fa-save"></i></a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%-- <td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %><i class="far fa-bell"></i></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+                    <%else if (rows[33].ToString() == "1")
+                        {%>
+                    <tr style="background-color: #FFFF99">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></a><br />                            
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','1')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <a href="#" title="Finished" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','0','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>')">
+                                <i style="width: 60px;" class="fas fa-save"></i>
+                            </a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+
+                    <%} %>
+                    <%else
+                        { %>
+                    <tr style="background-color: #99FFFF">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <%=rows[1].ToString() %><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','1')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <a href="#" title="Finished" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','0','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>')">
+                                <i style="width: 60px;" class="fas fa-save"></i>
+                            </a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+                    <%} %>
+
+                    <%else if (rows[13].ToString() == "finished")
+                        {%>
+
+                    <%if (rows[34].ToString() == "1")
+                        {%>
+                    <tr style="background-color: #99FFFF">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <%=rows[1].ToString() %><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','1')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <a href="#" title="Finished" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','1','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>')">
+                                <i style="width: 60px;" class="fas fa-save"></i>
+                            </a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+                    <%else
+                        {%>
+                    <%if (rows[18].ToString() == "OK")
+                        {%>
+                    <tr style="background-color: #66FF33">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <%=rows[1].ToString() %><br />
+                            <a href="#" title="Finished" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','1','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>')">
+                                <i style="width: 60px;" class="fas fa-save"></i>
+                            </a>
+                            <a href="#" title="history" onclick="openEditModal5('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[5].ToString() %>','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>','<%= rows[23].ToString() %>','<%= rows[40].ToString() %>','<%= rows[38].ToString() %>','<%= rows[41].ToString() %>','<%= rows[39].ToString() %>')">
+                                <i class="fas fa-search"></i>
+                            </a>
+
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+                    <%else
+                        {%>
+                    <tr style="background-color: #FF0000; color: white;">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <%=rows[1].ToString() %><br />
+                            <a href="#" title="Finished" onclick="openEditModal2('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','1','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>')">
+                                <i style="width: 60px;" class="fas fa-save"></i>
+                            </a>
+                            <a href="#" title="history" onclick="openEditModal5('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[5].ToString() %>','<%= rows[26].ToString() %>','<%= rows[19].ToString() %>','<%= rows[23].ToString() %>','<%= rows[40].ToString() %>','<%= rows[38].ToString() %>','<%= rows[41].ToString() %>','<%= rows[39].ToString() %>')">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><%=rows[15].ToString() %></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+
+                    <%} %>
+
+
+                    <%} %>
+
+                    <%else
+                        {%>
+                    <%if (rows[15].ToString() == "Urgent")
+                        {%>
+                    <tr style="background-color: #FF0000">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></a><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','0')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a href="#" title="Remove check" onclick="openEditModal4('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>')"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%-- <td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><b style="color: red"><%=rows[15].ToString() %><i class="far fa-bell"></i></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+                    </tr>
+                    <%} %>
+
+                    <%else if (rows[35].ToString() == "1")
+                        {%>
+                    <tr style="background-color: #FFC1C1">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></a><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','0')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a href="#" title="Remove check" onclick="openEditModal4('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>')"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><b style="color: red"><%=rows[15].ToString() %></b></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+
+                    <%else if (rows[36].ToString() == "0")
+                        {%>
+                    <tr style="background-color: #EEEEEE">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></a><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','0')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+                            <%--<a href="#" title="Remove check" onclick="openEditModal4('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>')"><i class="far fa-trash-alt"></i></a>--%>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><b style="color: red"><%=rows[15].ToString() %></b></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+                    <%} %>
+
+                    <%else
+                        { %>
+                    <tr style="background-color: #FFFF99">
+                        <td><%=i %></td>
+                        <td><%=rows[20].ToString() %></td>
+                        <td><%=rows[6].ToString() %></td>
+                        <td><%=rows[4].ToString() %></td>
+                        <td><%=rows[32].ToString() %></td>
+                        <td>
+                            <a href="/Main.aspx?material=<%=rows[1].ToString() %>" target="_blank"><%=rows[1].ToString() %></a><br />
+                            <a href="#" title="Check item" id="<%= rows[0].ToString() %>" onclick="openEditModal('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>','<%= rows[5].ToString() %>','<%= rows[6].ToString() %>','<%= rows[30].ToString() %>','<%= rows[31].ToString() %>','0')">
+                                <i style="width: 60px;" class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a href="#" title="Remove check" onclick="openEditModal4('<%= rows[0].ToString() %>','<%= rows[1].ToString() %>','<%= rows[2].ToString() %>')"><i class="far fa-trash-alt"></i></a>
+                        </td>
+                        <td><%=rows[3].ToString() %></td>
+                        <td><%=rows[5].ToString() %></td>
+                        <td><%=rows[11].ToString() %></td>
+                        <td><%=rows[16].ToString() %></td>
+                        <td><%=rows[17].ToString() %></td>
+                        <td><%=rows[2].ToString() %></td>
+                        <%--<td>time MCS2</td>--%>
+                        <td><%=rows[27].ToString() %></td>
+                        <td><b style="color: red"><%=rows[15].ToString() %></b></td>
+                        <td><%=rows[37].ToString() %></td>
+                        <td></td>
+                        <td></td>
+                        <td><%=rows[26].ToString() %></td>
+                        <td><%=rows[25].ToString() %></td>
+                        <td><%=rows[22].ToString() %></td>
+                        <td><%=rows[19].ToString() %></td>
+                        <td><%=rows[18].ToString() %></td>
+                        <td><%=rows[23].ToString() %></td>
+                        <td><%=rows[24].ToString() %></td>
+
+                    </tr>
+
+                    <%} %>
+
+
+                    <%} %>
+
+
+
+                    <%} %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal" id="myModal5">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Information of cargo inspection </h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="txtid5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="material5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty Lot</label>
+                                        <asp:TextBox ID="qtylot5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty Sample</label>
+                                        <asp:TextBox ID="qtysample5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty Test</label>
+                                        <asp:TextBox ID="qtytest5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty NG</label>
+                                        <asp:TextBox ID="qtyNG5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Start Time</label>
+                                        <asp:TextBox ID="starttime5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">User check</label>
+                                        <asp:TextBox ID="useridcheck5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">End Time</label>
+                                        <asp:TextBox ID="endtime5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">User finish</label>
+                                        <asp:TextBox ID="useridfinish5" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                        <%--<button type="button" runat="server" id="Button3" onserverclick="test" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Save
+                        </button>--%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="myModal4">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Do you want to delete item check? </h4>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <%-- Modal footer --%>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="ID4" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="material4" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="QtyNG">Pallet ID</label>
+                                        <asp:TextBox ID="palletid4" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">UserID</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;">You must input!(*)</span>
+                                        <asp:TextBox ID="txtuseridxoa" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                        <button type="button" runat="server" id="btnremoveitem" onserverclick="BtnRemoveItem" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="myModal3">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Return MCS Stock</h4>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <%-- Modal footer --%>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="ID3" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="material3" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="QtyNG">Pallet ID</label>
+                                        <asp:TextBox ID="palletid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Location Storage</label>
+                                        <asp:TextBox ID="storageMCS" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                        <button type="button" runat="server" id="Button2" onserverclick="BtnReturnMCS" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="myModal2">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Select Ok / NG</h4>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <%-- Modal footer --%>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="ID2" CssClass="form-control" placeholder="ID" runat="server"></asp:TextBox>
+                                        <%--onserverclick="btnAddClick"--%>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="Material2" CssClass="form-control" placeholder="Material" runat="server"></asp:TextBox>
+                                        <%-- end add Modal --%>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty Sample</label>
+                                        <asp:TextBox ID="qtysample3" CssClass="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty Test</label>
+                                        <asp:TextBox ID="qtytest3" CssClass="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="QtyNG">Qty NG</label>
+                                        <asp:TextBox ID="_QTYNG" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                        <%--onserverclick="btnAddClick"--%>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Error Name</label>
+                                        <asp:TextBox ID="namemistake" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                        <%-- end add Modal --%>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="remark">Remark</label>
+                                        <asp:TextBox ID="txtremark" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="QtyNG">UserID</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;">You must input!(*)</span>
+                                        <asp:TextBox ID="txtuserfinished" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <asp:RadioButton ID="RadioButton1" GroupName="Passport" Text="OK" runat="server" Checked="true" onclick="ShowHideDiv()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <asp:RadioButton ID="RadioButton2" GroupName="Passport" Text="NG" runat="server" onclick="ShowHideDiv()" />
+                                        <div id="dvPassport" style="display: none">
+                                            go<input type="text" id="txtPassportNumber" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%--<input runat="server" type="text" class="form-control" name="username" placeholder="Enter user name">--%>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                        <button type="button" runat="server" id="Button1" onserverclick="BtnFinish" class="btn btn-primary"><i class="fas fa-download"></i>Save</button>
+                        <%--<input runat="server" type="text" class="form-control" name="fullname" placeholder="Enter full name">--%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Inspection Cargo</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="Group" id="_comment2" runat="server"></label>
+                                <label for="Group" id="_documnet2" runat="server"></label>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="Group" id="_comment" runat="server"></label>
+                                <%-- <label for="Group" id="_documnet" runat="server"></label>--%>
+                                <%-- <input type="text" value="" id="myInput" style="display: none" >--%>
+                                <asp:TextBox ID="txtcp" runat="server" Width="100%" TextMode="MultiLine" value="" CssClass="ddl_Class_new"></asp:TextBox>
+
+                                <%-- <button type="button" id="openfile" class="btn btn-primary" runat="server"  onserverclick="openfile_Click">Open file</button>--%>
+                                <%--<button type="button" class="btn btn-primary" id="openfile" onclick="mycopy()">Copy Link</button>--%>
+                                <%--asp:Button ID="openfile" class="btn btn-primary" runat="server" Text="Copy text" OnClientClick="myFunction();" />--%>
+
+                                <button type="button" id="openfile" class="btn btn-primary" onclick="myFunction();">Copy Link</button>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <%-- Modal footer --%>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ID">ID</label>
+                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                        <asp:TextBox ID="idcheck" CssClass="form-control" placeholder="ID" runat="server"></asp:TextBox>
+                                        <%--onserverclick="btnAddClick"--%>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Material</label>
+                                        <asp:TextBox ID="material" CssClass="form-control" placeholder="Material" runat="server"></asp:TextBox>
+                                        <%-- end add Modal --%>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Location</label>
+                                        <asp:TextBox ID="location" CssClass="form-control" placeholder="location" runat="server"></asp:TextBox>
+                                        <%-- The edit Modal --%>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Invoice</label>
+                                        <asp:TextBox ID="Invoice" CssClass="form-control" placeholder="Invoice" runat="server"></asp:TextBox>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Qty Lot Receiving MCS </label>
+                                        <asp:TextBox ID="Qty" CssClass="form-control" placeholder="Qty" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Weight of JIG</label>
+                                        <asp:TextBox ID="txtweightofjig" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Group">Total Cycles</label>
+                                        <asp:TextBox ID="txttotalcycle" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Group">Qty Sample</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;" id="qty_sample_test">(*)</span>
+                                        <asp:TextBox ID="Qtysmaple" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                        <%-- <asp:DropDownList ID="dr_TypeChek" runat="server" AppendDataBoundItems="true" CssClass="form-control">
+                                            </asp:DropDownList>--%>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <%-- <label for="Group" id="test" runat="server"></label>--%>
+                                        <label for="Group">Qty Testing</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;">You have to select!(*)</span>
+                                        <asp:TextBox ID="Qtytest" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Group">UserID</label>
+                                        <span style="color: red; font-size: 11px; font-style: italic;">You must to select!(*)</span>
+                                        <asp:TextBox ID="txtusercheck" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <label for="Group" id="thongbaochiasoluong" runat="server"></label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" id="combine">
+                                        <asp:RadioButton ID="idcombine" GroupName="Passport" runat="server" Checked="true" />
+                                        YES                                         
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" id="notcombine">
+                                        <asp:RadioButton ID="idnotcombine" GroupName="Passport" runat="server" Checked="false" />
+                                        NO
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="Group" id="thongbaoinvoice" runat="server"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <%--<input runat="server" type="text" class="form-control" name="username" placeholder="Enter user name">--%>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnclose"><i class="fas fa-times"></i>Close</button>
+                        <button type="button" runat="server" id="btncheck_addnormal" onserverclick="BtnAddClick" class="btn btn-primary"><i class="fas fa-download"></i>Save</button>
+                                               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/dist/js/adminlte.min.js"></script>
+    <script src="/dist/js/demo.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //set 10 phut load lai page
+            setTimeout(function () {
+                window.location.reload(1);
+            }, 600000);
+
+            $("#openfile").css("display", "none");
+            $('#combine').css("display", "none");
+            $('#notcombine').css("display", "none");
+
+            $("#btncheck_addnormal").css("display", "none");
+
+
+            document.getElementById("partno_search").disabled = true;
+            //$("#partno_search").disabled = true;
+
+            //OK or NG deu nhap duoc het
+            //$('#_QTYNG').prop("readonly", true);
+            //$('#namemistake').prop("readonly", true);           
+
+            $('#idcheck').prop("readonly", true);
+            $('#material').prop("readonly", true);
+            $('#material').prop("readonly", true);
+            $('#location').prop("readonly", true);
+            $('#Invoice').prop("readonly", true);
+            $('#Qty').prop("readonly", true);
+
+            $("#qtysample3").prop("readonly", true);
+            $("#qtytest3").prop("readonly", true);
+
+            $('#ID2').prop("readonly", true);
+            $('#Material2').prop("readonly", true);
+
+            $('#ID4').prop("readonly", true);
+            $('#material4').prop("readonly", true);
+            $('#palletid4').prop("readonly", true);
+
+
+            $("#txtweightofjig").prop("readonly", true);
+            $("#txttotalcycle").prop("readonly", true);
+
+        });
+
+        $("#check_partno_search").change(function () {
+            if (this.checked) {
+                // the checkbox is now checked 
+                document.getElementById("partno_search").disabled = false;
+            } else {
+                // the checkbox is now no longer checked
+                document.getElementById("partno_search").disabled = true;
+            }
+
+        });
+       
+        //$('#btncheck_addnormal').click(function () {                                 
+        //    var idcheck = $('#idcheck').val();
+        //    var data = { idcheck: idcheck };
+        //    //dung ajax lay ra cate sau do filter ra           
+        //    $.ajax({
+        //        type: "POST",
+        //        contentType: "application/json; charset=utf-8",
+        //        url: "Normalinspection.aspx/checkinvoiceall",
+        //        data: JSON.stringify(data),
+        //        dataType: "json",
+        //        success: function (data) {
+        //            if (data.d == "OK") {  
+                        
+        //            } else {
+                        
+        //            }                 
+        //        },
+        //        error: function () {
+        //        }
+        //    });
+        //});
+
+        //check so luong sample phai > 0  
+        $('#Qtysmaple').change(function () {
+            var val = $(this).val();
+            if (isNaN(val)) {
+                val = val.replace(/[^0-9\.]/g, '');
+                if (val.split('.').length > 2)
+                    val = val.replace(/\.+$/, "");
+            }
+            $(this).val(val);
+
+            if (val === '' || val === "0") {
+                $("#qty_sample_test").text("You must to input > 0");
+                $("#btncheck_addnormal").css("display", "none");
+            }
+            else {
+                $("#qty_sample_test").text("*");
+                $("#btncheck_addnormal").css("display", "block");
+            }
+        });
+
+        //check userid 
+        $('#txtusercheck').change(function () {
+            var val = $(this).val();
+            if (val === '') {
+                $("#btncheck_addnormal").css("display", "none");
+            }
+            else {
+                $("#btncheck_addnormal").css("display", "block");
+            }
+        });
+
+        $('#btnclose').click(function () {
+            $('#combine').css("display", "none");
+            $('#notcombine').css("display", "none");
+        });
+
+        function ShowHideDiv() {
+            var _OK = document.getElementById("<%=RadioButton1.ClientID %>");
+            var dvPassport = document.getElementById("dvPassport");
+            //dvPassport.style.display = chkYes.checked ? "block" : "none";
+
+        }
+
+        //$("input[type=radio][id*=RadioButton2]").click(function () {
+        //        if ($(this).val() == "Yes")
+        //            alert('true');
+        //    else
+        //            alert('fail');
+        //            //$("div[id*=Panel2]").hide();
+        //});
+
+        $('#_QTYNG').on('keyup', function () {
+            var val = $(this).val();
+            if (isNaN(val)) {
+                val = val.replace(/[^0-9\.]/g, '');
+                if (val.split('.').length > 2)
+                    val = val.replace(/\.+$/, "");
+            }
+            $(this).val(val);
+        })
+
+        $("#RadioButton2").change(function () {
+            if ($(this).val() == "Yes") {
+                //alert($(this).val());
+                alert('true');
+            }
+            else {
+                //alert('fail');
+                //alert($(this).val());
+
+                //$('#_QTYNG').prop("readonly", false);
+                //$('#namemistake').prop("readonly", false);
+                $('#_QTYNG').select();
+            }
+        });
+
+        //$("#btnremoveitem").click(function () {
+        //    alert('aaa');
+        //    //$("#txtuseridxoa").text("");
+        //});
+
+        $("#dr_filter_cate").change(function () {
+            var cate = this.value;
+            var data = { _cate: cate };
+            //dung ajax lay ra cate sau do filter ra           
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Normalinspection.aspx/getcategogy",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+                    //var str_ = data.d;
+                    if (data.d == "OK") {
+                        window.location.href = "Normalinspection.aspx?cate=" + cate;
+                    } else {
+                        window.location.href = "Normalinspection.aspx";
+                    }
+                    //var catchuoi = str_.split(","); //catchuoi[0] == "OK"                        
+                },
+                error: function () {
+                }
+            });
+
+        });
+
+        //$("#openfile").click(function () {
+        //    var path = $("#_documnet").text();
+        //    //System.Diagnostics.Process.Start("explorer.exe", path);
+        //    //window.open(path);
+        //    //window.open(path,"window2","");
+        //    //"url of .xls","window2",""
+
+        //})      
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                //"order": [[7, "desc"]],
+                "pageLength": 500
+                //"ordering": true,
+                //"paging": true,
+                //"lengthChange": false,
+                //"searching": false,
+                //"info": true,                    
+            });
+
+        });
+
+        function openEditModal2(txt_id, txt_mahang, trangthai, qtysample, qtytest) {
+            $("#ID2").val(txt_id);
+            $("#Material2").val(txt_mahang);
+            $("#qtysample3").val(qtysample);
+            $("#qtytest3").val(qtytest);
+
+            $("#RadioButton1").prop('checked', true);
+            $("#txtremark").val('');
+
+            //$('#_QTYNG').prop("readonly", true);
+            //$('#namemistake').prop("readonly", true);
+
+
+            if (trangthai == "0") {
+                //giu nguyen chua co so luong NG can sua
+                $('#_QTYNG').val('');
+                $('#namemistake').val('');
+                $('#myModal2').modal('show');
+            }
+            else {
+                //trang thai == 1
+                var data = { _id: txt_id };
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "Normalinspection.aspx/getQTYNG",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    success: function (data) {
+                        var str_ = data.d;
+                        var catchuoi = str_.split(",");
+                        if (catchuoi[0] == "OK") {
+                            //var soluogNG = catchuoi[0];
+                            //var tenNG = catchuoi[1];
+                            $('#_QTYNG').val(catchuoi[1]);
+                            $('#namemistake').val(catchuoi[2]);
+                            $('#myModal2').modal('show');
+
+                        } else {
+                            //alert("nothing!");
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+            }
+
+            //$('#myModal2').modal('show'); 
+
+        }
+
+        function openEditModal5(txtid, txtmahang, txtqtylot, txtqtysample, txtqtytest, txtqtyng, txtstarttime, txtusercheck, txtendtime, txtuserfinish) {
+            $("#txtid5").val(txtid);
+            $("#material5").val(txtmahang);
+            $("#qtylot5").val(txtqtylot);
+            $("#qtysample5").val(txtqtysample);
+            $("#qtytest5").val(txtqtytest);
+            $("#qtyNG5").val(txtqtyng);
+            $("#starttime5").val(txtstarttime);
+            $("#useridcheck5").val(txtusercheck);
+            $("#endtime5").val(txtendtime);
+            $("#useridfinish5").val(txtuserfinish);
+
+            $('#myModal5').modal('show');
+
+        }
+
+        function openEditModal3(txt_id, txt_mahang, txt_pallet, txt_loacation) {
+            $("#ID3").val(txt_id);
+            $("#material3").val(txt_mahang);
+            $("#palletid").val(txt_pallet);
+            $("#storageMCS").val(txt_loacation);
+
+            var data = { _id: txt_id };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Normalinspection.aspx/checkreturnMCS",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+                    //var str_ = data.d;  
+                    if (data.d == "OK") {
+                        $('#myModal3').modal('show');
+                    } else {
+                        alert("Item has returned MCS stock!");
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+
+        function openEditModal4(txt_id, txt_mahang, txt_pallet) {
+            $("#ID4").val(txt_id);
+            $("#material4").val(txt_mahang);
+            $("#palletid4").val(txt_pallet);
+
+            $('#myModal4').modal('show');
+
+            //var data = { _id: txt_id };
+
+            //$.ajax({
+            //    type: "POST",
+            //    contentType: "application/json; charset=utf-8",
+            //    url: "Normalinspection.aspx/checkreturnMCS",
+            //    data: JSON.stringify(data),
+            //    dataType: "json",
+            //    success: function (data) {
+            //        //var str_ = data.d;  
+            //        if (data.d == "OK") {
+            //            $('#myModal3').modal('show');
+            //        } else {
+            //            alert("Item has returned MCS stock!");
+            //        }
+            //    },
+            //    error: function () {                    
+            //    }
+            //});                                                        
+        }
+
+        function openEditModal(txt_id, txt_mahang, txt_vitri, txt_soluong, txt_invoice, txt_weightofjig, txt_totalcycle, trangthai) {
+            $("#idcheck").val(txt_id);
+            $("#material").val(txt_mahang);
+            $("#location").val(txt_vitri);
+            $("#Qty").val(txt_soluong);
+            $("#Invoice").val(txt_invoice);
+            $("#txtweightofjig").val(txt_weightofjig);
+            $("#txttotalcycle").val(txt_totalcycle);
+
+            $("#openfile").css("display", "none");
+            $("#btncheck_addnormal").css("display", "none");
+            $("#txtusercheck").val("");
+
+            var data = { material: txt_mahang };
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Normalinspection.aspx/GetNormalCheck",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+                    var str_ = data.d;
+                    var catchuoi = str_.split(",");
+                    var thongbao = catchuoi[1];
+                    if (catchuoi[0] === "1") {
+                        $("#_comment2").text("Reliability testing !");
+                        $("#_comment").text("Type check :" + thongbao);
+                        $("#_comment").css("color", "#FF0000");
+
+                        $("#_documnet2").text("");
+                        //$("#_documnet").text("");
+                        $("#txtcp").css("display", "none");
+                    } else if (catchuoi[0] === "2") {
+                        //alert(""+thongbao);  //_documnet
+                        $("#_documnet2").text("Have WI document follow this path!");
+                        //$("#_documnet").text(thongbao);
+                        //$("#_documnet").css("color", "#FF0000");
+                        //$("#myInput").val(thongbao);
+                        $("#txtcp").css("display", "block");
+                        $("#txtcp").val(thongbao);
+
+
+                        $("#openfile").css("display", "block");
+
+                        $("#_comment2").text("");
+                        $("#_comment").text("");
+                    } else {
+                        $("#_documnet2").text("No Mater");
+                        //$("#_documnet").text("");
+                        $("#_comment2").text("");
+                        $("#_comment").text("");
+                        $("#txtcp").css("display", "none");
+                    }
+
+                },
+                error: function () {
+                    //$("#MainContent_txt_makercode").select();
+                    //$("#MainContent_txt_makercode").val('Không tìm thấy maker code, kiểm tra lại thông tin nhựa và Part');
+                    //$("#MainContent_txt_makercode").select();
+                }
+            });
+            var data = { _id: txt_id };
+            if (trangthai == "0") {
+                $("#Qtysmaple").val("");
+                $("#Qtytest").val("0");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "Normalinspection.aspx/checkcombine_qty",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    success: function (data) {
+                        var str_ = data.d;
+                        var catchuoi = str_.split(",");
+                        var note_qty = catchuoi[1];
+                        if (catchuoi[0] == "OK") {
+                            //dua ra thong hang bi tach pallet.
+                            //ban can phai lay du so luong test chua? => chon option de gop cac pallet
+                            //chuyen all sang trang thai check khi lay du so luong   
+                            //*****
+                            $("#idcombine").prop('checked', true);
+                            //Item is separated, do you want to check all when you input enough Qty
+                            $('#thongbaochiasoluong').text("SUM QTY : " + note_qty + "==> Item is separated, do you want to check all?");
+                            $('#thongbaochiasoluong').css("color", "#FF0000");
+                            $('#combine').css("display", "block");
+                            $('#notcombine').css("display", "block");
+                            //$('#myModal').modal('show');
+                            $('#Qty').val(note_qty); //show so luong tong
+
+                            //show ma hang cung invoice da duoc check
+                            if (catchuoi[2] != "0") {
+                                $("#thongbaoinvoice").text("The same Invoice, Material is checking or finished, Do you want to check?");
+                                $("#thongbaoinvoice").css("color", "#FF0000");
+                            } else {
+                                $("#thongbaoinvoice").text("");
+                            }
+                            
+                        } else {
+                            //alert("nothing!");
+                            $('#thongbaochiasoluong').text("");
+                            //show ma hang cung invoice da duoc check
+                            if (catchuoi[1] != "0") {
+                                $("#thongbaoinvoice").text("The same Invoice, Material is checking or finished, Do you want to check?!");
+                                $("#thongbaoinvoice").css("color", "#FF0000");
+                            } else {
+                                $("#thongbaoinvoice").text("");
+                            }
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+
+                $('#myModal').modal('show');
+            } else {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "Normalinspection.aspx/getQTYCheck",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    success: function (data) {
+                        var str_ = data.d;
+                        var catchuoi = str_.split(",");
+                        if (catchuoi[0] == "OK") {
+                            //var soluogNG = catchuoi[0];
+                            //var tenNG = catchuoi[1];
+                            $('#Qtysmaple').val(catchuoi[1]);
+                            $('#Qtytest').val(catchuoi[2]);
+                            $('#myModal').modal('show');
+                        } else {
+                            //alert("nothing!");
+                            $('#myModal').modal('show');
+                            $("#Qtysmaple").val("");
+                            $("#Qtytest").val("0");
+                        }
+                    },
+                    error: function () {
+                    }
+                });
+
+                $('#thongbaochiasoluong').text("");
+                $("#thongbaoinvoice").text("");
+            }
+
+            //$("#Qtysmaple").val("0");
+            //$("#Qtytest").val("0");
+            //$('#myModal').modal('show');
+        }
+
+
+        //function mycopy() {
+        //    /* Get the text field */
+        //    var copyText = document.getElementById("myInput");
+        //    /* Select the text field */
+        //    copyText.select();
+        //    copyText.setSelectionRange(0, 99999); /* For mobile devices */
+        //    /* Copy the text inside the text field */
+
+        //    navigator.clipboard.writeText(copyText.value);   //loi server. client chay ok
+        //    /* Alert the copied text */
+        //    //alert("Copied the text: " + copyText.value);
+        //}
+
+        function myFunction() {
+            /* Get the text field */
+            var copyText = document.getElementById("txtcp");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            /* Alert the copied text */
+            //alert("Copied the text: " + copyText.value);
+        }
+
+
+    </script>
+
+    <script src="/plugins/jquery/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var onlyDate, today = new Date();
+            var dateNewFormat = '';
+
+            onlyDate = today.getDate();
+            if (onlyDate.toString().length == 2) {
+
+                dateNewFormat = onlyDate;
+            }
+            else {
+                dateNewFormat = '0' + onlyDate;
+            }
+
+            dateNewFormat = dateNewFormat + '-';
+
+            if (today.getMonth().length == 2) {
+
+                dateNewFormat += (today.getMonth() + 1);
+            }
+            else {
+                //dateNewFormat += '0' + (today.getMonth() + 1);
+                dateNewFormat += (today.getMonth() + 1);
+            }
+
+            dateNewFormat = dateNewFormat + '-' + today.getFullYear();
+            //dateNewFormat = today.getFullYear() + '-';
+
+            //$('#datepicker').val(dateNewFormat);
+
+            $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        });
+
+
+    </script>
+
+
+
+</body>
+</html>

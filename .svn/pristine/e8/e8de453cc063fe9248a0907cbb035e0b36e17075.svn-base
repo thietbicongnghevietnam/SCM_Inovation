@@ -1,0 +1,383 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReportMCS.aspx.cs" Inherits="FreeLayout.QCC.ReportMCS" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Report MCS</title>
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css" />
+
+    <link rel="stylesheet" href="/plugins/toastr/toastr.css" />
+    <%--<link rel="stylesheet" href="/plugins/toastr/toastr.min.css" />--%>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/toastr/toastr.js"></script>
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/jquery-ui.css" />
+
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="row">
+            <div class="col-12">
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Danh sách hàng Free Location MCS</h1>
+                        <%--class="card-title"--%>
+                        <div class="col-sm-12">
+                            <b>Delivery Date :</b>
+                                    <input type="text" id="datepicker" runat="server">
+                            <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_MCS_Click">
+                                <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
+
+                            <button type="button" class="btn" style="margin-left:700px; background-color:#99FFCC">
+                                QC checked
+                            </button>
+                            <button type="button" class="btn" style="margin-left:50px; background-color:#FFFFCC">
+                                Wating check
+                            </button>
+                            <button type="button" class="btn" style="margin-left:50px; background-color:#FF9933">
+                                Storaged
+                            </button>
+
+                        </div>
+
+                        
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+
+                                    <table id="example1" class="table table-bordered">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>Material</th>
+                                                <th>Location</th>
+                                                <th>Plan</th>
+                                                <th>DeliveryDate</th>
+                                                <th>DA</th>
+                                                <th>PO</th>
+                                                <th>Vender</th>
+                                                <th>Qty</th>
+                                                <th>Status</th>
+                                                <th>Infor</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%foreach (System.Data.DataRow rows in dt.Rows)
+                                                {%>
+
+                                            <%if (rows[14].ToString() == "waiting")
+                                                {%>
+
+                                            <tr role="row" style="background-color: #FFFFCC">
+                                                <td><%=rows[1].ToString() %></td>
+                                                <td><%=rows[2].ToString() %></td>
+                                                <td><%=rows[3].ToString() %></td>
+                                                <td><%=rows[4].ToString() %></td>
+                                                <td><%=rows[5].ToString() %></td>
+                                                <td><%=rows[6].ToString() %></td>
+                                                <td><%=rows[7].ToString() %></td>
+                                                <td><%=rows[8].ToString() %></td>
+                                                <td><%=rows[14].ToString() %></td>
+                                                <td>
+                                                    <a href="#" onclick="openEditModal('<%= rows[0].ToString() %>',
+                                                        '<%= rows[1].ToString() %>',
+                                                        '<%= rows[2].ToString() %>',
+                                                        '<%= rows[3].ToString() %>',
+                                                        '<%= rows[4].ToString() %>',
+                                                        '<%= rows[5].ToString() %>',
+                                                        '<%= rows[6].ToString() %>',
+                                                        '<%= rows[7].ToString() %>',
+                                                        '<%= rows[12].ToString() %>',
+                                                        '<%= rows[13].ToString() %>')"><i class="fas fa-pencil-alt"></i></a>
+                                                </td>
+                                            </tr>
+
+                                            <% } %>
+                                            <%else if ((rows[14].ToString() == "checked") || (rows[14].ToString() == "finished"))
+                                                {%>
+                                            <tr role="row" style="background-color: #99FFCC">
+                                                <td><%=rows[1].ToString() %></td>
+                                                <td><%=rows[2].ToString() %></td>
+                                                <td><%=rows[3].ToString() %></td>
+                                                <td><%=rows[4].ToString() %></td>
+                                                <td><%=rows[5].ToString() %></td>
+                                                <td><%=rows[6].ToString() %></td>
+                                                <td><%=rows[7].ToString() %></td>
+                                                <td><%=rows[8].ToString() %></td>
+                                                <td><%=rows[14].ToString() %></td>
+                                                <td>
+                                                    <a href="#" onclick="openEditModal('<%= rows[0].ToString() %>',
+                                                        '<%= rows[1].ToString() %>',
+                                                        '<%= rows[2].ToString() %>',
+                                                        '<%= rows[3].ToString() %>',
+                                                        '<%= rows[4].ToString() %>',
+                                                        '<%= rows[5].ToString() %>',
+                                                        '<%= rows[6].ToString() %>',
+                                                        '<%= rows[7].ToString() %>',
+                                                        '<%= rows[12].ToString() %>',
+                                                        '<%= rows[13].ToString() %>')"><i class="fas fa-pencil-alt"></i></a>
+                                                </td>
+                                            </tr>
+                                            <%}%>
+                                            <%else
+                                                {%>
+
+                                            <tr role="row" style="background-color: #FF9933">
+                                                <td><%=rows[1].ToString() %></td>
+                                                <td><%=rows[2].ToString() %></td>
+                                                <td><%=rows[3].ToString() %></td>
+                                                <td><%=rows[4].ToString() %></td>
+                                                <td><%=rows[5].ToString() %></td>
+                                                <td><%=rows[6].ToString() %></td>
+                                                <td><%=rows[7].ToString() %></td>
+                                                <td><%=rows[8].ToString() %></td>
+                                                <td><%=rows[14].ToString() %></td>
+                                                <td>
+                                                    <a href="#" onclick="openEditModal('<%= rows[0].ToString() %>',
+                                                        '<%= rows[1].ToString() %>',
+                                                        '<%= rows[2].ToString() %>',
+                                                        '<%= rows[3].ToString() %>',
+                                                        '<%= rows[4].ToString() %>',
+                                                        '<%= rows[5].ToString() %>',
+                                                        '<%= rows[6].ToString() %>',
+                                                        '<%= rows[7].ToString() %>',
+                                                        '<%= rows[12].ToString() %>',
+                                                        '<%= rows[13].ToString() %>')"><i class="fas fa-pencil-alt"></i></a>
+                                                </td>
+                                            </tr>
+
+
+                                            <% } %>
+
+                                            <%}%>
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>Material</th>
+                                                <th>Location</th>
+                                                <th>Plan</th>
+                                                <th>DeliveryDate</th>
+                                                <th>DA</th>
+                                                <th>PO</th>
+                                                <th>Vender</th>
+                                                <th>Qty</th>
+                                                <th>Status</th>
+                                                <th>Infor</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+
+        </div>
+
+        <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div>
+                                    <h4 class="modal-title" id="headerTag" style="float: left">Infomation Mateial</h4>
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <%-- Modal footer --%>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ID">ID</label>
+                                            <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
+                                            <asp:TextBox ID="txtid" CssClass="form-control" placeholder="ID" runat="server"></asp:TextBox>
+                                            <%--onserverclick="btnAddClick"--%>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Material</label>
+                                            <asp:TextBox ID="txtmaterial" CssClass="form-control" placeholder="Material" runat="server"></asp:TextBox>
+                                            <%-- end add Modal --%>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Loctioan</label>                                           
+                                            <asp:TextBox ID="txtlocation" CssClass="form-control" placeholder="Location" runat="server"></asp:TextBox>                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Plan</label>
+                                            <asp:TextBox ID="txtplan" CssClass="form-control" placeholder="Plan" runat="server"></asp:TextBox>                                          
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">DeliveryDate</label>                                           
+                                            <asp:TextBox ID="txtDeliveryDate" CssClass="form-control" placeholder="DeliveryDate" runat="server"></asp:TextBox>                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">DANo</label>
+                                            <asp:TextBox ID="txtDA" CssClass="form-control" placeholder="DANo" runat="server"></asp:TextBox>                                          
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">PONo</label>                                           
+                                            <asp:TextBox ID="txtPO" CssClass="form-control" placeholder="PONo" runat="server"></asp:TextBox>                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Vender</label>
+                                            <asp:TextBox ID="txtVender" CssClass="form-control" placeholder="Vender" runat="server"></asp:TextBox>                                          
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Sloc</label>                                           
+                                            <asp:TextBox ID="txtsloc" CssClass="form-control" placeholder="Sloc" runat="server"></asp:TextBox>                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Location Storage</label>
+                                            <asp:TextBox ID="txtstorage" CssClass="form-control" placeholder="Location Storage" runat="server"></asp:TextBox>                                          
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                
+                            </div>
+                        </div>
+                        <%--<input runat="server" type="text" class="form-control" name="username" placeholder="Enter user name">--%>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Close</button>
+                            <%--<button type="button" id="Button1" class="btn btn-primary"><i class="fas fa-download"></i>Save</button>--%>
+                            <%--<input runat="server" type="text" class="form-control" name="fullname" placeholder="Enter full name">--%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    </form>
+
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/dist/js/adminlte.min.js"></script>
+    <script src="/dist/js/demo.js"></script>
+
+
+    <script src="/plugins/jquery/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "order": [[3, "desc"]],
+                "pageLength": 50
+                //"ordering": true,
+                //"paging": true,
+                //"lengthChange": false,
+                //"searching": false,
+                //"info": true,                    
+            });
+
+        });
+
+        function openEditModal(_id, _mahang,_vitri,_plant,_deliverydate,_DA,_PO,_Vender,_sloc,_storage) {
+            $("#txtid").val(_id);
+            $("#txtmaterial").val(_mahang);
+            $("#txtlocation").val(_vitri);
+            $("#txtplan").val(_plant);
+            $("#txtDeliveryDate").val(_deliverydate);
+            $("#txtDA").val(_DA);
+            $("#txtPO").val(_PO);
+            $("#txtVender").val(_Vender);
+            $("#txtsloc").val(_sloc);
+            $("#txtstorage").val(_storage);
+
+            $('#myModal').modal('show');
+        }
+
+        $(function () {
+            var onlyDate, today = new Date();
+            var dateNewFormat = '';
+
+            onlyDate = today.getDate();
+            if (onlyDate.toString().length == 2) {
+
+                dateNewFormat = onlyDate;
+            }
+            else {
+                dateNewFormat = '0' + onlyDate;
+            }
+
+            dateNewFormat = dateNewFormat + '-';
+
+            if (today.getMonth().length == 2) {
+
+                dateNewFormat += (today.getMonth() + 1);
+            }
+            else {
+                dateNewFormat += '0' + (today.getMonth() + 1);
+            }
+
+            dateNewFormat = dateNewFormat + '-' + today.getFullYear();
+            //dateNewFormat = today.getFullYear() + '-';
+
+            $('#datepicker').val(dateNewFormat);
+
+            $("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+        });
+    </script>
+
+</body>
+</html>

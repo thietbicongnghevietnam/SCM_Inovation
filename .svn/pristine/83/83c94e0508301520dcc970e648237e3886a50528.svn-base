@@ -1,0 +1,49 @@
+﻿using FreeLayout.App_Code;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+
+namespace FreeLayout.QCC
+{
+    public partial class ReportNomarlForm : System.Web.UI.Page
+    {
+        DataConn cnn = new DataConn();
+        public DataTable dt = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            datepicker.Value = DateTime.Now.ToString("dd-MM-yyyy");
+
+            dt = DataConn.StoreFillDS("Get_Report_Normal", System.Data.CommandType.StoredProcedure);
+
+        }
+
+        protected void Search_normaldate_Click(object sender, EventArgs e)
+        {
+            string _date = Request.Form[datepicker.UniqueID];
+            //09-08-2021
+            if (_date == "")
+            {
+                dt = DataConn.StoreFillDS("Get_Report_Normal", System.Data.CommandType.StoredProcedure);
+            }
+            else
+            {
+                string nam = _date.Substring(6, 4);
+                string thang = _date.Substring(3, 2);
+                string ngay = _date.Substring(0, 2);
+                string _date2 = nam + "-" + thang + "-" + ngay;
+
+                //dt = DataConn.StoreFillDS("Get_Report_Normal_date", System.Data.CommandType.StoredProcedure);
+                dt = DataConn.StoreFillDS("Get_Report_Normal_date", System.Data.CommandType.StoredProcedure, _date2);
+                datepicker.Value = ngay + "-" + thang + "-" + nam;
+
+            }
+        }
+
+
+    }
+}
