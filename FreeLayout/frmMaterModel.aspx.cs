@@ -54,19 +54,17 @@ namespace FreeLayout
             //string Category = cateid.Text;
             //string userid = Session["username"].ToString();
 
-            //DataTable dtinsert = new DataTable();
-            //dtinsert = DataConn.StoreFillDS("Insert_materAQ2", System.Data.CommandType.StoredProcedure, ModelNo, Category, userid);
-            //if (dtinsert.Rows[0][0].ToString() == "1")
-            //{
-            //    dt = DataConn.StoreFillDS("Select_mater_AQ2", System.Data.CommandType.StoredProcedure);
-            //    // dt_leadtime = DataConn.StoreFillDS("Select_mater_listime_cate", System.Data.CommandType.StoredProcedure, cateid_);
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //}
-            //else
-            //{
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //}
-
+            DataTable dtinsert = new DataTable();
+            dtinsert = DataConn.StoreFillDS("Insert_mater_ModelSCM", System.Data.CommandType.StoredProcedure, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
+            if (dtinsert.Rows[0][0].ToString() == "1")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
+            }
         }
 
         public void Updatethongtin(object sender, EventArgs e)
@@ -92,19 +90,18 @@ namespace FreeLayout
             
             //string userid = Session["username"].ToString();
 
-            //DataTable dtupdate = new DataTable();
-            //dtupdate = DataConn.StoreFillDS("Update_kehoachsanxuat", System.Data.CommandType.StoredProcedure, id, model, ngaysx, line, giosanxuat);
-            ////bo trang thai tach kip12b va ca3  => tinh gio san xuat tren stored
-            ////dtupdate = DataConn.StoreFillDS("Update_kehoachsanxuat", System.Data.CommandType.StoredProcedure, id, model, ngaysx, line, giosanxuat, trangthaitach);
-            //if (dtupdate.Rows[0][0].ToString() == "1")
-            //{
-            //    //dt_hanghoa = DataConn.StoreFillDS("NH_danhmuchanghoa", System.Data.CommandType.StoredProcedure);
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //}
-            //else
-            //{
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //}
+            DataTable dtupdate = new DataTable();
+            dtupdate = DataConn.StoreFillDS("Update_mater_ModelSCM", System.Data.CommandType.StoredProcedure, id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
+
+            if (dtupdate.Rows[0][0].ToString() == "1")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
+            }
         }
 
         public void Xoathongtin(object sender, EventArgs e)
@@ -115,19 +112,21 @@ namespace FreeLayout
             //string username = Session["username"].ToString();
             //string role_ = Session["role"].ToString();
 
+            DataTable dtupdate = new DataTable();
+            dtupdate = DataConn.StoreFillDS("Delete_mater_ModelSCM", System.Data.CommandType.StoredProcedure, id);  //username
+            if (dtupdate.Rows[0][0].ToString() == "1")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
+            }
+
             //if (role_ == "Admin")
             //{
-            //    DataTable dtupdate = new DataTable();
-            //    dtupdate = DataConn.StoreFillDS("Xoaid_kehoachsanxuat", System.Data.CommandType.StoredProcedure, id, username);
-            //    if (dtupdate.Rows[0][0].ToString() == "1")
-            //    {
-            //        //dt_hanghoa = DataConn.StoreFillDS("NH_danhmuchanghoa", System.Data.CommandType.StoredProcedure);
-            //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //    }
-            //    else
-            //    {
-            //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //    }
+
             //}
             //else
             //{
@@ -141,6 +140,8 @@ namespace FreeLayout
             string _todate = Request.Form[ngaychiid.UniqueID];
 
             string category = dr_filter_Cate.SelectedValue;
+
+            dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
             //loc theo ngay
             //if (_fromdate == "" || _fromdate == "")
             //{               

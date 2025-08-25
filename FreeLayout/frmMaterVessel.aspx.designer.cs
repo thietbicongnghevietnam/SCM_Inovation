@@ -87,13 +87,13 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.TextBox txtid_del;
 
         /// <summary>
-        /// txDestCity_del control.
+        /// txtCountry_del control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txDestCity_del;
+        protected global::System.Web.UI.WebControls.TextBox txtCountry_del;
 
         /// <summary>
         /// Button2 control.

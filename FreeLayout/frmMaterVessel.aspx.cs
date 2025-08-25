@@ -56,18 +56,17 @@ namespace FreeLayout
             string Can_combine = Can_combineid.Text;
             //string userid = Session["username"].ToString();
 
-            //DataTable dtinsert = new DataTable();
-            //dtinsert = DataConn.StoreFillDS("Insert_materAQ2", System.Data.CommandType.StoredProcedure, ModelNo, Category, userid);
-            //if (dtinsert.Rows[0][0].ToString() == "1")
-            //{
-            //    dt = DataConn.StoreFillDS("Select_mater_AQ2", System.Data.CommandType.StoredProcedure);
-            //    // dt_leadtime = DataConn.StoreFillDS("Select_mater_listime_cate", System.Data.CommandType.StoredProcedure, cateid_);
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //}
-            //else
-            //{
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //}
+            DataTable dtinsert = new DataTable();
+            dtinsert = DataConn.StoreFillDS("Insert_materVessel_SCM", System.Data.CommandType.StoredProcedure, cate, Area, Country, DestCity, DestCityName, PIC, Consignee, FCL_Ex_factory, FCL_ETD, FCL_ETA, LLC_Ex_factory, LLC_ETD, LLC_ETA, AIR_Ex_factory, AIR_ETD, AIR_ETA, Special_exfactory_date, SpecialETD_week, Special_ETA_Date, Can_combine);
+            if (dtinsert.Rows[0][0].ToString() == "1")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_VesselSCM", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
+            }
 
         }
 
@@ -96,42 +95,42 @@ namespace FreeLayout
             string Can_combine = idCan_combine.Text;
             //string userid = Session["username"].ToString();
 
-            //DataTable dtupdate = new DataTable();
-            //dtupdate = DataConn.StoreFillDS("Update_kehoachsanxuat", System.Data.CommandType.StoredProcedure, id, model, ngaysx, line, giosanxuat);
-            ////bo trang thai tach kip12b va ca3  => tinh gio san xuat tren stored
-            ////dtupdate = DataConn.StoreFillDS("Update_kehoachsanxuat", System.Data.CommandType.StoredProcedure, id, model, ngaysx, line, giosanxuat, trangthaitach);
-            //if (dtupdate.Rows[0][0].ToString() == "1")
-            //{
-            //    //dt_hanghoa = DataConn.StoreFillDS("NH_danhmuchanghoa", System.Data.CommandType.StoredProcedure);
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //}
-            //else
-            //{
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //}
+            DataTable dtupdate = new DataTable();
+            dtupdate = DataConn.StoreFillDS("Update_materVessel_SCM", System.Data.CommandType.StoredProcedure, id, cate, Area, Country, DestCity, DestCityName, PIC, Consignee, FCL_Ex_factory, FCL_ETD, FCL_ETA, LLC_Ex_factory, LLC_ETD, LLC_ETA, AIR_Ex_factory, AIR_ETD, AIR_ETA, Special_exfactory_date, SpecialETD_week, Special_ETA_Date, Can_combine);
+
+            if (dtupdate.Rows[0][0].ToString() == "1")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_VesselSCM", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
+            }
         }
 
         public void Xoathongtin(object sender, EventArgs e)
         {
             string id = txtid_del.Text;
-            string model = txDestCity_del.Text;            
+            string model = txtCountry_del.Text;
 
             //string username = Session["username"].ToString();
             //string role_ = Session["role"].ToString();
+            DataTable dtupdate = new DataTable();
+            dtupdate = DataConn.StoreFillDS("Delete_materVessel_SCM", System.Data.CommandType.StoredProcedure, id); //username
+            if (dtupdate.Rows[0][0].ToString() == "1")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_VesselSCM", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
+            }
 
             //if (role_ == "Admin")
             //{
-            //    DataTable dtupdate = new DataTable();
-            //    dtupdate = DataConn.StoreFillDS("Xoaid_kehoachsanxuat", System.Data.CommandType.StoredProcedure, id, username);
-            //    if (dtupdate.Rows[0][0].ToString() == "1")
-            //    {
-            //        //dt_hanghoa = DataConn.StoreFillDS("NH_danhmuchanghoa", System.Data.CommandType.StoredProcedure);
-            //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //    }
-            //    else
-            //    {
-            //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //    }
+
             //}
             //else
             //{
@@ -145,6 +144,8 @@ namespace FreeLayout
             string _todate = Request.Form[ngaychiid.UniqueID];
 
             string category = dr_filter_Cate.SelectedValue;
+
+            dt_plan = DataConn.StoreFillDS("Select_Mater_VesselSCM", System.Data.CommandType.StoredProcedure);
             //loc theo ngay
             //if (_fromdate == "" || _fromdate == "")
             //{               

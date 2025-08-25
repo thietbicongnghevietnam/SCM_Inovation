@@ -180,8 +180,26 @@
                         <td><%=rows["Can_combine"].ToString()%></td>
 
                         <td>
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["cate"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
-                            <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>','<%=rows["cate"].ToString()%>')"><i class="fas fa-trash"></i>Delete</a>
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["cate"].ToString() %>','<%=rows["Area"].ToString() %>',
+'<%=rows["Country"].ToString() %>',
+'<%=rows["DestCity"].ToString() %>',
+'<%=rows["DestCityName"].ToString() %>',
+'<%=rows["PIC"].ToString() %>',
+'<%=rows["Consignee"].ToString() %>',
+'<%=rows["FCL_Ex_factory"].ToString() %>',
+'<%=rows["FCL_ETD"].ToString() %>',
+'<%=rows["FCL_ETA"].ToString() %>',
+'<%=rows["LLC_Ex_factory"].ToString() %>',
+'<%=rows["LLC_ETD"].ToString() %>',
+'<%=rows["LLC_ETA"].ToString() %>',
+'<%=rows["AIR_Ex_factory"].ToString() %>',
+'<%=rows["AIR_ETD"].ToString() %>',
+'<%=rows["AIR_ETA"].ToString() %>',
+'<%=rows["Special_exfactory_date"].ToString() %>',
+'<%=rows["SpecialETD_week"].ToString() %>',
+'<%=rows["Special_ETA_Date"].ToString() %>',
+'<%=rows["Can_combine"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>','<%=rows["Country"].ToString()%>')"><i class="fas fa-trash"></i>Delete</a>
                         </td>
                     </tr>
                     <%} %>
@@ -244,8 +262,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">DestCity</label>
-                                        <asp:TextBox ID="txDestCity_del" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                        <label for="exampleInputEmail1">Country</label>
+                                        <asp:TextBox ID="txtCountry_del" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
@@ -585,7 +603,8 @@
 
     <script type="text/javascript">  
         $(document).ready(function () {
-            //$('#txtdevice').prop("readonly", true);
+            $('#IDedit').prop("readonly", true);
+            $('#txtid_del').prop("readonly", true);
         });
 
         $(function () {
@@ -604,19 +623,35 @@
 
         });
 
-        function openEditModal3(id, model, ngaysanxuat, linename, giosx) {
-            //$("#txtid2").val(id);
-            //$("#txtmodel2").val(model);
-            //$("#txtngaysx2").val(ngaysanxuat);
-            //$("#txtline2").val(linename); //txtgiosx_
-            //$("#txtgiosx_").val(giosx);
-
+        function openEditModal3(id, cate, Area, Country, DestCity, DestCityName, PIC, Consignee, FCL_Ex_factory, FCL_ETD, FCL_ETA, LLC_Ex_factory, LLC_ETD, LLC_ETA, AIR_Ex_factory, AIR_ETD, AIR_ETA, Special_exfactory_date, SpecialETD_week, Special_ETA_Date, Can_combine) {
+            $("#IDedit").val(id);
+            $("#idcate").val(cate);
+            $("#idArea").val(Area);
+            $("#idCountry").val(Country);
+            $("#idDestCity").val(DestCity);
+            $("#idDestCityName").val(DestCityName);
+            $("#idPIC").val(PIC);
+            $("#idConsignee").val(Consignee);
+            $("#idFCL_Ex_factory").val(FCL_Ex_factory);
+            $("#idFCL_ETD").val(FCL_ETD);
+            $("#idFCL_ETA").val(FCL_ETA);
+            $("#idLLC_Ex_factory").val(LLC_Ex_factory);
+            $("#idLLC_ETD").val(LLC_ETD);
+            $("#idLLC_ETA").val(LLC_ETA);
+            $("#idAIR_Ex_factory").val(AIR_Ex_factory);
+            $("#idAIR_ETD").val(AIR_ETD);
+            $("#idAIR_ETA").val(AIR_ETA);
+            $("#idSpecial_exfactory_date").val(Special_exfactory_date);
+            $("#idSpecialETD_week").val(SpecialETD_week);
+            $("#idSpecial_ETA_Date").val(Special_ETA_Date);
+            $("#idCan_combine").val(Can_combine);
+            
             $('#myModal3').modal('show');
         }
 
-        function openEditModal4(id, model, ngaysanxuat, linename) {
-            //$("#txtid_del").val(id);
-            //$("#txtmodel_del").val(model);
+        function openEditModal4(id, Country) {
+            $("#txtid_del").val(id);
+            $("#txtCountry_del").val(Country);
             //$("#txtngay_del").val(ngaysanxuat);
             //$("#txtline_del").val(linename);
 

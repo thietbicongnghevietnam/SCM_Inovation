@@ -176,8 +176,23 @@
                         <td><%=rows["DIM_of_Carton_W"].ToString()%></td>
                         <td><%=rows["DIM_of_Carton_H"].ToString()%></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["CAT"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
-                            <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>','<%=rows["CAT"].ToString()%>')"><i class="fas fa-trash"></i>Delete</a>
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["CAT"].ToString() %>','<%=rows["Consignee_Refer_ATP"].ToString() %>',
+'<%=rows["Country"].ToString() %>',
+'<%=rows["Dest"].ToString() %>',
+'<%=rows["Model"].ToString() %>',
+'<%=rows["Stuffing_type"].ToString() %>',
+'<%=rows["Model_Vol"].ToString() %>',
+'<%=rows["Pcs_ctn"].ToString() %>',
+'<%=rows["CTN_part"].ToString() %>',
+'<%=rows["CTN_vol"].ToString() %>',
+'<%=rows["Gross_weight"].ToString() %>',
+'<%=rows["Series"].ToString() %>',
+'<%=rows["MaxQty_cont40H"].ToString() %>',
+'<%=rows["Max_Qty_cont20F"].ToString() %>',
+'<%=rows["DIM_of_Carton_L"].ToString() %>',
+'<%=rows["DIM_of_Carton_W"].ToString() %>',
+'<%=rows["DIM_of_Carton_H"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>','<%=rows["Model"].ToString()%>')"><i class="fas fa-trash"></i>Delete</a>
 
                         </td>
                     </tr>
@@ -289,7 +304,7 @@
                                 <asp:TextBox ID="CATid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1">Consignee_Refer_ATP</label>
+                                <label for="exampleInputEmail1">ConsigneeReferATP</label>
                                 <span style="color: red; font-size: 11px; font-style: italic;">(*)</span>
                                 <asp:TextBox ID="Consignee_Refer_ATPid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
@@ -412,7 +427,7 @@
                                 <asp:TextBox ID="idCAT" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
                             <div class="col-md-3">
-                                <label for="exampleInputEmail1">Consignee_Refer_ATP</label>
+                                <label for="exampleInputEmail1">ConsigneeReferATP</label>
                                 <span style="color: red; font-size: 11px; font-style: italic;">(*)</span>
                                 <asp:TextBox ID="idConsignee_Refer_ATP" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
@@ -560,21 +575,31 @@
 
         });
 
-        function openEditModal3(id, model, ngaysanxuat, linename, giosx) {
-            //$("#txtid2").val(id);
-            //$("#txtmodel2").val(model);
-            //$("#txtngaysx2").val(ngaysanxuat);
-            //$("#txtline2").val(linename); //txtgiosx_
-            //$("#txtgiosx_").val(giosx);
-
+        function openEditModal3(id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H) {
+            $("#IDedit").val(id);
+            $("#idCAT").val(CAT);
+            $("#idConsignee_Refer_ATP").val(Consignee_Refer_ATP);
+            $("#idCountry").val(Country);
+            $("#idDest").val(Dest);
+            $("#idModel").val(Model);
+            $("#idStuffing_type").val(Stuffing_type);
+            $("#idModel_Vol").val(Model_Vol);
+            $("#idPcs_ctn").val(Pcs_ctn);
+            $("#idCTN_part").val(CTN_part);
+            $("#idCTN_vol").val(CTN_vol);
+            $("#idGross_weight").val(Gross_weight);
+            $("#idSeries").val(Series);
+            $("#idMaxQty_cont40H").val(MaxQty_cont40H);
+            $("#idMax_Qty_cont20F").val(Max_Qty_cont20F);
+            $("#idDIM_of_Carton_L").val(DIM_of_Carton_L);
+            $("#idDIM_of_Carton_W").val(DIM_of_Carton_W);
+            $("#idDIM_of_Carton_H").val(DIM_of_Carton_H);
             $('#myModal3').modal('show');
         }
 
-        function openEditModal4(id, model, ngaysanxuat, linename) {
-            //$("#txtid_del").val(id);
-            //$("#txtmodel_del").val(model);
-            //$("#txtngay_del").val(ngaysanxuat);
-            //$("#txtline_del").val(linename);
+        function openEditModal4(id, model) {
+            $("#txtid_del").val(id);
+            $("#txModel_del").val(model);
 
             $('#myModal4').modal('show');
         }
