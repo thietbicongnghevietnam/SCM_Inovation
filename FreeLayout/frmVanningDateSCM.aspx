@@ -38,14 +38,14 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link"><span style="font-size: 22px;">Home</span></a>
+                        <a href="/frmVanningDateSCM.aspx" class="nav-link"><span style="font-size: 22px;">Home</span></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
                         <%--<a href="/InventoryInfra.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel schedule</span></a>--%>
-                        <a href="#" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel schedule</span></a>
+                        <a href="/frmMaterVessel.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel</span></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" target="_blank" class="nav-link"><span style="font-size: 22px;">Master model</span></a>
+                        <a href="/frmMaterModel.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master model</span></a>
                     </li>
                 </ul>
 
