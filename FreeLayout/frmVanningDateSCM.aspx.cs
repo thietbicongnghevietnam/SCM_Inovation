@@ -24,7 +24,7 @@ namespace FreeLayout
         public DataTable dt_update = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) 
+            if (!IsPostBack)
             {
                 dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                 //Date1.Value = DateTime.Now.ToString("dd-MM-yyyy");
@@ -36,7 +36,7 @@ namespace FreeLayout
                 dr_filter_Cate.DataSource = dtcate;
                 dr_filter_Cate.DataBind();
             }
-                
+
         }
 
         protected void Search_Date_Click(object sender, EventArgs e)
@@ -92,7 +92,32 @@ namespace FreeLayout
             //this.Controls.Add(lblMessage);
         }
 
+        protected void btnSplitCont(object sender, EventArgs e) 
+        {
+            DataTable dt_splitcont = new DataTable();
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
 
+            string Category_ = "";
+            if (rblDP.Checked)
+            {
+                Category_ = rblDP.Text;
+            }
+            else if (rblDECT.Checked)
+            {
+                Category_ = rblDECT.Text;
+            }
+
+            if (_fromdate == "" || _fromdate == "")
+            {
+                //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
+            }
+            else 
+            {
+                //chia cont
+            }
+        }
 
         protected void btnTinhLichTau(object sender, EventArgs e) 
         {
@@ -163,8 +188,9 @@ namespace FreeLayout
 
                                 if (SpecialETD_week != "")
                                 {
-                                    //tinh ra tuan cua special note
-                                    if (weekOfMonth_rq < int.Parse(SpecialETD_week))
+                                    //truong hop 1
+                                    //tinh ra tuan cua special note //neu bang thi lay theo truoc do?
+                                    if (weekOfMonth_rq <= int.Parse(SpecialETD_week))
                                     {
                                         //lay theo tuan request date
                                         DayOfWeek day1 = ConvertToDayOfWeek(FCL_Ex_factory); // "THU"; // giá trị truyền vào thu 5
@@ -242,27 +268,54 @@ namespace FreeLayout
                                 }
                                 else if (Special_ETA_Date != "")
                                 {
+                                    //truong hop 3
+                                    //dựa vào ngày ship date tháng hiện tại là tháng nào  
+                                    //dt_tinhlichtau.Rows[i]["ATPdate"].ToString() //  7/16/2025  => thang 8
+                                    //tinh Special_ETA_Date tang them 1 thang so ngay la 14: => 8/14/2025  ***** dua vao so ngay la bao nhieu thi cong them so thang
+                                    int soNgay = Int32.Parse(dt_mater_vessel.Rows[0]["Special_ETA_Date"].ToString());
+                                    DateTime ngayGoc = DateTime.Parse(dt_tinhlichtau.Rows[i]["ATPdate"].ToString());
+                                    DateTime ngayCongSoNgay = ngayGoc.AddDays(soNgay); // ngày sau khi cộng 14 ngày
+                                    DateTime ketQua = ngayCongSoNgay.AddMonths(1); // cộng thêm 1 tháng vào ngày trên
 
+                                    // Trả về ngày dạng "dd/MM/yyyy" hoặc bạn muốn
+                                    string ketQuaNgay = ketQua.ToString("dd/MM/yyyy");
+
+                                    string stansit_time = "0";
+
+                                    //So sánh ngày trong tuần (FCL & LCL) ngày nào trước thì chọn để lấy ra transit time de tru di
+                                    DayOfWeek day11 = ConvertToDayOfWeek(FCL_Ex_factory); // "THU"; // giá trị truyền vào thu 5
+                                    DayOfWeek day22 = ConvertToDayOfWeek(LLC_Ex_factory);  // "TUE"; // giá trị truyền vào thu 3
+                                    if ((int)day11 < (int)day22)
+                                    {
+                                        //ngay nao nho < hon thi tinh toan****
+                                        stansit_time = dt_mater_vessel.Rows[0]["FCL_ETA"].ToString();
+                                    }
+                                    if((int)day22 < (int)day11)
+                                    {
+                                        //lay gia tri transit time  la "MON" < "WED"
+                                        //lay ngay tang len 1 thang - transit time : 8/14/2025 - 28
+                                        stansit_time = dt_mater_vessel.Rows[0]["LLC_ETA"].ToString();
+
+                                    }
                                 }
                                 else if (Special_exfactory_date != "")
                                 {
-
+                                    //truong hop 2
                                 }
-
-                                if (count > 1)
-                                {
-                                    lblConfirm.Text = "so ban ghi duoc update : " + count;
-                                    lblConfirm.Attributes.Add("style", "color:green");
-                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
-                                    //load lai du lieu
-                                    //dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
-                                }
-
                             }
                             else
                             {
 
                             }
+                        }
+
+                        if (count > 1)
+                        {
+                            lblConfirm.Text = "so ban ghi duoc update : " + count;
+                            lblConfirm.Attributes.Add("style", "color:green");
+                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
+                            //load lai du lieu
+                            dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                         }
                         //
                         //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Da tinh xong ngay, kiem tra lai!');", true);

@@ -109,6 +109,7 @@
 
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export</button>&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnTinhLichTau"><i class="fa fa-calculator"></i>&nbsp; Calculate Date</button>
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fa fa-calculator"></i>&nbsp; Split Cont</button>
                     <%--onserverclick="btnExport_Click"--%>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
 
