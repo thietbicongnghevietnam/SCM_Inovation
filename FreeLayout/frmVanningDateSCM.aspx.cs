@@ -274,8 +274,9 @@ namespace FreeLayout
                                     //tinh Special_ETA_Date tang them 1 thang so ngay la 14: => 8/14/2025  ***** dua vao so ngay la bao nhieu thi cong them so thang
                                     int soNgay = Int32.Parse(dt_mater_vessel.Rows[0]["Special_ETA_Date"].ToString());
                                     DateTime ngayGoc = DateTime.Parse(dt_tinhlichtau.Rows[i]["ATPdate"].ToString());
-                                    DateTime ngayCongSoNgay = ngayGoc.AddDays(soNgay); // ngày sau khi cộng 14 ngày
-                                    DateTime ketQua = ngayCongSoNgay.AddMonths(1); // cộng thêm 1 tháng vào ngày trên
+                                    //DateTime ngayCongSoNgay = ngayGoc.AddDays(soNgay); // ngày sau khi cộng 14 ngày
+                                    DateTime ngayThay = new DateTime(ngayGoc.Year, ngayGoc.Month, soNgay);
+                                    DateTime ketQua = ngayThay.AddMonths(1); // cộng thêm 1 tháng vào ngày trên   //dua vao so ngay la bao nhieu thi cong them so thang
 
                                     // Trả về ngày dạng "dd/MM/yyyy" hoặc bạn muốn
                                     string ketQuaNgay = ketQua.ToString("dd/MM/yyyy");
@@ -283,19 +284,47 @@ namespace FreeLayout
                                     string stansit_time = "0";
 
                                     //So sánh ngày trong tuần (FCL & LCL) ngày nào trước thì chọn để lấy ra transit time de tru di
-                                    DayOfWeek day11 = ConvertToDayOfWeek(FCL_Ex_factory); // "THU"; // giá trị truyền vào thu 5
-                                    DayOfWeek day22 = ConvertToDayOfWeek(LLC_Ex_factory);  // "TUE"; // giá trị truyền vào thu 3
+                                    DayOfWeek day11 = ConvertToDayOfWeek(FCL_ETD); // "FRI"; // giá trị truyền vào thu 5
+                                    DayOfWeek day22 = ConvertToDayOfWeek(LLC_ETD);  // "MON"; // giá trị truyền vào thu 3
                                     if ((int)day11 < (int)day22)
                                     {
-                                        //ngay nao nho < hon thi tinh toan****
-                                        stansit_time = dt_mater_vessel.Rows[0]["FCL_ETA"].ToString();
+                                        //lay ngay nao nho < hon thi tinh toan****
+                                        stansit_time = dt_mater_vessel.Rows[0]["FCL_ETA"].ToString();  //transit time
+                                        DateTime ngayDatru1 = ketQua.AddDays(-Int32.Parse(stansit_time));
+
+                                        //string ngaycantim1 = ngayDatru1.ToString("dd/MM/yyyy");
+                                        string inputDay = FCL_ETD;// "THU"; // giá trị truyền vào thu 5
+                                        DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
+                                        string inputDay2 = FCL_Ex_factory;
+                                        DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
+
+                                        DateTime resultDay = GetSpecificDayInWeek(ngayDatru1, targetDay);   //tinh ra ngay ETD
+                                        DateTime resultDay2 = GetSpecificDayInWeek(ngayDatru1, targetDay2);  // tinh ra ngay Ex-factory day
+                                        DateTime ngayTru1Tuan2 = resultDay2.AddDays(-7); // Trừ 7 ngày
+
+                                        dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, ngayTru1Tuan2, resultDay, ID_lichtau);
+                                        count = count + 1;
                                     }
-                                    if((int)day22 < (int)day11)
+                                    if ((int)day22 < (int)day11)
                                     {
                                         //lay gia tri transit time  la "MON" < "WED"
                                         //lay ngay tang len 1 thang - transit time : 8/14/2025 - 28
-                                        stansit_time = dt_mater_vessel.Rows[0]["LLC_ETA"].ToString();
+                                        stansit_time = dt_mater_vessel.Rows[0]["LLC_ETA"].ToString();  ////transit time
+                                        DateTime ngayDatru2 = ketQua.AddDays(-Int32.Parse(stansit_time));
+                                        //string ngaycantim2 = ngayDatru2.ToString("dd/MM/yyyy");
 
+
+                                        string inputDay = LLC_ETD;// "THU"; // giá trị truyền vào thu 5
+                                        DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
+                                        string inputDay2 = LLC_Ex_factory;
+                                        DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
+
+                                        DateTime resultDay = GetSpecificDayInWeek(ngayDatru2, targetDay);   //tinh ra ngay ETD
+                                        DateTime resultDay2 = GetSpecificDayInWeek(ngayDatru2, targetDay2);  // tinh ra ngay Ex-factory day  (***truoc 1 tuan tau chay***)
+                                        DateTime ngayTru1Tuan2 = resultDay2.AddDays(-7); // Trừ 7 ngày
+
+                                        dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, ngayTru1Tuan2,resultDay, ID_lichtau);
+                                        count = count + 1;
                                     }
                                 }
                                 else if (Special_exfactory_date != "")
@@ -314,6 +343,13 @@ namespace FreeLayout
                             lblConfirm.Text = "so ban ghi duoc update : " + count;
                             lblConfirm.Attributes.Add("style", "color:green");
                             Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
+                            //load lai du lieu
+                            dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
+                        }
+                        else 
+                        {
+                            lblConfirm.Text = "so ban ghi duoc update : " + count;
+                            lblConfirm.Attributes.Add("style", "color:red");
                             //load lai du lieu
                             dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                         }
