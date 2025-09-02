@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -117,7 +118,24 @@ namespace FreeLayout
             else 
             {
                 //chia cont
+                if (Category_ == "DECT")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Category nay khong co chuc nang nay!'); ", true);
+                }
+                else if (Category_ == "MW")
+                {
+
+                }
+                else if (Category_ == "DP")
+                {
+
+                }
             }
+        }
+
+        protected void btnRisK(object sender, EventArgs e) 
+        {
+        
         }
 
         protected void btnTinhLichTau(object sender, EventArgs e) 
@@ -189,11 +207,18 @@ namespace FreeLayout
                                     string SpecialETD_week = dt_mater_vessel.Rows[0]["SpecialETD_week"].ToString();
                                     string Special_ETA_Date = dt_mater_vessel.Rows[0]["Special_ETA_Date"].ToString();
 
+                                    string stansit_time = "0";
+                                    string stansit_time2 = "0";
+                                    stansit_time = dt_mater_vessel.Rows[0]["FCL_ETA"].ToString();  //transit time
+                                    stansit_time2 = dt_mater_vessel.Rows[0]["LLC_ETA"].ToString();  //transit time
+
                                     //lay theo tuan request date
                                     DayOfWeek day1 = ConvertToDayOfWeek(FCL_Ex_factory); // "THU"; // giá trị truyền vào thu 5
                                     DayOfWeek day1b = ConvertToDayOfWeek(FCL_ETD); // "MON"; // giá trị truyền vào thu 2
                                     DayOfWeek day2 = ConvertToDayOfWeek(LLC_Ex_factory);  // "TUE"; // giá trị truyền vào thu 3
                                     DayOfWeek day2b = ConvertToDayOfWeek(LLC_ETD);  // "SUN"; // giá trị truyền vào thu CN
+
+                                    DateTime date_request1 = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
 
                                     if (SpecialETD_week != "")
                                     {
@@ -205,7 +230,6 @@ namespace FreeLayout
                                             {
                                                 //Response.Write("Ngày đứng trước là: " + day1);
                                                 //DateTime date_request1 = DateTime.ParseExact(ATPdate, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                                                DateTime date_request1 = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
                                                 bool isDiffWeek = IsDifferentWeek(day2, day2b);  //lay day2b lam goc
                                                 if (isDiffWeek == true)
                                                 {
@@ -220,28 +244,41 @@ namespace FreeLayout
                                                         //DateTime resultDay = GetSpecificDayInWeek_back(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                        dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+
+                                                        //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                        DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                        dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+
+                                                        //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
                                                     }
                                                     else
                                                     {
                                                         // TH khong phai tuan dau cua thang
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                        dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                        //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+
+                                                        //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                        DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                        dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                     }
                                                     count = count + 1;
                                                 }
                                                 else
                                                 {
                                                     //giu nguyen lich cach tinh cu *****   
-                                                    string inputDay = FCL_Ex_factory;// "THU"; // giá trị truyền vào thu 5
+                                                    string inputDay = FCL_Ex_factory;
                                                     DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
                                                     string inputDay2 = FCL_ETD;
                                                     DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
                                                     DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                     DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                                                                                            //update len 2 gia tri len co so du lieu *****
-                                                    dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //update len 2 gia tri len co so du lieu *****
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                     count = count + 1;
                                                 }
 
@@ -251,7 +288,7 @@ namespace FreeLayout
                                                 //Response.Write("Ngày đứng trước là: " + day2);
                                                 //string ATPdate1 = ATPdate; // e.g., "2025-07-02 00:00:00.000"
                                                 //DateTime date_request1 = DateTime.ParseExact(ATPdate, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                                                DateTime date_request1 = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                                                //DateTime date_request1 = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
 
                                                 //1*so sánh tương quan ngày Ex-factory và ngày ETD xem có cùng tuần hay không? 
                                                 //neu khac tuan thi phai lay lich tau khac
@@ -271,14 +308,22 @@ namespace FreeLayout
                                                         //DateTime resultDay = GetSpecificDayInWeek_back(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                        dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+
+                                                        //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                        DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                        dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+                                                        //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
                                                     }
                                                     else
                                                     {
                                                         // TH khong phai tuan dau cua thang
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                        dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                        //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+
+                                                        //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                        DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                        dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                     }
 
                                                     //DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
@@ -299,7 +344,11 @@ namespace FreeLayout
                                                     DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
 
                                                     //update len 2 gia tri len co so du lieu *****
-                                                    dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+
                                                     count = count + 1;
                                                     // In kết quả
                                                     //Response.Write($"Ngày {inputDay} trong tuần chứa {date_request:dd/MM/yyyy} là: {resultDay:dd/MM/yyyy}");
@@ -309,7 +358,41 @@ namespace FreeLayout
                                             else 
                                             {
                                                 //(int)day2 = (int)day1
-                                                //.....  ***pending ***test sai
+                                                DayOfWeek day11 = ConvertToDayOfWeek(FCL_ETD);
+                                                DayOfWeek day22 = ConvertToDayOfWeek(LLC_ETD);
+                                                if ((int)day11 < (int)day22)
+                                                {
+                                                    string inputDay = FCL_Ex_factory;
+                                                    DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
+                                                    string inputDay2 = FCL_ETD;
+                                                    DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
+                                                    DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
+                                                    //update len 2 gia tri len co so du lieu *****
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+                                                    count = count + 1;
+                                                }
+                                                if ((int)day22 < (int)day11)
+                                                {
+                                                    string inputDay = LLC_Ex_factory;
+                                                    DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
+                                                    string inputDay2 = LLC_ETD;
+                                                    DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
+
+                                                    DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
+
+                                                    //update len 2 gia tri len co so du lieu *****
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+                                                    count = count + 1;
+                                                }
                                             }
                                         }
                                         else
@@ -358,7 +441,11 @@ namespace FreeLayout
                                                     //}
                                                     DateTime resultDay = GetSpecificDayInPreviousWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day
                                                     DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
-                                                    dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+
                                                     count = count + 1;
                                                 }
                                                 else
@@ -370,22 +457,25 @@ namespace FreeLayout
                                                     DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
                                                     DateTime resultDay = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day
                                                     DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
-                                                                                                                            //update len 2 gia tri len co so du lieu *****
-                                                    dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //update len 2 gia tri len co so du lieu *****
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                     count = count + 1;
                                                 }
 
                                             }
-                                            else
+                                            else if ((int)day2 < (int)day1)
                                             {
                                                 //Response.Write("Ngày đứng trước là: " + day2);
                                                 //string ATPdate1 = ATPdate; // e.g., "2025-07-02 00:00:00.000"
                                                 //DateTime date_request1 = DateTime.ParseExact(ATPdate, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                                                
+
                                                 //1*so sánh tương quan ngày Ex-factory và ngày ETD xem có cùng tuần hay không? 
                                                 //neu khac tuan thi phai lay lich tau khac
                                                 bool isDiffWeek = IsDifferentWeek(day1, day1b);  //lay day1b lam goc
-                                                                                                 //Console.WriteLine(isDiffWeek ? "Khác tuần" : "Cùng tuần");
+                                                //Console.WriteLine(isDiffWeek ? "Khác tuần" : "Cùng tuần");
                                                 if (isDiffWeek == true)
                                                 {
                                                     //khac tuan => lay lich tau nguoc lai *****   
@@ -394,17 +484,12 @@ namespace FreeLayout
                                                     string inputDay2 = FCL_ETD;
                                                     DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
 
-                                                    //neu la tuan dau cua thang
-                                                    //if (IsFirstWeekOfMonth(mondayOfSpecialWeek) == true)
-                                                    //{                                                        
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    //    // TH khong phai tuan dau cua thang                                                        
-                                                    //}
                                                     DateTime resultDay = GetSpecificDayInPreviousWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day
                                                     DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
-                                                    dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                     count = count + 1;
                                                 }
                                                 else
@@ -419,10 +504,52 @@ namespace FreeLayout
                                                     DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
 
                                                     //update len 2 gia tri len co so du lieu *****
-                                                    dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                     count = count + 1;
                                                     // In kết quả
                                                     //Response.Write($"Ngày {inputDay} trong tuần chứa {date_request:dd/MM/yyyy} là: {resultDay:dd/MM/yyyy}");
+                                                }
+                                            }
+                                            else 
+                                            {
+                                                //(int)day2 = (int)day1  ==> TH bang nhau // so sanh ngay ETD de lay lich tau
+                                                DayOfWeek day11 = ConvertToDayOfWeek(FCL_ETD); 
+                                                DayOfWeek day22 = ConvertToDayOfWeek(LLC_ETD);
+                                                if ((int)day11 < (int)day22)
+                                                {
+                                                    string inputDay = FCL_Ex_factory;
+                                                    DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
+                                                    string inputDay2 = FCL_ETD;
+                                                    DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
+
+                                                    DateTime resultDay = GetSpecificDayInPreviousWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day
+                                                    DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+                                                    count = count + 1;
+                                                }
+                                                if ((int)day22 < (int)day11)
+                                                {
+                                                    string inputDay = LLC_Ex_factory;// "TUE"; // giá trị truyền vào thu 3
+                                                    DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
+                                                    string inputDay2 = LLC_ETD;
+                                                    DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
+
+                                                    DateTime resultDay = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day
+                                                    DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
+
+                                                    //update len 2 gia tri len co so du lieu *****
+                                                    //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau);
+                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                    DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
+                                                    dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+
+                                                    count = count + 1;
                                                 }
                                             }
                                         }
@@ -438,10 +565,10 @@ namespace FreeLayout
                                         //DateTime ngayCongSoNgay = ngayGoc.AddDays(soNgay); // ngày sau khi cộng 14 ngày
                                         DateTime ngayThay = new DateTime(ngayGoc.Year, ngayGoc.Month, soNgay);
                                         DateTime ketQua = ngayThay;
-
-                                        string stansit_time = "0";
-                                        stansit_time = dt_mater_vessel.Rows[0]["FCL_ETA"].ToString();  //transit time
+     
                                         //dua vao so ngay transit time la bao nhieu ? thi cong them so thang
+                                        //co 2 transit time => chon transitme cua lich tau nao???
+                                        //??? tam lay transit time cua lich tau 1
                                         if (Int32.Parse(stansit_time) <= 45)
                                         {
                                             ketQua = ngayThay.AddMonths(1); // cộng thêm 1 tháng vào ngày trên   
@@ -470,7 +597,7 @@ namespace FreeLayout
                                                 DateTime ngayDatru1 = ketQua.AddDays(-Int32.Parse(stansit_time));
 
                                                 //string ngaycantim1 = ngayDatru1.ToString("dd/MM/yyyy");
-                                                string inputDay = FCL_ETD;// "THU"; // giá trị truyền vào thu 5
+                                                string inputDay = FCL_ETD; 
                                                 DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
                                                 string inputDay2 = FCL_Ex_factory;
                                                 DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
@@ -478,7 +605,10 @@ namespace FreeLayout
                                                 DateTime resultDay = GetSpecificDayInWeek(ngayDatru1, targetDay);   //tinh ra ngay ETD
                                                 DateTime resultDay2 = GetSpecificDayInPreviousWeek(ngayDatru1, targetDay2);  // tinh ra ngay Ex-factory day
 
-                                                dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                                //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                                //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                DateTime dateETA = resultDay.AddDays(Int32.Parse(stansit_time));
+                                                dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
 
                                                 count = count + 1;
                                             }
@@ -489,9 +619,9 @@ namespace FreeLayout
                                                 //stansit_time = dt_mater_vessel.Rows[0]["LLC_ETA"].ToString();  ////transit time
 
                                                 //tinh toan nhu cu ******
-                                                DateTime ngayDatru2 = ketQua.AddDays(-Int32.Parse(stansit_time));
+                                                DateTime ngayDatru2 = ketQua.AddDays(-Int32.Parse(stansit_time2));
                                                 //string ngaycantim2 = ngayDatru2.ToString("dd/MM/yyyy");
-                                                string inputDay = LLC_ETD;// "THU"; // giá trị truyền vào thu 5
+                                                string inputDay = LLC_ETD;// "MON"; // giá trị truyền vào thu2
                                                 DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
                                                 string inputDay2 = LLC_Ex_factory;
                                                 DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
@@ -500,7 +630,10 @@ namespace FreeLayout
                                                 DateTime resultDay2 = GetSpecificDayInPreviousWeek(ngayDatru2, targetDay2);  // tinh ra ngay Ex-factory day  (***truoc 1 tuan tau chay***)
                                                                                                                              //DateTime ngayTru1Tuan2 = resultDay2.AddDays(-7); // Trừ 7 ngày
 
-                                                dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                                //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                                //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                DateTime dateETA = resultDay.AddDays(Int32.Parse(stansit_time2));
+                                                dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
 
 
                                                 count = count + 1;
@@ -521,12 +654,15 @@ namespace FreeLayout
                                             DateTime resultDay = GetSpecificDayInWeek(ngayDatru1, targetDay);   //tinh ra ngay ETD
                                             DateTime resultDay2 = GetSpecificDayInPreviousWeek(ngayDatru1, targetDay2);  // tinh ra ngay Ex-factory day                                                                                                                        
 
-                                            dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                            //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                            //tinh ra ngay ETA =  Ngay ETD + transitime
+                                            DateTime dateETA = resultDay.AddDays(Int32.Parse(stansit_time));
+                                            dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                             count = count + 1;
                                         }
                                         else if ((int)day2 < (int)day1)
                                         {
-                                            DateTime ngayDatru1 = ketQua.AddDays(-Int32.Parse(stansit_time));
+                                            DateTime ngayDatru1 = ketQua.AddDays(-Int32.Parse(stansit_time2));
 
                                             //string ngaycantim1 = ngayDatru1.ToString("dd/MM/yyyy");
                                             string inputDay = LLC_ETD;// "THU"; // giá trị truyền vào thu 5
@@ -537,7 +673,11 @@ namespace FreeLayout
                                             DateTime resultDay = GetSpecificDayInWeek(ngayDatru1, targetDay);   //tinh ra ngay ETD
                                             DateTime resultDay2 = GetSpecificDayInPreviousWeek(ngayDatru1, targetDay2);  // tinh ra ngay Ex-factory day                                                                                                                        
 
-                                            dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                            //dt_update = DataConn.StoreFillDS("Update_lichtau", System.Data.CommandType.StoredProcedure, resultDay2, resultDay, ID_lichtau);
+                                            //tinh ra ngay ETA =  Ngay ETD + transitime
+                                            DateTime dateETA = resultDay.AddDays(Int32.Parse(stansit_time2));
+                                            dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
+
                                             count = count + 1;
                                         }
 
@@ -711,7 +851,8 @@ namespace FreeLayout
                         dt_new.Columns.Add("TTLcont2", typeof(float));
                         dt_new.Columns.Add("Exfactorydate", typeof(DateTime));
                         dt_new.Columns.Add("ETD", typeof(DateTime));
-                        dt_new.Columns.Add("ETA", typeof(int));
+                        //dt_new.Columns.Add("ETA", typeof(int));
+                        dt_new.Columns.Add("ETA", typeof(DateTime));
                         dt_new.Columns.Add("Cancombine", typeof(String));
                         dt_new.Columns.Add("Risky", typeof(String));
                         
@@ -768,7 +909,8 @@ namespace FreeLayout
                             float TTLcont2 = 0;
                             DateTime? Exfactorydate = null;
                             DateTime? ETD = null;
-                            int ETA = 0;
+                            DateTime? ETA = null;
+                            //int ETA = 0;
                             string Cancombine = "";
                             string Risky = "";
 
@@ -801,6 +943,7 @@ namespace FreeLayout
                                         Destination = dt_getmodel.Rows[0][2].ToString();        //lay tu mater model
                                         Volume = dt_getmodel.Rows[0][3].ToString();             //lay tu mater model
                                         Grossweight = dt_getmodel.Rows[0][4].ToString();       //lay tu mater model
+                                        Cancombine = dt_getmodel.Rows[0][5].ToString();         //link tu mater model sang mater vessel
                                     }
                                     else 
                                     {
@@ -818,8 +961,9 @@ namespace FreeLayout
                                     // gia tri se duoc tinh o buoc so 2
                                     Exfactorydate = null;// dtExcelData.Rows[i][""].ToString().Trim();
                                     ETD = null;
-                                    ETA = 0;
-                                    Cancombine = "";// dtExcelData.Rows[i][""].ToString().Trim();
+                                    ETA = null;
+                                    //ETA = 0;
+                                    //Cancombine = "";// dtExcelData.Rows[i][""].ToString().Trim();
                                     Risky = "";
 
                                     req_qty = Int32.Parse(dtExcelData.Rows[i]["req_qty"].ToString().Trim());

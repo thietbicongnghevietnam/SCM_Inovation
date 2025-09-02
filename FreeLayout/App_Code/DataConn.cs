@@ -21,6 +21,7 @@ namespace FreeLayout.App_Code
     public class DataConn
     {
         public static string source;
+        public static string source2;
         private static SqlConnection con;
         public static int gio;
         public static DbDataAdapter adapter;
@@ -29,6 +30,7 @@ namespace FreeLayout.App_Code
             //source = @"Data Source=192.168.128.1;Initial Catalog=FREE_LOCATION;User ID=sa;Password=Psnvdb2013";
             //source = @"Data Source=192.168.128.1;Initial Catalog=PC_Inventory_Infra;User ID=sa;Password=Psnvdb2013";
             source = @"Data Source=10.92.186.30;Initial Catalog=PC_Inventory_Infra;User ID=sa;Password=Psnvdb2013";
+            source2 = @"Data Source=10.92.186.30;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
             //local
             //source = @"Data Source=./;Initial Catalog=FREE_LOCATION;User ID='';Password=''";
 
@@ -92,6 +94,25 @@ namespace FreeLayout.App_Code
         public static DataTable StoreFillDS(string query_object, CommandType type, params object[] obj)
         {
             SqlConnection conn = new SqlConnection(source);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(query_object, conn);
+            cmd.CommandType = type;
+            SqlCommandBuilder.DeriveParameters(cmd);
+            for (int i = 1; i <= obj.Length; i++)
+            {
+                cmd.Parameters[i].Value = obj[i - 1];
+            }
+            SqlDataAdapter dap = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            dap.Fill(ds);
+            conn.Dispose();
+            conn.Close();
+            return ds.Tables[0];
+        }
+
+        public static DataTable StoreFillDS2(string query_object, CommandType type, params object[] obj)
+        {
+            SqlConnection conn = new SqlConnection(source2);
             conn.Open();
             SqlCommand cmd = new SqlCommand(query_object, conn);
             cmd.CommandType = type;

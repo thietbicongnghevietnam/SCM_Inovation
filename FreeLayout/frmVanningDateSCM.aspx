@@ -109,7 +109,8 @@
 
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export</button>&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnTinhLichTau"><i class="fa fa-calculator"></i>&nbsp; Calculate Date</button>
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fa fa-calculator"></i>&nbsp; Split Cont</button>
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fas fa-compress"></i>&nbsp; Split Cont</button>
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRisK"><i class="fas fa-exclamation-triangle"></i>&nbsp; Show Risky</button>
                     <%--onserverclick="btnExport_Click"--%>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
 
@@ -252,9 +253,10 @@
 
         $(function () {
             $("#example").DataTable({
-                "responsive": true,
+                "responsive": false,
                 "autoWidth": true,
                 //"order": [[7, "desc"]],
+                "scrollX": true,
                 "pageLength": 50
                 //"ordering": true,
                 //"paging": true,

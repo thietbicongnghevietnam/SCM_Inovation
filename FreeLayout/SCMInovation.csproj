@@ -129,6 +129,8 @@
     <Content Include="Exportexcel\bootstrap.min.css" />
     <Content Include="Exportexcel\jquery.min.js" />
     <Content Include="Exportexcel\jquery.table2excel.min.js" />
+    <Content Include="frmExportImage.aspx" />
+    <Content Include="frmMaterialName.aspx" />
     <Content Include="frmMaterModel.aspx" />
     <Content Include="frmMaterVessel.aspx" />
     <Content Include="frmVanningDateSCM.aspx" />
@@ -1825,6 +1827,20 @@
       <DependentUpon>EquipmentBorrowHistory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Excel\Application.cs" />
+    <Compile Include="frmExportImage.aspx.cs">
+      <DependentUpon>frmExportImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmExportImage.aspx.designer.cs">
+      <DependentUpon>frmExportImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMaterialName.aspx.cs">
+      <DependentUpon>frmMaterialName.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMaterialName.aspx.designer.cs">
+      <DependentUpon>frmMaterialName.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmMaterModel.aspx.cs">
       <DependentUpon>frmMaterModel.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
