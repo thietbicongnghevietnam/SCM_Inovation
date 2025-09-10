@@ -195,7 +195,7 @@
                             <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                         </td>
 
-                        <td></td>
+                       
                     </tr>
                     <%} %>
                 </tbody>

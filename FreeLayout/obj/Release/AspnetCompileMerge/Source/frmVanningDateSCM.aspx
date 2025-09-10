@@ -192,9 +192,10 @@
                         </td>
                         <td>
                             <!-- Cột trống này giữ nguyên -->
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                         </td>
 
-                        <td></td>
+                       
                     </tr>
                     <%} %>
                 </tbody>
@@ -228,6 +229,54 @@
         </div>
 
 
+        <div class="modal" id="myModal3">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div>
+                        <h4 class="modal-title" id="headerTag1" style="float: left">Cập nhật thông tin lịch vessel</h4>
+                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <%--<label for="exampleInputEmail1">Can_combine</label>
+                        <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="ID">ID</label>
+                        <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3"></div>
+                </div>
+
+                <!-- Lặp lại thêm các dòng -->
+            </div>
+
+            <%-- Modal footer --%>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                <button type="button" runat="server" id="Button1"  class="btn btn-primary">  <%--onserverclick="Updatethongtin"--%>
+                    <i class="fas fa-download"></i>
+                    Ghi lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     </form>
 
 
@@ -253,7 +302,7 @@
 
     <script type="text/javascript">  
         $(document).ready(function () {
-            $('#txtdevice').prop("readonly", true);
+            $('#IDedit').prop("readonly", true);
         });
 
         $(function () {
@@ -272,7 +321,31 @@
 
         });
 
+        function openEditModal3(id) {
+            $("#IDedit").val(id);
+            //$("#idcate").val(cate);
+            //$("#idArea").val(Area);
+            //$("#idCountry").val(Country);
+            //$("#idDestCity").val(DestCity);
+            //$("#idDestCityName").val(DestCityName);
+            //$("#idPIC").val(PIC);
+            //$("#idConsignee").val(Consignee);
+            //$("#idFCL_Ex_factory").val(FCL_Ex_factory);
+            //$("#idFCL_ETD").val(FCL_ETD);
+            //$("#idFCL_ETA").val(FCL_ETA);
+            //$("#idLLC_Ex_factory").val(LLC_Ex_factory);
+            //$("#idLLC_ETD").val(LLC_ETD);
+            //$("#idLLC_ETA").val(LLC_ETA);
+            //$("#idAIR_Ex_factory").val(AIR_Ex_factory);
+            //$("#idAIR_ETD").val(AIR_ETD);
+            //$("#idAIR_ETA").val(AIR_ETA);
+            //$("#idSpecial_exfactory_date").val(Special_exfactory_date);
+            //$("#idSpecialETD_week").val(SpecialETD_week);
+            //$("#idSpecial_ETA_Date").val(Special_ETA_Date);
+            //$("#idCan_combine").val(Can_combine);
 
+            $('#myModal3').modal('show');
+        }
 
 
 

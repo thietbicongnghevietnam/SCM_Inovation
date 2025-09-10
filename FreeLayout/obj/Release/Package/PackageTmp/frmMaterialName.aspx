@@ -124,7 +124,7 @@
                         <td><%=rows["EnglishName"].ToString()%></td>
                         <td><%=rows["VietNameseName"].ToString()%></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["Material"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["EnglishName"].ToString() %>','<%=rows["VietNameseName"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                             <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>','<%=rows["Material"].ToString()%>')"><i class="fas fa-trash"></i>Delete</a>
 
                         </td>
