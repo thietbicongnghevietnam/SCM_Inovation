@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -187,7 +190,192 @@ namespace FreeLayout
 
         protected void ImportFromExcel(object sender, EventArgs e) 
         {
-        
+            DataTable dtcheck = new DataTable();
+            if (FileUpload.HasFile)
+            {
+                if (FileUpload.PostedFile.ContentLength > 0) 
+                {
+                    // Save the uploaded file to the server.
+                    FileUpload.SaveAs(Server.MapPath(".") + "\\" + FileUpload.FileName);
+
+                    // Set connection string with the Excel file.
+                    //string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
+                    //                      Server.MapPath(".") + "\\" + FileUpload.FileName +
+                    //                      "; Extended Properties=Excel 12.0;"
+
+                    //new
+                    string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
+                      Server.MapPath(".") + "\\" + FileUpload.FileName +
+                      "; Extended Properties='Excel 12.0; HDR=YES; IMEX=1;'"; // HDR=YES để xử lý header, IMEX=1 để xử lý cả dữ liệu chuỗi và số
+
+                    OleDbConnection excelConn = null;
+                    OleDbDataReader objBulkReader = null;
+                    try
+                    {
+                        DataTable dt_checkupload = new DataTable();
+                        DataTable dt_new = new DataTable();
+                        int countlap = 0;
+
+                        dt_new.Columns.Add("ID", typeof(Int32));
+                        dt_new.Columns.Add("CAT", typeof(String));
+                        dt_new.Columns.Add("Consignee_Refer_ATP", typeof(String));
+                        dt_new.Columns.Add("Country", typeof(String));
+                        dt_new.Columns.Add("Dest", typeof(String));
+                        dt_new.Columns.Add("Model", typeof(String));
+                        dt_new.Columns.Add("Stuffing_type", typeof(String));
+                        dt_new.Columns.Add("Model_Vol", typeof(float));
+                        dt_new.Columns.Add("Pcs_ctn", typeof(Int32));
+                        dt_new.Columns.Add("CTN_part", typeof(String));
+                        dt_new.Columns.Add("CTN_vol", typeof(Int32));
+                        dt_new.Columns.Add("Gross_weight", typeof(float));
+                        dt_new.Columns.Add("Series", typeof(String));
+                        dt_new.Columns.Add("MaxQty_cont40H", typeof(Int32));
+                        dt_new.Columns.Add("Max_Qty_cont20F", typeof(Int32));
+                        dt_new.Columns.Add("DIM_of_Carton_L", typeof(String));
+                        dt_new.Columns.Add("DIM_of_Carton_W", typeof(String));
+                        dt_new.Columns.Add("DIM_of_Carton_H", typeof(String));
+
+                        // Open connection to Excel file.
+                        excelConn = new OleDbConnection(excelConnStr);
+                        excelConn.Open();
+                        // Lấy danh sách các sheet trong Excel
+                        DataTable sheets = excelConn.GetSchema("Tables");
+                        // Lấy tên sheet đầu tiên (vì chỉ có một sheet)
+                        string sheetName = sheets.Rows[0]["TABLE_NAME"].ToString();
+                        Console.WriteLine("Tên sheet: " + sheetName);
+
+                        // Xử lý tên sheet (nếu có ký tự đặc biệt)
+                        string sanitizedSheetName = SanitizeSheetName(sheetName);
+                        // Tạo câu truy vấn SQL với tên sheet đã xử lý
+                        OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sanitizedSheetName}$]", excelConn);
+
+                        objBulkReader = objOleDB.ExecuteReader();
+
+                        if (objBulkReader.HasRows) 
+                        {
+                            DataTable dtExcelData = new DataTable();
+                            dtExcelData.Load(objBulkReader); // Load data into DataTable.
+                            string Sheet = sheetName.Replace("$", "");
+
+                            string CAT = "";
+                            string Consignee_Refer_ATP = "";
+                            string Country = "";
+                            string Dest = "";
+                            string Model = "";
+                            string Stuffing_type = "";
+                            float Model_Vol = 0;
+                            int Pcs_ctn = 0;
+                            string CTN_part = "";
+                            int CTN_vol = 0;
+                            float Gross_weight = 0;
+                            string Series = "";
+                            int MaxQty_cont40H = 0;
+                            int Max_Qty_cont20F = 0;
+                            string DIM_of_Carton_L = "";
+                            string DIM_of_Carton_W = "";
+                            string DIM_of_Carton_H = "";
+
+                            for (int i = 0; i < dtExcelData.Rows.Count; i++) 
+                            {
+                                countlap = 0; 
+                                CAT = dtExcelData.Rows[i]["CAT"].ToString();
+                                Consignee_Refer_ATP = dtExcelData.Rows[i]["Consignee_Refer_ATP"].ToString();
+                                Country = dtExcelData.Rows[i]["Country"].ToString();
+                                Dest = dtExcelData.Rows[i]["Dest"].ToString();
+                                Model = dtExcelData.Rows[i]["Model"].ToString();
+                                Stuffing_type = dtExcelData.Rows[i]["Stuffing_type"].ToString();
+                                Model_Vol = float.Parse(dtExcelData.Rows[i]["Model_Vol"].ToString());
+                                Pcs_ctn = Int32.Parse(dtExcelData.Rows[i]["Pcs_ctn"].ToString());
+                                CTN_part = dtExcelData.Rows[i]["CTN_part"].ToString();
+                                CTN_vol = Int32.Parse(dtExcelData.Rows[i]["CTN_vol"].ToString());
+                                Gross_weight = float.Parse(dtExcelData.Rows[i]["Gross_weight"].ToString());
+                                Series = dtExcelData.Rows[i]["Series"].ToString();
+
+                                //truong hop null
+
+                                MaxQty_cont40H = Int32.Parse(dtExcelData.Rows[i]["MaxQty_cont40H"].ToString());
+                                Max_Qty_cont20F = Int32.Parse(dtExcelData.Rows[i]["Max_Qty_cont20F"].ToString());
+                                DIM_of_Carton_L = dtExcelData.Rows[i]["DIM_of_Carton_L"].ToString();
+                                DIM_of_Carton_W = dtExcelData.Rows[i]["DIM_of_Carton_W"].ToString();
+                                DIM_of_Carton_H = dtExcelData.Rows[i]["DIM_of_Carton_H"].ToString();
+
+                                dt_getmodel = DataConn.StoreFillDS("Get_infor_mater_model2", System.Data.CommandType.StoredProcedure, Model, CAT, Country, Dest);
+                                if (dt_getmodel.Rows[0][0].ToString() == "1")
+                                {
+                                    //da ton tai roi
+                                    //nothing
+                                    countlap = countlap + 1;
+                                }
+                                else 
+                                {
+                                    //insert model moi
+                                    dt_new.Rows.Add(i, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
+                                }
+                                // Dừng vòng lặp khi các cột cần kiểm tra (cột 0, 2, 3) đều rỗng
+                                if (dtExcelData.Rows[i][0].ToString() == "" && dtExcelData.Rows[i][1].ToString() == "" && dtExcelData.Rows[i][2].ToString() == "")
+                                {
+                                    break;
+                                }
+                            }
+
+                            string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                                "Initial Catalog=PC_Inventory_Infra;User Id=sa;Password=Psnvdb2013;" +
+                                "Connect Timeout=30;";
+
+                            using (SqlConnection con = new SqlConnection(sqlConnStr))
+                            {
+                                con.Open();
+
+                                // Initialize SqlBulkCopy.
+                                using (SqlBulkCopy oSqlBulk = new SqlBulkCopy(con))
+                                {
+                                    oSqlBulk.DestinationTableName = "tblMaterModelSCM"; // Table name in database.
+                                                                                      //oSqlBulk.WriteToServer(dtExcelData); // Write data from DataTable to database.
+                                    oSqlBulk.WriteToServer(dt_new);
+                                }
+                            }
+                            if (countlap > 0)
+                            {
+                                lblConfirm.Text = "Ban ghi lap : " + countlap;
+                                lblConfirm.Attributes.Add("style", "color:green");
+                            }
+                            else
+                            {
+                                lblConfirm.Text = "DATA IMPORTED SUCCESSFULLY.";
+                                lblConfirm.Attributes.Add("style", "color:green");
+                            }
+
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Upload thành công!');", true);
+                            dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
+
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        lblConfirm.Text = ex.Message;
+                        lblConfirm.Attributes.Add("style", "color:red");
+                        //throw;
+                    }
+                    finally
+                    {
+                        // Close and dispose objects.
+                        if (objBulkReader != null && !objBulkReader.IsClosed)
+                        {
+                            objBulkReader.Close();
+                        }
+                        if (excelConn != null && excelConn.State == ConnectionState.Open)
+                        {
+                            excelConn.Close();
+                        }
+                        // Delete the uploaded file (optional).
+                        File.Delete(Server.MapPath(".") + "\\" + FileUpload.FileName);
+                        // Reload grid or perform other necessary actions.
+                        //dt_phanca = Db_connect.StoreFillDS("HR_List_phanca", System.Data.CommandType.StoredProcedure);
+                    }
+                }
+            }
         }
 
         public static string SanitizeSheetName(string sheetName)
