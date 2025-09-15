@@ -76,7 +76,8 @@
                                 AppendDataBoundItems="true"
                                 DataTextField="Description"
                                 DataValueField="Description"
-                                CssClass="custom-select custom-select-sm form-control form-control-sm" OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True" />
+                                CssClass="custom-select custom-select-sm form-control form-control-sm"  />
+                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
                         </div>
                     </div>
                     <span style="padding-left: 20px;"></span>
@@ -111,6 +112,7 @@
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnTinhLichTau"><i class="fa fa-calculator"></i>&nbsp; Calculate Date</button>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fas fa-compress"></i>&nbsp; Split Cont</button>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRisK"><i class="fas fa-exclamation-triangle"></i>&nbsp; Show Risky</button>
+                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSaveHistory"><i class="fas fa-save"></i>&nbsp; Save History</button>
                     <%--onserverclick="btnExport_Click"--%>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
 
@@ -125,6 +127,8 @@
                     <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAM" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History
                 </div>
             </div>
         </div>
@@ -187,7 +191,7 @@
                         <td><%=rows["ETA"].ToString()%></td>
                         <td><%=rows["Cancombine"].ToString()%></td>
                         <%--<td><%=rows["Risky"].ToString()%></td>--%>
-                        <td style='<% if (rows["Risky"].ToString() == "Chu y LCL") { %>background-color: yellow; color: red; <% } %>'>
+                        <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
                             <%=rows["Risky"].ToString()%>
                         </td>
                         <td>

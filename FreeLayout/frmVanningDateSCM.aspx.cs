@@ -53,7 +53,16 @@ namespace FreeLayout
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
 
+            string _checkpartno = Request.Form["check_history_search"];
+
             string category = dr_filter_Cate.SelectedValue;
+            string statushistory = "off";
+
+            if (_checkpartno == "on")
+            {
+                statushistory = "on";
+            }
+
             //loc theo ngay
             if (_fromdate == "" || _fromdate == "")
             {
@@ -66,11 +75,11 @@ namespace FreeLayout
                 if (category == "==Categogy==")
                 {
                     //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
-                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory);
                 }
                 else
                 {
-                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category);
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory);
                 }
 
                 //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan_theongay", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
@@ -137,6 +146,57 @@ namespace FreeLayout
                 {
 
                 }
+            }
+        }
+
+        protected void btnSaveHistory(object sender, EventArgs e)
+        {
+            DataTable dt_save = new DataTable();
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
+
+            string Category_ = "";
+            if (rblDP.Checked)
+            {
+                Category_ = rblDP.Text;
+            }
+            else if (rblDECT.Checked)
+            {
+                Category_ = rblDECT.Text;
+            }
+
+            if (_fromdate == "" || _fromdate == "")
+            {
+                //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
+            }
+            else if (Category_ == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
+            }
+            else
+            {
+                try
+                {
+                    DataTable dt_get_infor = new DataTable();
+                    dt_save = DataConn.StoreFillDS("Save_lichtau_history", System.Data.CommandType.StoredProcedure, Category_, _fromdate, _todate);
+                    if (dt_save.Rows[0][0].ToString() == "1")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Save data thanh cong!');", true);
+                        dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, Category_);
+                    }
+                    else 
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Khong ton tai ban ghi nao!'); ", true);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
             }
         }
 
@@ -1838,7 +1898,8 @@ namespace FreeLayout
                                     }
 
                                     TTLVolume = float.Parse(Volume) * Quantity;          //cot HxJ  
-                                    TTLcont = RoundUpDiv(TTLVolume, 53);   //Roundup(L9/53,0)
+                                    //TTLcont = RoundUpDiv(TTLVolume, 53);   //Roundup(L9/53,0)
+                                    TTLcont = (TTLVolume/53);   //Roundup(L9/53,0)
                                     Qtycont = 0;    //(Dect khong co cot nay)                             //lay tu mater model 
                                     TTLcont2 = 0;   // (Dect khong co cot nay)   Roundup(H/N,0)
 

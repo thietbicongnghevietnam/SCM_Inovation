@@ -144,7 +144,15 @@ namespace FreeLayout
 
             string category = dr_filter_Cate.SelectedValue;
 
-            dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
+            if (category == "==Categogy==")
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
+            }
+            else 
+            {
+                dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM_cate", System.Data.CommandType.StoredProcedure, category);
+            }
+
             //loc theo ngay
             //if (_fromdate == "" || _fromdate == "")
             //{               
@@ -284,17 +292,26 @@ namespace FreeLayout
                                 Dest = dtExcelData.Rows[i]["Dest"].ToString();
                                 Model = dtExcelData.Rows[i]["Model"].ToString();
                                 Stuffing_type = dtExcelData.Rows[i]["Stuffing_type"].ToString();
-                                Model_Vol = float.Parse(dtExcelData.Rows[i]["Model_Vol"].ToString());
-                                Pcs_ctn = Int32.Parse(dtExcelData.Rows[i]["Pcs_ctn"].ToString());
+                                //Model_Vol = float.Parse(dtExcelData.Rows[i]["Model_Vol"].ToString());
+                                float.TryParse(dtExcelData.Rows[i]["Model_Vol"].ToString(), out Model_Vol);
+                                Model_Vol = (float)Math.Round(Model_Vol, 3);
+                                //Pcs_ctn = Int32.Parse(dtExcelData.Rows[i]["Pcs_ctn"].ToString());
+                                int.TryParse(dtExcelData.Rows[i]["Pcs_ctn"].ToString(), out Pcs_ctn);
                                 CTN_part = dtExcelData.Rows[i]["CTN_part"].ToString();
-                                CTN_vol = Int32.Parse(dtExcelData.Rows[i]["CTN_vol"].ToString());
-                                Gross_weight = float.Parse(dtExcelData.Rows[i]["Gross_weight"].ToString());
+                                int.TryParse(dtExcelData.Rows[i]["CTN_vol"].ToString(), out CTN_vol);
+                                //CTN_vol = Int32.Parse(dtExcelData.Rows[i]["CTN_vol"].ToString());
+                                //Gross_weight = float.Parse(dtExcelData.Rows[i]["Gross_weight"].ToString());
+                                float.TryParse(dtExcelData.Rows[i]["Gross_weight"].ToString(), out Gross_weight);
+                                Gross_weight = (float)Math.Round(Gross_weight, 3);
                                 Series = dtExcelData.Rows[i]["Series"].ToString();
 
                                 //truong hop null
 
-                                MaxQty_cont40H = Int32.Parse(dtExcelData.Rows[i]["MaxQty_cont40H"].ToString());
-                                Max_Qty_cont20F = Int32.Parse(dtExcelData.Rows[i]["Max_Qty_cont20F"].ToString());
+                                //MaxQty_cont40H = Int32.Parse(dtExcelData.Rows[i]["MaxQty_cont40H"].ToString());
+                                //Max_Qty_cont20F = Int32.Parse(dtExcelData.Rows[i]["Max_Qty_cont20F"].ToString());
+                                int.TryParse(dtExcelData.Rows[i]["MaxQty_cont40H"].ToString(), out MaxQty_cont40H);
+                                int.TryParse(dtExcelData.Rows[i]["Max_Qty_cont20F"].ToString(), out Max_Qty_cont20F);
+
                                 DIM_of_Carton_L = dtExcelData.Rows[i]["DIM_of_Carton_L"].ToString();
                                 DIM_of_Carton_W = dtExcelData.Rows[i]["DIM_of_Carton_W"].ToString();
                                 DIM_of_Carton_H = dtExcelData.Rows[i]["DIM_of_Carton_H"].ToString();
@@ -354,7 +371,7 @@ namespace FreeLayout
                     }
                     catch (Exception ex)
                     {
-                        lblConfirm.Text = ex.Message;
+                        lblConfirm.Text = "Lỗi : " + ex.Message;
                         lblConfirm.Attributes.Add("style", "color:red");
                         //throw;
                     }
@@ -409,6 +426,74 @@ namespace FreeLayout
 
             // Nếu không parse được (ví dụ: "abc"), trả về 0 hoặc xử lý tùy ý
             return 0;
+        }
+
+        protected void btnDownloadClick(Object sender, EventArgs e)
+        {
+            try
+            {
+                string fileName = "mau upload mater model.xlsx";
+                string fileExtension = ".xlsx";
+
+                // Set Response.ContentType
+                Response.ContentType = GetContentType(fileExtension);
+
+                // Append header
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+                // Write the file to the Response
+                Response.TransmitFile(Server.MapPath("~/Textfile/" + fileName));
+                //Response.TransmitFile(Server.MapPath("~/Uploads/" + fileName));
+                Response.End();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private string GetContentType(string fileExtension)
+        {
+            if (string.IsNullOrEmpty(fileExtension))
+                return string.Empty;
+
+            string contentType = string.Empty;
+            switch (fileExtension)
+            {
+                case ".htm":
+                case ".html":
+                    contentType = "text/HTML";
+                    break;
+                case ".csv":
+                case ".txt":
+                    contentType = "text/plain";
+                    break;
+
+                case ".doc":
+                case ".rtf":
+                case ".docx":
+                    contentType = "Application/msword";
+                    break;
+
+                case ".xls":
+                case ".xlsx":
+                    contentType = "Application/x-msexcel";
+                    break;
+
+                case ".jpg":
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    break;
+
+                case ".gif":
+                    contentType = "image/GIF";
+                    break;
+
+                case ".pdf":
+                    contentType = "application/pdf";
+                    break;
+            }
+            return contentType;
         }
 
 
