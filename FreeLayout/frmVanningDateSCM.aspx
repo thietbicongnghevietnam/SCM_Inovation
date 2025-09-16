@@ -119,6 +119,7 @@
                 </div>
                 <br />
                 <div class="col-sm-12">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -128,7 +129,21 @@
                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAM" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History
+                     <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
+                    
+                    <div class="col-md-1" style="float: left"> <asp:CheckBox ID="check_history_search" runat="server" Text="" />&nbsp;Show History </div>
+                    <div class="col-md-1" style="float: left"> Select Upload No:  </div>
+                    <div class="col-md-2" style="float: left">                        
+                        <div class="form-group">
+                            <%-- <label for="Group">Filter Cate</label>--%>
+                            <asp:DropDownList ID="dr_filter_namegroup" runat="server"
+                                AppendDataBoundItems="true"
+                                DataTextField="NameGroup"
+                                DataValueField="NameGroup"
+                                CssClass="custom-select custom-select-sm form-control form-control-sm"  />
+                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,6 +175,7 @@
                             <th>ETA</th>
                             <th>Cancombine</th>
                             <th>Risky</th>
+                            <th>NameGroup</th>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -194,6 +210,7 @@
                         <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
                             <%=rows["Risky"].ToString()%>
                         </td>
+                        <td><%=rows["NameGroup"].ToString()%></td>
                         <td>
                             <!-- Cột trống này giữ nguyên -->
                             <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
@@ -226,6 +243,7 @@
                         <th>ETA</th>
                         <th>Cancombine</th>
                         <th>Risky</th>
+                        <th>NameGroup</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -311,7 +329,7 @@
 
         $(function () {
             $("#example").DataTable({
-                "responsive": false,
+                //"responsive": false,
                 "autoWidth": true,
                 //"order": [[7, "desc"]],
                 "scrollX": true,

@@ -17,6 +17,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 
 namespace FreeLayout
 {
@@ -25,6 +27,7 @@ namespace FreeLayout
         public DataTable dt_plan = new DataTable();
         public DataTable dt_getmodel = new DataTable();
         public DataTable dtcate = new DataTable();
+        public DataTable dtgroup = new DataTable();
         public DataTable dt_update = new DataTable();
         public bool chk_khactuan;
 
@@ -41,9 +44,16 @@ namespace FreeLayout
                 dtcate.Rows.InsertAt(newRow1, 0);
                 dr_filter_Cate.DataSource = dtcate;
                 dr_filter_Cate.DataBind();
-                
+
+
+                dtgroup = DataConn.StoreFillDS("pro_get_namegroup", System.Data.CommandType.StoredProcedure);
+                DataRow newRow2 = dtgroup.NewRow();
+                newRow2["NameGroup"] = "==UploadNo==";
+                dtgroup.Rows.InsertAt(newRow2, 0);
+                dr_filter_namegroup.DataSource = dtgroup;
+                dr_filter_namegroup.DataBind();
                 //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;  // Dùng cho mục đích phi thương mại
-                
+
             }
 
         }
@@ -56,6 +66,9 @@ namespace FreeLayout
             string _checkpartno = Request.Form["check_history_search"];
 
             string category = dr_filter_Cate.SelectedValue;
+
+            string uploadno = dr_filter_namegroup.SelectedValue;
+
             string statushistory = "off";
 
             if (_checkpartno == "on")
@@ -74,12 +87,20 @@ namespace FreeLayout
             {
                 if (category == "==Categogy==")
                 {
-                    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
-                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory);
+                    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);                                     
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno);
+                    if (_checkpartno == "on")
+                    {
+                        check_history_search.Checked = true;
+                    }
                 }
                 else
-                {
-                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory);
+                {                   
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno);
+                    if (_checkpartno == "on")
+                    {
+                        check_history_search.Checked = true;
+                    }
                 }
 
                 //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan_theongay", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
@@ -970,7 +991,7 @@ namespace FreeLayout
                                                 string inputDay2 = FCL_ETD;
                                                 DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
 
-                                                DateTime resultDay = GetSpecificDayInPreviousWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day
+                                                DateTime resultDay = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day  //ngay tuan dac biet
                                                 DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
                                                                                                                              
                                                 DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
@@ -1195,7 +1216,9 @@ namespace FreeLayout
                                                     DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
                                                     string inputDay2 = FCL_ETD;
                                                     DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
-                                                    DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    //DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    //===> test file 2 vi khac tuan phai lay truoc 1 tuan*** chu y test lai nguoc 1
+                                                    DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);
                                                     DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
 
                                                     //tinh ra ngay ETA =  Ngay ETD + transitime
@@ -1211,7 +1234,9 @@ namespace FreeLayout
                                                     string inputDay2 = LLC_ETD;
                                                     DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
 
-                                                    DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    //DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    //===> test file 2 vi khac tuan phai lay truoc 1 tuan*** chu y test lai nguoc 1
+                                                    DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day 
                                                     DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
 
                                                     //update len 2 gia tri len co so du lieu *****
@@ -1229,7 +1254,9 @@ namespace FreeLayout
                                                     DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
                                                     string inputDay2 = FCL_ETD;
                                                     DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
-                                                    DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    //DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
+                                                    //===> test file 2 vi khac tuan phai lay truoc 1 tuan*** chu y test lai nguoc 1
+                                                    DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay);
                                                     DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
 
                                                     //tinh ra ngay ETA =  Ngay ETD + transitime
@@ -1558,36 +1585,50 @@ namespace FreeLayout
         public void Download_Click(object sender, EventArgs e)
         {            
 
-            DataTable dt_dowload = new DataTable();
+            DataTable dt_dowload = new DataTable();            
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
-
-            string Category_ = "";
-            if (rblDP.Checked)
+            string _checkpartno = Request.Form["check_history_search"];
+            string category = dr_filter_Cate.SelectedValue;
+            string uploadno = dr_filter_namegroup.SelectedValue;
+            string statushistory = "off";
+            if (_checkpartno == "on")
             {
-                Category_ = rblDP.Text;
+                statushistory = "on";
             }
-            else if (rblDECT.Checked)
-            {
-                Category_ = rblDECT.Text;
-            }
-
+            //loc theo ngay
             if (_fromdate == "" || _fromdate == "")
+            {                
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
+                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
+            }
+            else
             {
-                //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
+                if (category == "==Categogy==")
+                {                                                       
+                    dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno);
+                    if (_checkpartno == "on")
+                    {
+                        check_history_search.Checked = true;
+                    }
+                }
+                else
+                {
+                    dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno);
+                    if (_checkpartno == "on")
+                    {
+                        check_history_search.Checked = true;
+                    }
+                }
+
+                //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan_theongay", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
+                //ngaychiid.Value = ngay + "-" + thang + "-" + nam;
             }
 
-            if (Category_ == "")
-            {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
-            }
 
-           
-           
 
             //dowload excel
-            dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, Category_);
+            //dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, Category_);
 
             //System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
             //Response.Clear();

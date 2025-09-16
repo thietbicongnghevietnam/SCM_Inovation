@@ -141,6 +141,24 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.RadioButton rblCAM;
 
         /// <summary>
+        /// check_history_search control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox check_history_search;
+
+        /// <summary>
+        /// dr_filter_namegroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_namegroup;
+
+        /// <summary>
         /// IDedit control.
         /// </summary>
         /// <remarks>
