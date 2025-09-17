@@ -163,6 +163,7 @@
     <Content Include="frmMaterialName.aspx" />
     <Content Include="frmMaterModel.aspx" />
     <Content Include="frmMaterVessel.aspx" />
+    <Content Include="frmUploadScraplist.aspx" />
     <Content Include="frmVanningDateSCM.aspx" />
     <Content Include="InventoryInfra.aspx" />
     <Content Include="Layout1.aspx" />
@@ -1884,6 +1885,13 @@
     </Compile>
     <Compile Include="frmMaterVessel.aspx.designer.cs">
       <DependentUpon>frmMaterVessel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmUploadScraplist.aspx.cs">
+      <DependentUpon>frmUploadScraplist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmUploadScraplist.aspx.designer.cs">
+      <DependentUpon>frmUploadScraplist.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmVanningDateSCM.aspx.cs">
       <DependentUpon>frmVanningDateSCM.aspx</DependentUpon>
