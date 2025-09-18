@@ -75,7 +75,7 @@
                             <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
                         </p>
                         <p style="margin-top: 0px; margin-left: 20px;">
-                            <input type="button" value="Import Plan" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />
+                            <input type="button" value="Import ScrapList" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />
 
                             &nbsp;&nbsp;&nbsp;<%--<input type="button" value="Import DECT" runat="server" onserverclick="ImportFromExcel1" class="btn btn-primary" />--%>
 
@@ -132,21 +132,21 @@
                     <%i++;%>
                     <tr role="row">
                         <td><%=i %></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><%=rows["SanctionId"].ToString()%></td>
+                        <td><%=rows["Material"].ToString()%></td>
+                        <td><%=rows["Qty"].ToString()%></td>
+                        <td><%=rows["QtyActual"].ToString()%></td>
+                        <td><%=rows["UnitPrice"].ToString()%></td>
+                        <td><%=rows["Amount"].ToString()%></td>
+                        <td><%=rows["CostCenter"].ToString()%></td>
+                        <td><%=rows["Reason"].ToString()%></td>
+                        <td><%=rows["Plant"].ToString()%></td>
+                        <td><%=rows["Sloc"].ToString()%></td>
+                        <td><%=rows["NameCost"].ToString()%></td>
+                        <td><%=rows["Pallet"].ToString()%></td>
+                        <td><%=rows["Barcode"].ToString()%></td>
+                        <td><%=rows["IssueOut"].ToString()%></td>
+                        <td><%=rows["CreatedDate"].ToString()%></td>
                         
                         <td>
                             
