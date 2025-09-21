@@ -485,7 +485,8 @@ namespace FreeLayout
                                                     {
                                                         //kiem tra ngay ATP co phai la tuan dau tien cua thang khong?? => neu la tuan dau lay luon lich trong tuan luon!   //Test 2 **** test file 2
                                                         bool isFirstWeekOfMonth = date_request1.Day <= 7;
-                                                        if (weekOfMonth_rq == 1)
+                                                        //so sanh them ngay ETD trong tuan co phu hop khong??? //tuan dau cua thang  ****tuan dau - thang 9
+                                                        if (weekOfMonth_rq == 1 && (int)day1 < (int)day2b)   // && (int)day1 < (int)day2b
                                                         //if (isFirstWeekOfMonth == true)
                                                         {
                                                             //lay lich FCL 
@@ -581,8 +582,8 @@ namespace FreeLayout
 
                                                         //kiem tra ngay ATP co phai la tuan dau tien cua thang khong?? => neu la tuan dau lay luon lich trong tuan luon!   //Test 2 **** test file 2
                                                         bool isFirstWeekOfMonth = date_request1.Day <= 7;
-
-                                                        if (weekOfMonth_rq == 1)  //tuan dau cua thang
+                                                        //&& (int)day2 < (int)day1b so sanh them ngay ETD trong tuan co phu hop khong???
+                                                        if (weekOfMonth_rq == 1 && (int)day2 < (int)day1b)  //tuan dau cua thang  ****tuan dau - thang 9
                                                         //if (isFirstWeekOfMonth == true)
                                                         {                                                           
                                                             //so sanh 2 ngay ex-factory xem ngay nao nho hon thi lay theo lich (tren da so sanh roi : ((int)day2 < (int)day1) )
