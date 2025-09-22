@@ -42,43 +42,35 @@ namespace FreeLayout
         {
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
-
             string bophan = dr_filter_Cate.SelectedValue;
-
-            //if (bophan == "==Categogy==")
-            //{
-            //    dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
-            //}
-            //else
-            //{
-            //    dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM_cate", System.Data.CommandType.StoredProcedure, category);
-            //}
-
+            string sacnctionid = filterSanction.Value;
             //loc theo ngay
-            //if (_fromdate == "" || _fromdate == "")
-            //{               
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
-            //    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
-            //}
-            //else
-            //{
-            //    if (category == "==Categogy==")
-            //    {
-            //        //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
-            //        dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
-            //    }
-            //    else
-            //    {
-            //        dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category);
-            //    }
+            if (_fromdate == "" || _todate == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
+                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
+            }
+            else
+            {
+                if (bophan == "==Section==")
+                {
+                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
+                }
+                else
+                {
+                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, sacnctionid, _fromdate, _todate);
+                }
 
-            //}
+            }
         }
 
 
         protected void ImportFromExcel(object sender, EventArgs e) 
         {
             DataTable dtcheck = new DataTable();
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
+
             if (FileUpload.HasFile) 
             {
                 if (FileUpload.PostedFile.ContentLength > 0) 
@@ -207,7 +199,9 @@ namespace FreeLayout
                                         {
                                             Material = dtExcelData.Rows[i][1].ToString();
                                             float.TryParse(dtExcelData.Rows[i][8].ToString(), out Qty);
-                                            QtyActual = 0;
+
+                                            float.TryParse(dtExcelData.Rows[i][8].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
+                                            //QtyActual = 0;
                                             float.TryParse(dtExcelData.Rows[i][7].ToString(), out UnitPrice);
                                             float.TryParse(dtExcelData.Rows[i][10].ToString(), out Amount);
                                             CostCenter = "";
@@ -272,7 +266,7 @@ namespace FreeLayout
                                     }
 
                                     Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Upload thành công!');", true);
-                                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList", System.Data.CommandType.StoredProcedure);
+                                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
 
                                 }
                             }
@@ -325,7 +319,70 @@ namespace FreeLayout
 
         protected void btnDownloadClick(object sender, EventArgs e)
         {
+            try
+            {
+                string fileName = "scrap list hang huy.xlsx";
+                string fileExtension = ".xlsx";
 
+                // Set Response.ContentType
+                Response.ContentType = GetContentType(fileExtension);
+
+                // Append header
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+                // Write the file to the Response
+                Response.TransmitFile(Server.MapPath("~/Textfile/" + fileName));
+                //Response.TransmitFile(Server.MapPath("~/Uploads/" + fileName));
+                Response.End();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private string GetContentType(string fileExtension)
+        {
+            if (string.IsNullOrEmpty(fileExtension))
+                return string.Empty;
+
+            string contentType = string.Empty;
+            switch (fileExtension)
+            {
+                case ".htm":
+                case ".html":
+                    contentType = "text/HTML";
+                    break;
+                case ".csv":
+                case ".txt":
+                    contentType = "text/plain";
+                    break;
+
+                case ".doc":
+                case ".rtf":
+                case ".docx":
+                    contentType = "Application/msword";
+                    break;
+
+                case ".xls":
+                case ".xlsx":
+                    contentType = "Application/x-msexcel";
+                    break;
+
+                case ".jpg":
+                case ".jpeg":
+                    contentType = "image/jpeg";
+                    break;
+
+                case ".gif":
+                    contentType = "image/GIF";
+                    break;
+
+                case ".pdf":
+                    contentType = "application/pdf";
+                    break;
+            }
+            return contentType;
         }
 
 

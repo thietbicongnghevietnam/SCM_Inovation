@@ -168,6 +168,42 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.TextBox IDedit;
 
         /// <summary>
+        /// IDexfactorydate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox IDexfactorydate;
+
+        /// <summary>
+        /// exFactoryDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl exFactoryDate;
+
+        /// <summary>
+        /// IDETDdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox IDETDdate;
+
+        /// <summary>
+        /// etdDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl etdDate;
+
+        /// <summary>
         /// Button1 control.
         /// </summary>
         /// <remarks>

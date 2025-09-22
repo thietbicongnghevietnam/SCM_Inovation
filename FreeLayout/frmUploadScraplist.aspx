@@ -57,6 +57,11 @@
                             <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
                         </div>
                     </div>
+
+                     <div style="float: left; padding-right: 10px;">
+                         <input type="text" id="filterSanction" runat="server" placeholder="Nhập Sacntion" style="height: 34px;" />
+                     </div>
+
                     <span style="padding-left: 20px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
 

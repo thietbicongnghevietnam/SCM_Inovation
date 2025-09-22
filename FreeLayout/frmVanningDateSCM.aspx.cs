@@ -221,6 +221,41 @@ namespace FreeLayout
             }
         }
 
+        //Updatethongtin
+        protected void Updatethongtin(object sender, EventArgs e) 
+        {
+            DataTable dt_update = new DataTable();
+            string Exfactory_date = Request.Form[exFactoryDate.UniqueID];
+            string ETD_date = Request.Form[etdDate.UniqueID];
+            string IDupdate = IDedit.Text.ToString();
+
+            try
+            {
+                if (Exfactory_date == "" || ETD_date == "")
+                {
+                    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay update!'); ", true);
+                }
+                else
+                {
+                    dt_update = DataConn.StoreFillDS("update_EXfactory_ETD", System.Data.CommandType.StoredProcedure, IDupdate, Exfactory_date, ETD_date);
+                    if (dt_update.Rows[0][0].ToString() == "1")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
+                        dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
+                    }
+                    else 
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Kiem tra lai thong tin!'); ", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         protected void btnRisK(object sender, EventArgs e) 
         {
             DataTable dt_tinhlichtau = new DataTable();

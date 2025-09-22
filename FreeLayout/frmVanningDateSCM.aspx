@@ -213,7 +213,7 @@
                         <td><%=rows["NameGroup"].ToString()%></td>
                         <td>
                             <!-- Cột trống này giữ nguyên -->
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["Exfactorydate"].ToString() %>','<%= rows["ETD"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                         </td>
 
                        
@@ -271,16 +271,36 @@
             <div class="modal-body">
                 
                 <div class="row">
-                    <div class="col-md-3">
+                    <%--<div class="col-md-3">--%>
                         <%--<label for="exampleInputEmail1">Can_combine</label>
                         <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
-                    </div>
-                    <div class="col-md-3">
+                    <%--</div>--%>
+                    <div class="col-md-12">
                         <label for="ID">ID</label>
                         <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                     </div>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3"></div>
+                   <%-- <div class="col-md-3"></div>--%>
+                   <%-- <div class="col-md-3"></div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                           <label for="exFactoryDate">Ex-factory Date</label>
+                           <asp:TextBox ID="IDexfactorydate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                     <div class="col-md-6">
+                            <label for="exFactoryDate"><i style="color:green">Update Ex-factory Date</i></label>
+                            <input type="date" id="exFactoryDate" class="form-control" name="exFactoryDate" runat="server" />
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label for="exETD">ETD Date</label>
+                       <asp:TextBox ID="IDETDdate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                </div>
+                     <div class="col-md-6">
+                         <label for="etdDate"><i style="color:green">Update ETD Date</i></label>
+                        <input type="date" id="etdDate" class="form-control" name="etdDate" runat="server" />
+                     </div>
                 </div>
 
                 <!-- Lặp lại thêm các dòng -->
@@ -289,7 +309,7 @@
             <%-- Modal footer --%>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-                <button type="button" runat="server" id="Button1"  class="btn btn-primary">  <%--onserverclick="Updatethongtin"--%>
+                <button type="button" runat="server" id="Button1"  class="btn btn-primary" onserverclick="Updatethongtin"> 
                     <i class="fas fa-download"></i>
                     Ghi lại
                 </button>
@@ -343,31 +363,18 @@
 
         });
 
-        function openEditModal3(id) {
+        function openEditModal3(id, exfactory_date, ETA_Date) {
             $("#IDedit").val(id);
-            //$("#idcate").val(cate);
-            //$("#idArea").val(Area);
-            //$("#idCountry").val(Country);
-            //$("#idDestCity").val(DestCity);
-            //$("#idDestCityName").val(DestCityName);
-            //$("#idPIC").val(PIC);
-            //$("#idConsignee").val(Consignee);
-            //$("#idFCL_Ex_factory").val(FCL_Ex_factory);
-            //$("#idFCL_ETD").val(FCL_ETD);
-            //$("#idFCL_ETA").val(FCL_ETA);
-            //$("#idLLC_Ex_factory").val(LLC_Ex_factory);
-            //$("#idLLC_ETD").val(LLC_ETD);
-            //$("#idLLC_ETA").val(LLC_ETA);
-            //$("#idAIR_Ex_factory").val(AIR_Ex_factory);
-            //$("#idAIR_ETD").val(AIR_ETD);
-            //$("#idAIR_ETA").val(AIR_ETA);
-            //$("#idSpecial_exfactory_date").val(Special_exfactory_date);
-            //$("#idSpecialETD_week").val(SpecialETD_week);
-            //$("#idSpecial_ETA_Date").val(Special_ETA_Date);
-            //$("#idCan_combine").val(Can_combine);
-
+            //$("#exFactoryDate").val(exfactory_date);
+            //$("#etdDate").val(ETA_Date);
+            // Ensure the date is in YYYY-MM-DD format
+            $("#IDexfactorydate").val(exfactory_date);
+            $("#IDETDdate").val(ETA_Date);
+            
             $('#myModal3').modal('show');
         }
+
+        
 
 
 
