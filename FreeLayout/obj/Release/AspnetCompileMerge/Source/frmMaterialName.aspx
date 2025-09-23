@@ -80,8 +80,8 @@
                             &nbsp;&nbsp;&nbsp;<%--<input type="button" value="Import DECT" runat="server" onserverclick="ImportFromExcel1" class="btn btn-primary" />--%>
 
   &nbsp;&nbsp;&nbsp;
-                     <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server">
-                         <%--onserverclick="btnDownloadClick" --%>
+                     <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server" onserverclick="btnDownloadClick">
+                         
                          <i class="fas fa-download"></i>Tải file mẫu upload
                      </button>
                         </p>

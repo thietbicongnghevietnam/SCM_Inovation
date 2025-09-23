@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>E:\SCM_Inovation_Deloy</_PublishTargetUrl>
-    <History>True|2025-09-04T08:54:48.6577316Z;True|2025-09-03T08:16:43.7385692+07:00;</History>
+    <History>True|2025-09-23T01:45:00.1135751Z;False|2025-09-23T08:40:54.7342280+07:00;False|2025-09-23T08:39:23.8691389+07:00;True|2025-09-04T15:54:48.6577316+07:00;True|2025-09-03T08:16:43.7385692+07:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -18,10 +18,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/15/2025 21:57:10</publishTime>
     </File>
     <File Include="bin/FreeLayout.dll">
-      <publishTime>09/10/2025 13:30:12</publishTime>
+      <publishTime>09/23/2025 08:44:09</publishTime>
     </File>
     <File Include="bin/FreeLayout.pdb">
-      <publishTime>09/10/2025 13:30:12</publishTime>
+      <publishTime>09/23/2025 08:44:09</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>08/16/2021 12:01:57</publishTime>
@@ -369,16 +369,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/03/2025 08:07:52</publishTime>
     </File>
     <File Include="frmMaterialName.aspx">
-      <publishTime>09/10/2025 08:06:14</publishTime>
+      <publishTime>09/22/2025 14:54:12</publishTime>
     </File>
     <File Include="frmMaterModel.aspx">
-      <publishTime>08/26/2025 08:05:07</publishTime>
+      <publishTime>09/16/2025 08:08:05</publishTime>
     </File>
     <File Include="frmMaterVessel.aspx">
-      <publishTime>08/26/2025 08:05:07</publishTime>
+      <publishTime>09/16/2025 10:34:26</publishTime>
+    </File>
+    <File Include="frmUploadScraplist.aspx">
+      <publishTime>09/22/2025 13:26:41</publishTime>
     </File>
     <File Include="frmVanningDateSCM.aspx">
-      <publishTime>09/10/2025 13:14:21</publishTime>
+      <publishTime>09/22/2025 09:37:05</publishTime>
     </File>
     <File Include="InventoryInfra.aspx">
       <publishTime>08/25/2025 08:08:27</publishTime>
@@ -5592,7 +5595,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2025 08:08:53</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>09/10/2025 13:30:15</publishTime>
+      <publishTime>09/23/2025 08:44:10</publishTime>
     </File>
     <File Include="QCC/DailyMaterial.aspx">
       <publishTime>08/25/2021 09:57:00</publishTime>
@@ -5646,7 +5649,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2025 08:08:27</publishTime>
     </File>
     <File Include="Textfile/mau upload WI.xlsx">
-      <publishTime>08/25/2025 08:08:27</publishTime>
+      <publishTime>09/23/2025 08:43:50</publishTime>
     </File>
     <File Include="video/gfp-astro-timelapse.mp4">
       <publishTime>08/25/2025 08:08:53</publishTime>

@@ -76,7 +76,8 @@
                                 AppendDataBoundItems="true"
                                 DataTextField="Description"
                                 DataValueField="Description"
-                                CssClass="custom-select custom-select-sm form-control form-control-sm" OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True" />
+                                CssClass="custom-select custom-select-sm form-control form-control-sm"  />
+                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
                         </div>
                     </div>
                     <span style="padding-left: 20px;"></span>
@@ -111,12 +112,14 @@
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnTinhLichTau"><i class="fa fa-calculator"></i>&nbsp; Calculate Date</button>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fas fa-compress"></i>&nbsp; Split Cont</button>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRisK"><i class="fas fa-exclamation-triangle"></i>&nbsp; Show Risky</button>
+                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSaveHistory"><i class="fas fa-save"></i>&nbsp; Save History</button>
                     <%--onserverclick="btnExport_Click"--%>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
 
                 </div>
                 <br />
                 <div class="col-sm-12">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -125,6 +128,22 @@
                     <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAM" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
+                    
+                    <div class="col-md-1" style="float: left"> <asp:CheckBox ID="check_history_search" runat="server" Text="" />&nbsp;Show History </div>
+                    <div class="col-md-1" style="float: left"> Select Upload No:  </div>
+                    <div class="col-md-2" style="float: left">                        
+                        <div class="form-group">
+                            <%-- <label for="Group">Filter Cate</label>--%>
+                            <asp:DropDownList ID="dr_filter_namegroup" runat="server"
+                                AppendDataBoundItems="true"
+                                DataTextField="NameGroup"
+                                DataValueField="NameGroup"
+                                CssClass="custom-select custom-select-sm form-control form-control-sm"  />
+                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,6 +175,7 @@
                             <th>ETA</th>
                             <th>Cancombine</th>
                             <th>Risky</th>
+                            <th>NameGroup</th>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -187,12 +207,13 @@
                         <td><%=rows["ETA"].ToString()%></td>
                         <td><%=rows["Cancombine"].ToString()%></td>
                         <%--<td><%=rows["Risky"].ToString()%></td>--%>
-                        <td style='<% if (rows["Risky"].ToString() == "Chu y LCL") { %>background-color: yellow; color: red; <% } %>'>
+                        <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
                             <%=rows["Risky"].ToString()%>
                         </td>
+                        <td><%=rows["NameGroup"].ToString()%></td>
                         <td>
                             <!-- Cột trống này giữ nguyên -->
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["Exfactorydate"].ToString() %>','<%= rows["ETD"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                         </td>
 
                        
@@ -222,6 +243,7 @@
                         <th>ETA</th>
                         <th>Cancombine</th>
                         <th>Risky</th>
+                        <th>NameGroup</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -249,16 +271,36 @@
             <div class="modal-body">
                 
                 <div class="row">
-                    <div class="col-md-3">
+                    <%--<div class="col-md-3">--%>
                         <%--<label for="exampleInputEmail1">Can_combine</label>
                         <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
-                    </div>
-                    <div class="col-md-3">
+                    <%--</div>--%>
+                    <div class="col-md-12">
                         <label for="ID">ID</label>
                         <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                     </div>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3"></div>
+                   <%-- <div class="col-md-3"></div>--%>
+                   <%-- <div class="col-md-3"></div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                           <label for="exFactoryDate">Ex-factory Date</label>
+                           <asp:TextBox ID="IDexfactorydate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                     <div class="col-md-6">
+                            <label for="exFactoryDate"><i style="color:green">Update Ex-factory Date</i></label>
+                            <input type="date" id="exFactoryDate" class="form-control" name="exFactoryDate" runat="server" />
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label for="exETD">ETD Date</label>
+                       <asp:TextBox ID="IDETDdate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                </div>
+                     <div class="col-md-6">
+                         <label for="etdDate"><i style="color:green">Update ETD Date</i></label>
+                        <input type="date" id="etdDate" class="form-control" name="etdDate" runat="server" />
+                     </div>
                 </div>
 
                 <!-- Lặp lại thêm các dòng -->
@@ -267,7 +309,7 @@
             <%-- Modal footer --%>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-                <button type="button" runat="server" id="Button1"  class="btn btn-primary">  <%--onserverclick="Updatethongtin"--%>
+                <button type="button" runat="server" id="Button1"  class="btn btn-primary" onserverclick="Updatethongtin"> 
                     <i class="fas fa-download"></i>
                     Ghi lại
                 </button>
@@ -307,7 +349,7 @@
 
         $(function () {
             $("#example").DataTable({
-                "responsive": false,
+                //"responsive": false,
                 "autoWidth": true,
                 //"order": [[7, "desc"]],
                 "scrollX": true,
@@ -321,31 +363,18 @@
 
         });
 
-        function openEditModal3(id) {
+        function openEditModal3(id, exfactory_date, ETA_Date) {
             $("#IDedit").val(id);
-            //$("#idcate").val(cate);
-            //$("#idArea").val(Area);
-            //$("#idCountry").val(Country);
-            //$("#idDestCity").val(DestCity);
-            //$("#idDestCityName").val(DestCityName);
-            //$("#idPIC").val(PIC);
-            //$("#idConsignee").val(Consignee);
-            //$("#idFCL_Ex_factory").val(FCL_Ex_factory);
-            //$("#idFCL_ETD").val(FCL_ETD);
-            //$("#idFCL_ETA").val(FCL_ETA);
-            //$("#idLLC_Ex_factory").val(LLC_Ex_factory);
-            //$("#idLLC_ETD").val(LLC_ETD);
-            //$("#idLLC_ETA").val(LLC_ETA);
-            //$("#idAIR_Ex_factory").val(AIR_Ex_factory);
-            //$("#idAIR_ETD").val(AIR_ETD);
-            //$("#idAIR_ETA").val(AIR_ETA);
-            //$("#idSpecial_exfactory_date").val(Special_exfactory_date);
-            //$("#idSpecialETD_week").val(SpecialETD_week);
-            //$("#idSpecial_ETA_Date").val(Special_ETA_Date);
-            //$("#idCan_combine").val(Can_combine);
-
+            //$("#exFactoryDate").val(exfactory_date);
+            //$("#etdDate").val(ETA_Date);
+            // Ensure the date is in YYYY-MM-DD format
+            $("#IDexfactorydate").val(exfactory_date);
+            $("#IDETDdate").val(ETA_Date);
+            
             $('#myModal3').modal('show');
         }
+
+        
 
 
 
