@@ -58,9 +58,9 @@
                         </div>
                     </div>
 
-                     <div style="float: left; padding-right: 10px;">
-                         <input type="text" id="filterSanction" runat="server" placeholder="Nhập Sacntion" style="height: 34px;" />
-                     </div>
+                    <div style="float: left; padding-right: 10px;">
+                        <input type="text" id="filterSanction" runat="server" placeholder="Nhập Sacntion" style="height: 34px;" />
+                    </div>
 
                     <span style="padding-left: 20px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
@@ -85,7 +85,7 @@
                             &nbsp;&nbsp;&nbsp;<%--<input type="button" value="Import DECT" runat="server" onserverclick="ImportFromExcel1" class="btn btn-primary" />--%>
 
  &nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server" onserverclick="btnDownloadClick" >  
+                    <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server" onserverclick="btnDownloadClick">
                         <i class="fas fa-download"></i>Tải file mẫu upload
                     </button>
                         </p>
@@ -96,15 +96,24 @@
 
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export</button>&nbsp;&nbsp;&nbsp;             
             <%--onserverclick="btnExport_Click"--%>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Template upload :
+<asp:RadioButton ID="rblOther" runat="server" GroupName="rblOptions" Text="Fixed Asset" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<asp:RadioButton ID="rblMCS" runat="server" GroupName="rblOptions" Text="MCS" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                     
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <%-- Checked="true"--%>
+
+                </div>
+
+                <div class="col-sm-12">
+                     
                 </div>
 
             </div>
         </div>
 
 
-                <div>
+        <div>
             <table id="example" class="table table-striped table-bordered" style="width: 100%">
                 <thead>
                     <tr>
@@ -152,33 +161,31 @@
                         <td><%=rows["Barcode"].ToString()%></td>
                         <td><%=rows["IssueOut"].ToString()%></td>
                         <td><%=rows["CreatedDate"].ToString()%></td>
-                        
-                        <td>
-                            
-                        </td>
+
+                        <td></td>
                     </tr>
                     <%} %>
                 </tbody>
                 <tfoot>
                     <tr>
-                         <th>ID</th>
-                         <th>SanctionId</th>
-                         <th>Material</th>
-                         <th>Qty</th>
-                         <th>QtyActual</th>
-                         <th>UnitPrice</th>
-                         <th>Amount</th>
-                         <th>CostCenter</th>
-                         <th>Reason</th>
-                         <th>Plant</th>
-                         <th>Sloc</th>
-                         <th>NameCost</th>
-                         <th>Pallet</th>
-                         <th>Barcode</th>
-                         <th>IssueOut</th>
-                         <th>CreatedDate</th>
+                        <th>ID</th>
+                        <th>SanctionId</th>
+                        <th>Material</th>
+                        <th>Qty</th>
+                        <th>QtyActual</th>
+                        <th>UnitPrice</th>
+                        <th>Amount</th>
+                        <th>CostCenter</th>
+                        <th>Reason</th>
+                        <th>Plant</th>
+                        <th>Sloc</th>
+                        <th>NameCost</th>
+                        <th>Pallet</th>
+                        <th>Barcode</th>
+                        <th>IssueOut</th>
+                        <th>CreatedDate</th>
 
-                         <th>Action</th>
+                        <th>Action</th>
                     </tr>
                 </tfoot>
             </table>
@@ -188,122 +195,122 @@
 
     </form>
 
-<script src="/plugins/jquery/jquery.min.js"></script>
-<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="/dist/js/adminlte.min.js"></script>
-<script src="/dist/js/demo.js"></script>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/dist/js/adminlte.min.js"></script>
+    <script src="/dist/js/demo.js"></script>
 
-<script>
+    <script>
 
-    //$(function () {
-    //    $("#btnExport_normal").click(function () {
-    //        $("#example1").table2excel({
-    //            filename: "Report_inspection_normal"
-    //        });
-    //    })
-    //});
-</script>
+        //$(function () {
+        //    $("#btnExport_normal").click(function () {
+        //        $("#example1").table2excel({
+        //            filename: "Report_inspection_normal"
+        //        });
+        //    })
+        //});
+    </script>
 
-<script type="text/javascript">  
-    $(document).ready(function () {
-        $('#IDedit').prop("readonly", true);
-        $('#txtid_del').prop("readonly", true);
-    });
-
-    $(function () {
-        $("#example").DataTable({
-            //"responsive": true,
-            "autoWidth": true,
-            scrollX: true,
-            //"order": [[7, "desc"]],
-            "pageLength": 50
-            //"ordering": true,
-            //"paging": true,
-            //"lengthChange": false,
-            //"searching": false,
-            //"info": true,                    
+    <script type="text/javascript">  
+        $(document).ready(function () {
+            $('#IDedit').prop("readonly", true);
+            $('#txtid_del').prop("readonly", true);
         });
 
-    });
+        $(function () {
+            $("#example").DataTable({
+                //"responsive": true,
+                "autoWidth": true,
+                scrollX: true,
+                //"order": [[7, "desc"]],
+                "pageLength": 50
+                //"ordering": true,
+                //"paging": true,
+                //"lengthChange": false,
+                //"searching": false,
+                //"info": true,                    
+            });
 
-    //function openEditModal3(id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H) {
-    //    $("#IDedit").val(id);
-    //    $("#idCAT").val(CAT);
-    //    $("#idConsignee_Refer_ATP").val(Consignee_Refer_ATP);
-    //    $("#idCountry").val(Country);
-    //    $("#idDest").val(Dest);
-    //    $("#idModel").val(Model);
-    //    $("#idStuffing_type").val(Stuffing_type);
-    //    $("#idModel_Vol").val(Model_Vol);
-    //    $("#idPcs_ctn").val(Pcs_ctn);
-    //    $("#idCTN_part").val(CTN_part);
-    //    $("#idCTN_vol").val(CTN_vol);
-    //    $("#idGross_weight").val(Gross_weight);
-    //    $("#idSeries").val(Series);
-    //    $("#idMaxQty_cont40H").val(MaxQty_cont40H);
-    //    $("#idMax_Qty_cont20F").val(Max_Qty_cont20F);
-    //    $("#idDIM_of_Carton_L").val(DIM_of_Carton_L);
-    //    $("#idDIM_of_Carton_W").val(DIM_of_Carton_W);
-    //    $("#idDIM_of_Carton_H").val(DIM_of_Carton_H);
-    //    $('#myModal3').modal('show');
-    //}
+        });
 
-    //function openEditModal4(id, model) {
-    //    $("#txtid_del").val(id);
-    //    $("#txModel_del").val(model);
+        //function openEditModal3(id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H) {
+        //    $("#IDedit").val(id);
+        //    $("#idCAT").val(CAT);
+        //    $("#idConsignee_Refer_ATP").val(Consignee_Refer_ATP);
+        //    $("#idCountry").val(Country);
+        //    $("#idDest").val(Dest);
+        //    $("#idModel").val(Model);
+        //    $("#idStuffing_type").val(Stuffing_type);
+        //    $("#idModel_Vol").val(Model_Vol);
+        //    $("#idPcs_ctn").val(Pcs_ctn);
+        //    $("#idCTN_part").val(CTN_part);
+        //    $("#idCTN_vol").val(CTN_vol);
+        //    $("#idGross_weight").val(Gross_weight);
+        //    $("#idSeries").val(Series);
+        //    $("#idMaxQty_cont40H").val(MaxQty_cont40H);
+        //    $("#idMax_Qty_cont20F").val(Max_Qty_cont20F);
+        //    $("#idDIM_of_Carton_L").val(DIM_of_Carton_L);
+        //    $("#idDIM_of_Carton_W").val(DIM_of_Carton_W);
+        //    $("#idDIM_of_Carton_H").val(DIM_of_Carton_H);
+        //    $('#myModal3').modal('show');
+        //}
 
-    //    $('#myModal4').modal('show');
-    //}
+        //function openEditModal4(id, model) {
+        //    $("#txtid_del").val(id);
+        //    $("#txModel_del").val(model);
 
-
-
-</script>
-
-<script src="/plugins/jquery/jquery-ui.js"></script>
-<script type="text/javascript">
-    //$(function () {
-    //    var onlyDate, today = new Date();
-    //    var dateNewFormat = '';
-
-    //    onlyDate = today.getDate();
-    //    if (onlyDate.toString().length == 2) {
-
-    //        dateNewFormat = onlyDate;
-    //    }
-    //    else {
-    //        dateNewFormat = '0' + onlyDate;
-    //    }
-
-    //    dateNewFormat = dateNewFormat + '-';
-
-    //    if (today.getMonth().length == 2) {
-
-    //        dateNewFormat += (today.getMonth() + 1);
-    //    }
-    //    else {
-    //        //dateNewFormat += '0' + (today.getMonth() + 1);
-    //        dateNewFormat += (today.getMonth() + 1);
-    //    }
-
-    //    dateNewFormat = dateNewFormat + '-' + today.getFullYear();
-    //    //dateNewFormat = today.getFullYear() + '-';
-
-    //    //$('#datepicker').val(dateNewFormat);
+        //    $('#myModal4').modal('show');
+        //}
 
 
-    //    //$("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 
-    //    $("#Date1").datepicker({ dateFormat: 'dd-mm-yy' });
-    //    $("#ngaychiid").datepicker({ dateFormat: 'dd-mm-yy' });
+    </script>
 
-    //});
+    <script src="/plugins/jquery/jquery-ui.js"></script>
+    <script type="text/javascript">
+        //$(function () {
+        //    var onlyDate, today = new Date();
+        //    var dateNewFormat = '';
+
+        //    onlyDate = today.getDate();
+        //    if (onlyDate.toString().length == 2) {
+
+        //        dateNewFormat = onlyDate;
+        //    }
+        //    else {
+        //        dateNewFormat = '0' + onlyDate;
+        //    }
+
+        //    dateNewFormat = dateNewFormat + '-';
+
+        //    if (today.getMonth().length == 2) {
+
+        //        dateNewFormat += (today.getMonth() + 1);
+        //    }
+        //    else {
+        //        //dateNewFormat += '0' + (today.getMonth() + 1);
+        //        dateNewFormat += (today.getMonth() + 1);
+        //    }
+
+        //    dateNewFormat = dateNewFormat + '-' + today.getFullYear();
+        //    //dateNewFormat = today.getFullYear() + '-';
+
+        //    //$('#datepicker').val(dateNewFormat);
 
 
-</script>
+        //    //$("#datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
+
+        //    $("#Date1").datepicker({ dateFormat: 'dd-mm-yy' });
+        //    $("#ngaychiid").datepicker({ dateFormat: 'dd-mm-yy' });
+
+        //});
+
+
+    </script>
 
 
 </body>
