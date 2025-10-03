@@ -96,15 +96,6 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.RadioButton rblDP;
 
         /// <summary>
-        /// rblPJ control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rblPJ;
-
-        /// <summary>
         /// rblMW control.
         /// </summary>
         /// <remarks>
@@ -121,15 +112,6 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rblSound;
-
-        /// <summary>
-        /// rblTV control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rblTV;
 
         /// <summary>
         /// rblCAM control.

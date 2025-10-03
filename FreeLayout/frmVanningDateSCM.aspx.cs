@@ -35,6 +35,10 @@ namespace FreeLayout
         {
             if (!IsPostBack)
             {
+                //Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                //ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
+               
+
                 dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                 //Date1.Value = DateTime.Now.ToString("dd-MM-yyyy");
                 //ngaychiid.Value = DateTime.Now.ToString("dd-MM-yyyy");
@@ -54,6 +58,8 @@ namespace FreeLayout
                 dr_filter_namegroup.DataBind();
                 //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;  // Dùng cho mục đích phi thương mại
 
+                Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
             }
 
         }
@@ -185,17 +191,21 @@ namespace FreeLayout
             {
                 Category_ = rblDECT.Text;
             }
+            else if (rblMW.Checked)
+            {
+                Category_ = rblMW.Text;
+            }
+            else if (rblSound.Checked)
+            {
+                Category_ = rblSound.Text;
+            }
 
             if (_fromdate == "" || _fromdate == "")
             {
                 //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
             }
-            else if (Category_ == "")
-            {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
-            }
-            else
+            else 
             {
                 try
                 {
@@ -206,7 +216,7 @@ namespace FreeLayout
                         Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Save data thanh cong!');", true);
                         dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, Category_);
                     }
-                    else 
+                    else
                     {
                         Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Khong ton tai ban ghi nao!'); ", true);
                     }
@@ -217,8 +227,16 @@ namespace FreeLayout
 
                     throw ex;
                 }
-
             }
+
+            //else if (Category_ == "")
+            //{
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
+            //}
+            //else
+            //{
+                
+            //}
         }
 
         //Updatethongtin

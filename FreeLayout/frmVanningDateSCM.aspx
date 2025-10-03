@@ -63,10 +63,10 @@
                 </div>
                 <div class="col-sm-12">
                     <div style="float: left;">
-                        Từ ngày:
+                        From Date:
                                      <%--<input type="text" id="datepicker" runat="server">--%>
                         <input type="date" id="Date1" name="date" runat="server">
-                        Đến ngày:                                    
+                        To Date:                                    
                                      <input type="date" id="ngaychiid" name="date" runat="server">
                     </div>
                     <div class="col-md-1" style="float: left">
@@ -89,7 +89,7 @@
                     <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
                     <div style="font: 14px Verdana; float: right">
                         <p style="margin-top: 0px; margin-left: 20px;">
-                            Chọn file để upload:
+                            Select file to upload:
         <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
                         </p>
                         <p style="margin-top: 0px; margin-left: 20px;">
@@ -122,11 +122,11 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
                     <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAM" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <%-- <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                    <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAMERA" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                      <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
