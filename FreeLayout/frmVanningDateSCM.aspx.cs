@@ -69,6 +69,9 @@ namespace FreeLayout
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
 
+            string _modelname = model_search.Value.ToString();
+            string _countryname = country_search.Value.ToString();
+
             string _checkpartno = Request.Form["check_history_search"];
 
             string category = dr_filter_Cate.SelectedValue;
@@ -94,7 +97,7 @@ namespace FreeLayout
                 if (category == "==Categogy==")
                 {
                     //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);                                     
-                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno);
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno, _modelname, _countryname);
                     if (_checkpartno == "on")
                     {
                         check_history_search.Checked = true;
@@ -2413,6 +2416,9 @@ namespace FreeLayout
                             int delay4_qty = 0;
                             int delay5_qty = 0;
 
+                            int pcs_cnt = 0;  //phuc vu viec tinh Groww weight
+                            int ctn_vol = 0;  //phuc vu viec tinh Groww weight
+
                             DateTime ngayATP;
 
 
@@ -2437,7 +2443,17 @@ namespace FreeLayout
                                         Country = dt_getmodel.Rows[0][1].ToString();            //lay tu mater model
                                         Destination = dt_getmodel.Rows[0][2].ToString();        //lay tu mater model
                                         Volume = dt_getmodel.Rows[0][3].ToString();             //lay tu mater model
-                                        Grossweight = dt_getmodel.Rows[0][4].ToString();       //lay tu mater model
+
+                                        pcs_cnt = Int32.Parse(dt_getmodel.Rows[0][6].ToString());
+                                        ctn_vol = Int32.Parse(dt_getmodel.Rows[0][7].ToString());
+
+                                        //Grossweight = dt_getmodel.Rows[0][4].ToString();       //lay tu mater model
+                                        //cong thuc duoc lay tu file test 4  => thay doi cong thuc
+                                        //Qty*product weight + Qty/pcs_ctnt*ctn_vol
+                                        float soluong_GW = (Quantity * float.Parse(dt_getmodel.Rows[0][4].ToString())) + (Quantity/ pcs_cnt* ctn_vol);
+
+                                        Grossweight = soluong_GW.ToString();                //tinh theo cong thu phan test 4
+
                                         Cancombine = dt_getmodel.Rows[0][5].ToString();         //link tu mater model sang mater vessel
                                     }
                                     else 

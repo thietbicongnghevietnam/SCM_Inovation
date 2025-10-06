@@ -55,7 +55,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-sm-12">
-                    <h3><b style="font-size: 30px;">SCM Vanning Date</b></h3>
+                    <h3><b style="font-size: 30px;">SHIPMENT PLAN BY DEMAND</b></h3>
                     <br />
                     <p style="color: blue;">
                         <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
@@ -132,8 +132,7 @@
                      <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
                     
                     <div class="col-md-1" style="float: left"> <asp:CheckBox ID="check_history_search" runat="server" Text="" />&nbsp;Show History </div>
-                    <div class="col-md-1" style="float: left"> Select Upload No:  </div>
-                    <div class="col-md-2" style="float: left">                        
+                    <div class="col-md-1" style="float: left"> Select Upload No:                                            
                         <div class="form-group">
                             <%-- <label for="Group">Filter Cate</label>--%>
                             <asp:DropDownList ID="dr_filter_namegroup" runat="server"
@@ -144,6 +143,8 @@
                             <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
                         </div>
                     </div>
+                    <div class="col-md-1" style="float: left"> Model:  <input type="text" id="model_search" runat="server" /> </div>
+                    <div class="col-md-1" style="float: left"> Country:  <input type="text" id="country_search" runat="server" /> </div>
                 </div>
             </div>
         </div>
@@ -155,7 +156,7 @@
                     <tr>
                         <tr role="row">
                             <th>ID</th>
-                            <th>Sheet</th>
+                            <%--<th>Sheet</th>--%>
                             <th>Cat</th>
                             <th>Shipmode</th>
                             <th>Consignee</th>
@@ -163,19 +164,22 @@
                             <th>Destination</th>
                             <th>Model</th>
                             <th>Quantity</th>
-                            <th>ATPdate</th>
-                            <th>Volume</th>
-                            <th>Grossweight</th>
-                            <th>TTLVolume</th>
-                            <th>TTLcont</th>
-                            <th>Qtycont</th>
-                            <th>TTLcont2</th>
-                            <th>Exfactorydate</th>
-                            <th>ETD</th>
-                            <th>ETA</th>
-                            <th>Cancombine</th>
-                            <th>Risky</th>
-                            <th>NameGroup</th>
+                           <%-- <th>ATPdate</th>--%>
+                             <th>ATP jit date</th>
+
+                            <%--<th>Volume</th>--%>
+                            <th>TTL gross weight (KG)</th>
+                            <th>TTL Volume (M3)</th>
+                           <%-- <th>TTLcont</th>--%>
+                           <%-- <th>Qtycont</th>--%>
+                            <%--<th>TTLcont2</th>--%>
+                            <th>ETD PSNV</th>
+                            <th>ETD Port</th>
+                            <th>ETA Port</th>
+                            <th>Remark</th>
+                            <%--<th>Cancombine</th>--%>
+                           <%-- <th>Risky</th>--%>
+                           <%-- <th>NameGroup</th>--%>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -187,33 +191,79 @@
                     <%i++;%>
                     <tr role="row">
                         <td><%=i %></td>
-                        <td><%=rows["Sheet"].ToString()%></td>
+                        <%--<td><%=rows["Sheet"].ToString()%></td>--%>
+
                         <td><%=rows["Cat"].ToString()%></td>
-                        <td><%=rows["Shipmode"].ToString()%></td>
+                        <%if (rows["Shipmode"].ToString() == "S") { 
+                            %>
+                        <td>SEA</td>
+                        <%} %>
+                        <%else if(rows["Shipmode"].ToString() == "A")
+                        { %>
+                        <td>AIR</td>
+                        <%} %>
+
                         <td><%=rows["Consignee"].ToString()%></td>
                         <td><%=rows["Country"].ToString()%></td>
                         <td><%=rows["Destination"].ToString()%></td>
                         <td><%=rows["Model"].ToString()%></td>
-                        <td><%=rows["Quantity"].ToString()%></td>
-                        <td><%=rows["ATPdate"].ToString()%></td>
-                        <td><%=rows["Volume"].ToString()%></td>
-                        <td><%=rows["Grossweight"].ToString()%></td>
-                        <td><%=rows["TTLVolume"].ToString()%></td>
-                        <td><%=rows["TTLcont"].ToString()%></td>
-                        <td><%=rows["Qtycont"].ToString()%></td>
-                        <td><%=rows["TTLcont2"].ToString()%></td>
-                        <td><%=rows["Exfactorydate"].ToString()%></td>
-                        <td><%=rows["ETD"].ToString()%></td>
-                        <td><%=rows["ETA"].ToString()%></td>
-                        <td><%=rows["Cancombine"].ToString()%></td>
-                        <%--<td><%=rows["Risky"].ToString()%></td>--%>
-                        <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
-                            <%=rows["Risky"].ToString()%>
+                        <%--<td><%=rows["Quantity"].ToString()%></td>--%>
+                        <td><%= String.Format("{0:N0}", Convert.ToInt32(rows["Quantity"])) %></td>
+                       <%-- <td><%=rows["ATPdate"].ToString()%></td>--%>
+                        <td><%= Convert.ToDateTime(rows["ATPdate"]).ToString("dd/MM/yyyy") %></td>
+                        
+                        <%--<td><%=rows["Volume"].ToString()%></td>--%>
+                        <td>
+                            <%--<%=rows["Grossweight"].ToString()%>--%>
+                            <%= String.Format("{0:N2}", Convert.ToDouble(rows["Grossweight"])) %>
                         </td>
-                        <td><%=rows["NameGroup"].ToString()%></td>
+                       <%-- <td><%=rows["TTLVolume"].ToString()%></td>--%>
+                        <td><%= String.Format("{0:N2}", Convert.ToDouble(rows["TTLVolume"])) %></td>
+                       <%-- <td><%=rows["TTLcont"].ToString()%></td>--%>
+                       <%-- <td><%=rows["Qtycont"].ToString()%></td>--%>
+                        <%--<td><%=rows["TTLcont2"].ToString()%></td>--%>
+                        <td>
+                            <%--<%=rows["Exfactorydate"].ToString()%>--%>
+                            <%= (rows["Exfactorydate"] != DBNull.Value && rows["Exfactorydate"] != null && !string.IsNullOrEmpty(rows["Exfactorydate"].ToString())) 
+    ? Convert.ToDateTime(rows["Exfactorydate"]).ToString("dd/MM/yyyy") 
+    : ""  %>
+                        </td>
+                        <td>
+                           <%-- <%=rows["ETD"].ToString()%>--%>
+                             <%= (rows["ETD"] != DBNull.Value && rows["ETD"] != null && !string.IsNullOrEmpty(rows["ETD"].ToString())) 
+    ? Convert.ToDateTime(rows["ETD"]).ToString("dd/MM/yyyy") 
+    : "" %>
+                        </td>
+                        <td>
+                            <%--<%=rows["ETA"].ToString()%>--%>
+                            <%= (rows["ETA"] != DBNull.Value && rows["ETA"] != null && !string.IsNullOrEmpty(rows["ETA"].ToString())) 
+    ? Convert.ToDateTime(rows["ETA"]).ToString("dd/MM/yyyy") 
+    : "" %>
+                        </td>
+                        <td></td>
+                        <%--<td><%=rows["Cancombine"].ToString()%></td>--%>
+                        <%--<td><%=rows["Risky"].ToString()%></td>--%>
+                       <%-- <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
+                            <%=rows["Risky"].ToString()%>
+                        </td>--%>
+                        <%--<td><%=rows["NameGroup"].ToString()%></td>--%>
                         <td>
                             <!-- Cột trống này giữ nguyên -->
                             <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["Exfactorydate"].ToString() %>','<%= rows["ETD"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" class="btn btn-info btn-sm" title="detail item" onclick="openEditModal4('<%= rows["ID"].ToString() %>',
+                                '<%= rows["Exfactorydate"].ToString() %>',
+                                '<%= rows["ETD"].ToString() %>',
+                                '<%= rows["Consignee"].ToString() %>',
+                                '<%= rows["Country"].ToString() %>',
+                                '<%= rows["Destination"].ToString() %>',
+                                '<%= rows["Model"].ToString() %>',
+                                '<%= rows["Quantity"].ToString() %>',
+                                '<%= rows["TTLcont"].ToString() %>',
+                                '<%= rows["Qtycont"].ToString() %>',
+                                '<%= rows["TTLcont2"].ToString() %>',
+                                '<%= rows["Cancombine"].ToString() %>',
+                                '<%= rows["Risky"].ToString() %>',
+                                )" ><i class="fas fa-info-circle"></i>Detail</a>
                         </td>
 
                        
@@ -222,29 +272,32 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>ID</th>
-                        <th>Sheet</th>
-                        <th>Cat</th>
-                        <th>Shipmode</th>
-                        <th>Consignee</th>
-                        <th>Country</th>
-                        <th>Destination</th>
-                        <th>Model</th>
-                        <th>Quantity</th>
-                        <th>ATPdate</th>
-                        <th>Volume</th>
-                        <th>Grossweight</th>
-                        <th>TTLVolume</th>
-                        <th>TTLcont</th>
-                        <th>Qtycont</th>
-                        <th>TTLcont2</th>
-                        <th>Exfactorydate</th>
-                        <th>ETD</th>
-                        <th>ETA</th>
-                        <th>Cancombine</th>
-                        <th>Risky</th>
-                        <th>NameGroup</th>
-                        <th>Action</th>
+                         <th>ID</th>
+                         <%--<th>Sheet</th>--%>
+                         <th>Cat</th>
+                         <th>Shipmode</th>
+                         <th>Consignee</th>
+                         <th>Country</th>
+                         <th>Destination</th>
+                         <th>Model</th>
+                         <th>Quantity</th>
+                        <%-- <th>ATPdate</th>--%>
+                          <th>ATP jit date</th>
+
+                         <%--<th>Volume</th>--%>
+                         <th>TTL gross weight (KG)</th>
+                         <th>TTL Volume (M3)</th>
+                        <%-- <th>TTLcont</th>--%>
+                        <%-- <th>Qtycont</th>--%>
+                         <%--<th>TTLcont2</th>--%>
+                         <th>ETD PSNV</th>
+                         <th>ETD Port</th>
+                         <th>ETA Port</th>
+                         <th>Remark</th>
+                         <%--<th>Cancombine</th>--%>
+                        <%-- <th>Risky</th>--%>
+                        <%-- <th>NameGroup</th>--%>
+                         <th>Action</th>
                     </tr>
                 </tfoot>
             </table>
@@ -318,6 +371,113 @@
     </div>
 </div>
 
+                <div class="modal" id="myModal4">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div>
+                        <h4 class="modal-title" id="headerTag12" style="float: left">Thông tin chi tiết</h4>
+                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-body">
+                
+                <div class="row">
+                    <%--<div class="col-md-3">--%>
+                        <%--<label for="exampleInputEmail1">Can_combine</label>
+                        <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-12">
+                        <label for="ID">ID</label>
+                        <asp:TextBox ID="IDedit2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>--%>
+                   <%-- <div class="col-md-3"></div>--%>
+                   <%-- <div class="col-md-3"></div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                           <label for="exFactoryDate">Ex-factory Date</label>
+                           <asp:TextBox ID="IDexfactorydate2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                     <div class="col-md-6">
+                            <label for="exFactoryDate">ETD Date</label>
+                            <asp:TextBox ID="IDETDdate2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label for="exETD">Consignee</label>
+                       <asp:TextBox ID="idConsignee" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                </div>
+                     <div class="col-md-6">
+                         <label for="etdDate">Country</label>
+                        <asp:TextBox ID="idCountry" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label for="exETD">Destination</label>
+                       <asp:TextBox ID="idDestination" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                </div>
+                     <div class="col-md-6">
+                         <label for="etdDate">Model</label>
+                        <asp:TextBox ID="idModel" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label for="exETD">Quantity</label>
+                       <asp:TextBox ID="idQuantity" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                </div>
+                     <div class="col-md-6">
+                         <label for="etdDate">TTLcont</label>
+                        <asp:TextBox ID="idTTLcont" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                       <label for="exETD">Qtycont</label>
+                       <asp:TextBox ID="idQtycont" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                </div>
+                     <div class="col-md-6">
+                         <label for="etdDate">TTLcont2</label>
+                        <asp:TextBox ID="idTTLcont2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                     </div>
+                </div>
+                 <div class="row">
+                     <div class="col-md-6">
+                        <label for="exETD">Cancombine</label>
+                        <asp:TextBox ID="idCancombine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                 </div>
+                      <div class="col-md-6">
+                          <label for="etdDate">Risky</label>
+                         <asp:TextBox ID="idRisky" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                      </div>
+                 </div>
+
+                <!-- Lặp lại thêm các dòng -->
+            </div>
+
+            <%-- Modal footer --%>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+               <%-- <button type="button" runat="server" id="Button2"  class="btn btn-primary" onserverclick="Updatethongtin"> 
+                    <i class="fas fa-download"></i>
+                    Ghi lại
+                </button>--%>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     </form>
 
@@ -345,6 +505,8 @@
     <script type="text/javascript">  
         $(document).ready(function () {
             $('#IDedit').prop("readonly", true);
+            $('#example thead th').slice(0, 9).css('background-color', '#FFDAB9');
+            $('#example thead th').slice(9).css('background-color', '#B0E0E6');
         });
 
         $(function () {
@@ -372,6 +534,27 @@
             $("#IDETDdate").val(ETA_Date);
             
             $('#myModal3').modal('show');
+        }
+
+        function openEditModal4(id, exfactory_date, ETD_Date, Consignee, Country, Destination, Model, Quantity, TTLcont, Qtycont, TTLcont2, Cancombine, Risky) {
+            /*$("#IDedit2").val(id);*/
+            //$("#exFactoryDate").val(exfactory_date);
+            //$("#etdDate").val(ETA_Date);
+            // Ensure the date is in YYYY-MM-DD format
+            $("#IDexfactorydate2").val(exfactory_date);
+            $("#IDETDdate2").val(ETD_Date);
+            $("#idConsignee").val(Consignee);
+            $("#idCountry").val(Country);
+            $("#idDestination").val(Destination);
+            $("#idModel").val(Model);
+            $("#idQuantity").val(Quantity);
+            $("#idTTLcont").val(TTLcont);
+            $("#idQtycont").val(Qtycont);
+            $("#idTTLcont2").val(TTLcont2);
+            $("#idCancombine").val(Cancombine);
+            $("#idRisky").val(Risky);
+
+            $('#myModal4').modal('show');
         }
 
         
