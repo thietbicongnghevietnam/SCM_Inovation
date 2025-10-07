@@ -105,7 +105,7 @@ namespace FreeLayout
                 }
                 else
                 {                   
-                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno);
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno, _modelname, _countryname);
                     if (_checkpartno == "on")
                     {
                         check_history_search.Checked = true;
@@ -325,6 +325,156 @@ namespace FreeLayout
 
                             //update thong tin theo rule tren sql
                             dt_get_infor = DataConn.StoreFillDS("get_infor_cal_risk", System.Data.CommandType.StoredProcedure, Destination, Exfactorydate, cancombine, ID_lichtau, Category_);
+                        }
+
+                        //load lai du lieu
+                        dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate", System.Data.CommandType.StoredProcedure, _fromdate, _todate, Category_);
+                    }
+                    else if (Category_ == "DP")
+                    {
+
+                    }
+                    else if (Category_ == "MW")
+                    {
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+            }
+
+        }
+
+        // Kiểm tra value2 có thuộc tuần trước so với value1 không  ==> de tinh ra cot Remark
+        private bool IsDateInPreviousWeek(DateTime value2, DateTime value1)
+        {
+            // Tính ngày đầu tuần (ví dụ bắt đầu tuần là thứ 2) của value1
+            // Nếu bạn muốn tuần bắt đầu từ Chủ nhật, điều chỉnh accordingly.
+            DayOfWeek firstDayOfWeek = DayOfWeek.Monday;
+
+            // Tìm ngày đầu tuần của value1
+            int diff = (7 + (value1.DayOfWeek - firstDayOfWeek)) % 7;
+            DateTime startOfWeekValue1 = value1.AddDays(-diff).Date;
+
+            // Tuần trước là khoảng 7 ngày trước đó
+            DateTime startOfPreviousWeek = startOfWeekValue1.AddDays(-7);
+            DateTime endOfPreviousWeek = startOfWeekValue1.AddDays(-1);
+
+            // Kiểm tra value2 nằm trong tuần trước không
+            return value2.Date >= startOfPreviousWeek && value2.Date <= endOfPreviousWeek;
+        }
+
+        protected void btnRemark(object sender, EventArgs e) 
+        {
+            DataTable dt_remark = new DataTable();
+            DataTable dt_check_specialnote = new DataTable();
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
+
+            string Category_ = "";
+            if (rblDP.Checked)
+            {
+                Category_ = rblDP.Text;
+            }
+            else if (rblDECT.Checked)
+            {
+                Category_ = rblDECT.Text;
+            }
+
+            if (_fromdate == "" || _todate == "")
+            {
+                //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh remark!'); ", true);
+            }
+            else if (Category_ == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
+            }
+            else 
+            {
+                DataTable dt_update = new DataTable();
+                dt_remark = DataConn.StoreFillDS("Calculator_lichtau", System.Data.CommandType.StoredProcedure, Category_, _fromdate, _todate);
+                try
+                {
+                    if (Category_ == "DECT")
+                    {
+                        for (int i = 0; i < dt_remark.Rows.Count; i++)
+                        {
+                            //lay ngay ETD PSNV = ngay ex-factory date
+                            string Exfactorydate = dt_remark.Rows[i]["Exfactorydate"].ToString(); //lay ngay exfactory date
+                            //lay ngay ATP jit date
+                            string ATPdate = dt_remark.Rows[i]["ATPdate"].ToString();
+
+                            //lay ngay ETD 
+                            string ETDdate = dt_remark.Rows[i]["ETD"].ToString();
+
+                            //****pending
+                            //float TTLvol = 0;
+                            string ID_lichtau = dt_remark.Rows[i]["ID"].ToString();
+                            string modelname = dt_remark.Rows[i]["Model"].ToString();
+                            string Country = dt_remark.Rows[i]["Country"].ToString();
+                            //string cancombine = dt_remark.Rows[i]["Cancombine"].ToString();
+                            string Destination = dt_remark.Rows[i]["Destination"].ToString();
+
+                            DateTime date_exfactory = DateTime.ParseExact(Exfactorydate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                            DateTime date_ATP = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+
+                            //check hai ngay tren co khac tuan hay khong?
+                            //tuan exfactory date co som hon ATP hay khong?
+                            ////Nếu ngày ETD PSNV trước tuần ATP jit date --> Show lý do
+                            bool isValue2InPreviousWeek = IsDateInPreviousWeek(date_exfactory, date_ATP);
+
+                            //Response.Write($"Giá trị 2 có thuộc tuần trước so với giá trị 1? {isValue2InPreviousWeek}");
+
+                            string note_remark = "";
+
+                            if (isValue2InPreviousWeek == true)
+                            {
+                                //kiem tra xem co special note hay khong???
+                                dt_check_specialnote = DataConn.StoreFillDS("Check_special_note_remark", System.Data.CommandType.StoredProcedure, Category_, modelname, Country, Destination);
+                                if (dt_check_specialnote.Rows[0][0].ToString() != "0")
+                                {
+                                    //ton tai trong mater
+                                    string Special_exfactory_date = dt_check_specialnote.Rows[0][1].ToString();     //theo ngày xuất hàng muộn nhất của tháng
+                                    string SpecialETD_week = dt_check_specialnote.Rows[0][2].ToString();            //theo tuan
+                                    string Special_ETA_Date = dt_check_specialnote.Rows[0][3].ToString();           //theo ngay ETA
+                                    //Nếu ngày ETD PSNV(ex-factorydate)  trước tuần ATP jit date --> Show lý do
+
+                                    if (Special_exfactory_date != "")
+                                    {
+                                        note_remark = "Customer request special exfactory date : " + Special_exfactory_date;
+                                    }
+                                    else if (SpecialETD_week != "")
+                                    {
+                                        note_remark = "Customer request special ETD week : " + SpecialETD_week + "/Date :" + ETDdate.Substring(0, 9);
+                                    }
+                                    else if (Special_ETA_Date != "")
+                                    {
+                                        note_remark = "Customer request ETA date by : " + Special_ETA_Date;
+                                    }
+                                    else
+                                    {
+                                        //truong hop khong co sepecial note  => Show rõ "Carrier request early cut-off time"
+                                        note_remark = "Carrier request early cut-off time (no special note)";
+                                    }
+                                    //update remark  theo rule tren sql
+                                    dt_update = DataConn.StoreFillDS("update_infor_remark", System.Data.CommandType.StoredProcedure, note_remark, ID_lichtau);
+
+                                }
+                                else
+                                {
+                                    //khong ton tai trong mater
+                                    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, du lieu model khong co trong mater!!!'); ", true);
+                                    //nothing
+                                }
+                            }
+                            else 
+                            {
+                                //nothing
+                            }                                                                                                                           
                         }
 
                         //load lai du lieu

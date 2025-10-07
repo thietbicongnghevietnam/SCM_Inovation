@@ -112,6 +112,7 @@
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnTinhLichTau"><i class="fa fa-calculator"></i>&nbsp; Calculate Date</button>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fas fa-compress"></i>&nbsp; Split Cont</button>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRisK"><i class="fas fa-exclamation-triangle"></i>&nbsp; Show Risky</button>
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRemark"><i class="fas fa-comment"></i>&nbsp; Show Remark</button>
                      <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSaveHistory"><i class="fas fa-save"></i>&nbsp; Save History</button>
                     <%--onserverclick="btnExport_Click"--%>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
@@ -240,7 +241,7 @@
     ? Convert.ToDateTime(rows["ETA"]).ToString("dd/MM/yyyy") 
     : "" %>
                         </td>
-                        <td></td>
+                        <td><%=rows["Remark"].ToString()%></td>
                         <%--<td><%=rows["Cancombine"].ToString()%></td>--%>
                         <%--<td><%=rows["Risky"].ToString()%></td>--%>
                        <%-- <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
