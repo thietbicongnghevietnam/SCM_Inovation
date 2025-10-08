@@ -83,7 +83,7 @@
                     <span style="padding-left: 20px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
 
-                        <i class="fa fa-fw fa-lg fa-search"></i>Lọc</button>
+                        <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
 
                     <!-- import file excel -->
                     <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
@@ -100,7 +100,7 @@
          &nbsp;&nbsp;&nbsp;
                             <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server">
                                 <%--onserverclick="btnDownloadClick" --%>
-                                <i class="fas fa-download"></i>Tải file mẫu upload
+                                <i class="fas fa-download"></i>Download template
                             </button>
                         </p>
                         <p>

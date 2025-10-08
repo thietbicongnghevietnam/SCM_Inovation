@@ -54,11 +54,14 @@ namespace FreeLayout
             string DIM_of_Carton_L = DIM_of_Carton_Lid.Text;
             string DIM_of_Carton_W = DIM_of_Carton_Wid.Text;
             string DIM_of_Carton_H = DIM_of_Carton_Hid.Text;
+
+            string CTNweight = CTNweightid.Text;
+
             //string Category = cateid.Text;
             //string userid = Session["username"].ToString();
 
             DataTable dtinsert = new DataTable();
-            dtinsert = DataConn.StoreFillDS("Insert_mater_ModelSCM", System.Data.CommandType.StoredProcedure, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
+            dtinsert = DataConn.StoreFillDS("Insert_mater_ModelSCM", System.Data.CommandType.StoredProcedure, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H, CTNweight);
             if (dtinsert.Rows[0][0].ToString() == "1")
             {
                 dt_plan = DataConn.StoreFillDS("Select_Mater_ModelSCM", System.Data.CommandType.StoredProcedure);
@@ -90,11 +93,13 @@ namespace FreeLayout
             string DIM_of_Carton_L = idDIM_of_Carton_L.Text;
             string DIM_of_Carton_W = idDIM_of_Carton_W.Text;
             string DIM_of_Carton_H = idDIM_of_Carton_H.Text;
-            
+
+            string CTNweight = idCTNweight.Text;
+
             //string userid = Session["username"].ToString();
 
             DataTable dtupdate = new DataTable();
-            dtupdate = DataConn.StoreFillDS("Update_mater_ModelSCM", System.Data.CommandType.StoredProcedure, id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
+            dtupdate = DataConn.StoreFillDS("Update_mater_ModelSCM", System.Data.CommandType.StoredProcedure, id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H, CTNweight);
 
             if (dtupdate.Rows[0][0].ToString() == "1")
             {
@@ -236,6 +241,9 @@ namespace FreeLayout
                         dt_new.Columns.Add("CTN_part", typeof(String));
                         dt_new.Columns.Add("CTN_vol", typeof(Int32));
                         dt_new.Columns.Add("Gross_weight", typeof(float));
+                        
+                        dt_new.Columns.Add("CTNweight", typeof(float));
+
                         dt_new.Columns.Add("Series", typeof(String));
                         dt_new.Columns.Add("MaxQty_cont40H", typeof(Int32));
                         dt_new.Columns.Add("Max_Qty_cont20F", typeof(Int32));
@@ -276,6 +284,9 @@ namespace FreeLayout
                             string CTN_part = "";
                             int CTN_vol = 0;
                             float Gross_weight = 0;
+
+                            float CTNweight = 0;
+                            
                             string Series = "";
                             int MaxQty_cont40H = 0;
                             int Max_Qty_cont20F = 0;
@@ -302,6 +313,10 @@ namespace FreeLayout
                                 //CTN_vol = Int32.Parse(dtExcelData.Rows[i]["CTN_vol"].ToString());
                                 //Gross_weight = float.Parse(dtExcelData.Rows[i]["Gross_weight"].ToString());
                                 float.TryParse(dtExcelData.Rows[i]["Gross_weight"].ToString(), out Gross_weight);
+
+                                float.TryParse(dtExcelData.Rows[i]["CTNweight"].ToString(), out CTNweight);
+
+
                                 Gross_weight = (float)Math.Round(Gross_weight, 3);
                                 Series = dtExcelData.Rows[i]["Series"].ToString();
 
@@ -326,7 +341,7 @@ namespace FreeLayout
                                 else 
                                 {
                                     //insert model moi
-                                    dt_new.Rows.Add(i, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
+                                    dt_new.Rows.Add(i, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, CTNweight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H);
                                 }
                                 // Dừng vòng lặp khi các cột cần kiểm tra (cột 0, 2, 3) đều rỗng
                                 if (dtExcelData.Rows[i][0].ToString() == "" && dtExcelData.Rows[i][1].ToString() == "" && dtExcelData.Rows[i][2].ToString() == "")

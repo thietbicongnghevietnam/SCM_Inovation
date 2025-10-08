@@ -258,6 +258,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.TextBox DIM_of_Carton_Hid;
 
         /// <summary>
+        /// CTNweightid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox CTNweightid;
+
+        /// <summary>
         /// idCAT control.
         /// </summary>
         /// <remarks>
@@ -409,6 +418,15 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox idDIM_of_Carton_H;
+
+        /// <summary>
+        /// idCTNweight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idCTNweight;
 
         /// <summary>
         /// IDedit control.
