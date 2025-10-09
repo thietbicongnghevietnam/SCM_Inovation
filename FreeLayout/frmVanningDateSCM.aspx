@@ -61,6 +61,37 @@
                         <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
                     </p>
                 </div>
+
+                 <div class="col-sm-12">
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+     <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <%-- <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAMERA" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
+     
+     <div class="col-md-1" style="float: left"> <asp:CheckBox ID="check_history_search" runat="server" Text="" />&nbsp;Show History </div>
+     <div class="col-md-1" style="float: left"> Select Upload No:                                            
+         <div class="form-group">
+             <%-- <label for="Group">Filter Cate</label>--%>
+             <asp:DropDownList ID="dr_filter_namegroup" runat="server"
+                 AppendDataBoundItems="true"
+                 DataTextField="NameGroup"
+                 DataValueField="NameGroup"
+                 CssClass="custom-select custom-select-sm form-control form-control-sm"  />
+             <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+         </div>
+     </div>
+     <div class="col-md-1" style="float: left"> Model:  <input type="text" id="model_search" runat="server" /> </div>
+     <div class="col-md-1" style="float: left"> Country:  <input type="text" id="country_search" runat="server" /> </div>
+ </div>
+
+
                 <div class="col-sm-12">
                     <div style="float: left;">
                         From Date:
@@ -118,35 +149,11 @@
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
 
                 </div>
-                <br />
-                <div class="col-sm-12">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                    <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   <%-- <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                    <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAMERA" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                     <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
-                    
-                    <div class="col-md-1" style="float: left"> <asp:CheckBox ID="check_history_search" runat="server" Text="" />&nbsp;Show History </div>
-                    <div class="col-md-1" style="float: left"> Select Upload No:                                            
-                        <div class="form-group">
-                            <%-- <label for="Group">Filter Cate</label>--%>
-                            <asp:DropDownList ID="dr_filter_namegroup" runat="server"
-                                AppendDataBoundItems="true"
-                                DataTextField="NameGroup"
-                                DataValueField="NameGroup"
-                                CssClass="custom-select custom-select-sm form-control form-control-sm"  />
-                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
-                        </div>
-                    </div>
-                    <div class="col-md-1" style="float: left"> Model:  <input type="text" id="model_search" runat="server" /> </div>
-                    <div class="col-md-1" style="float: left"> Country:  <input type="text" id="country_search" runat="server" /> </div>
-                </div>
+                <br />
+
+               
+
             </div>
         </div>
 
