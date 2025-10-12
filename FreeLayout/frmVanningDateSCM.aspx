@@ -250,7 +250,7 @@
                 <thead>
                     <tr>
                         <tr role="row">
-                            <th>ID</th>
+                            <th>No</th>
                             <%--<th>Sheet</th>--%>
                             <th>Cat</th>
                             <th>Shipmode</th>
@@ -368,7 +368,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
                         <%--<th>Sheet</th>--%>
                         <th>Cat</th>
                         <th>Shipmode</th>
