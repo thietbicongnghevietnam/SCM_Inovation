@@ -198,10 +198,10 @@ namespace FreeLayout
             {
                 Category_ = rblMW.Text;
             }
-            else if (rblSound.Checked)
-            {
-                Category_ = rblSound.Text;
-            }
+            //else if (rblSound.Checked)
+            //{
+            //    Category_ = rblSound.Text;
+            //}
 
             if (_fromdate == "" || _fromdate == "")
             {

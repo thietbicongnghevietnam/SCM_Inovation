@@ -21,10 +21,56 @@
     <script src="/dist/Infra/jquery-3.7.0.js"></script>
     <script src="/dist/Infra/jquery.dataTables.min.js"></script>
     <script src="/dist/Infra/dataTables.bootstrap4.min.js"></script>
-
-
-
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
+
+    <style>
+        .navbar-nav {
+    display: flex;
+    gap: 15px; /* khoảng cách giữa các ô */
+}
+
+    .navbar-nav .nav-item .nav-link {
+        position: relative;
+        padding: 8px 12px;
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        border: 2px solid transparent; /* chuẩn bị viền */
+        border-radius: 6px;
+        transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            color: #FFD700; /* vàng nổi bật khi hover */
+            border-color: #FFD700; /* viền vàng khi hover */
+        }
+
+        /* Hiệu ứng gạch chân chuyển động */
+        .navbar-nav .nav-item .nav-link::after {
+            content: "";
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            bottom: 2px;
+            height: 2px;
+            background: #FFD700;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+    /* Icon bars giữ nguyên màu trắng */
+    .navbar-nav .nav-item:first-child .nav-link {
+        border: none;
+        padding: 8px 10px;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -33,23 +79,23 @@
 
         <div>
             <nav class="navbar navbar-expand navbar-dark bg-primary">
-                <!-- Left navbar links -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="/frmVanningDateSCM.aspx" class="nav-link"><span style="font-size: 22px;">Home</span></a>
+                        <a href="/frmVanningDateSCM.aspx" class="nav-link">Home
+                        </a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <%--<a href="/InventoryInfra.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel schedule</span></a>--%>
-                        <a href="/frmMaterVessel.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel</span></a>
+                        <a href="/frmMaterVessel.aspx" target="_blank" class="nav-link">Master vessel
+                        </a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="/frmMaterModel.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master model</span></a>
+                        <a href="/frmMaterModel.aspx" target="_blank" class="nav-link">Master model
+                        </a>
                     </li>
                 </ul>
-
             </nav>
         </div>
 
@@ -168,12 +214,15 @@
 
                         <td><%=rows["Model"].ToString()%></td>
                         <td><%=rows["Stuffing_type"].ToString()%></td>
-                        <td><%=rows["Model_Vol"].ToString()%></td>
+                        <%--<td><%=rows["Model_Vol"].ToString()%></td>--%>
+                         <td><%= String.Format("{0:N3}", Convert.ToDouble(rows["Model_Vol"])) %></td>
                         <td><%=rows["Pcs_ctn"].ToString()%></td>
                         <td><%=rows["CTN_part"].ToString()%></td>
                         <td><%=rows["CTN_vol"].ToString()%></td>
-                        <td><%=rows["Gross_weight"].ToString()%></td>
-                        <td><%=rows["CTNweight"].ToString()%></td>
+                      <%--  <td><%=rows["Gross_weight"].ToString()%></td>--%>
+                         <td><%= String.Format("{0:N2}", Convert.ToDouble(rows["Gross_weight"])) %></td>
+                       <%-- <td><%=rows["CTNweight"].ToString()%></td>--%>
+                        <td><%= String.Format("{0:N2}", Convert.ToDouble(rows["CTNweight"])) %></td>
                         <td><%=rows["Series"].ToString()%></td>
                         <td><%=rows["MaxQty_cont40H"].ToString()%></td>
                         <td><%=rows["Max_Qty_cont20F"].ToString()%></td>

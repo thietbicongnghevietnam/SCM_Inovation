@@ -60,15 +60,6 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.RadioButton rblMW;
 
         /// <summary>
-        /// rblSound control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rblSound;
-
-        /// <summary>
         /// rblCAM control.
         /// </summary>
         /// <remarks>
@@ -78,6 +69,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.RadioButton rblCAM;
 
         /// <summary>
+        /// FileUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload FileUpload;
+
+        /// <summary>
         /// check_history_search control.
         /// </summary>
         /// <remarks>
@@ -85,33 +85,6 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox check_history_search;
-
-        /// <summary>
-        /// dr_filter_namegroup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dr_filter_namegroup;
-
-        /// <summary>
-        /// model_search control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText model_search;
-
-        /// <summary>
-        /// country_search control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText country_search;
 
         /// <summary>
         /// Date1 control.
@@ -132,6 +105,33 @@ namespace FreeLayout
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl ngaychiid;
 
         /// <summary>
+        /// model_search control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText model_search;
+
+        /// <summary>
+        /// country_search control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText country_search;
+
+        /// <summary>
+        /// dr_filter_namegroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_namegroup;
+
+        /// <summary>
         /// dr_filter_Cate control.
         /// </summary>
         /// <remarks>
@@ -139,24 +139,6 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dr_filter_Cate;
-
-        /// <summary>
-        /// FileUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload;
-
-        /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
         /// IDedit control.

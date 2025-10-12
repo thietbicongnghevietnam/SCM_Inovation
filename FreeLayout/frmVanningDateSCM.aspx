@@ -25,6 +25,63 @@
 
 
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
+
+    <style>
+        .horizontal-radio-group {
+            display: flex;
+            flex-wrap: wrap; /* Tự xuống hàng nếu màn hình nhỏ */
+            gap: 10px; /* Khoảng cách giữa các nút */
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 15px; /* khoảng cách giữa các ô */
+        }
+
+            .navbar-nav .nav-item .nav-link {
+                position: relative;
+                padding: 8px 12px;
+                color: white;
+                font-size: 18px;
+                font-weight: 500;
+                text-decoration: none;
+                border: 2px solid transparent; /* chuẩn bị viền */
+                border-radius: 6px;
+                transition: color 0.3s ease, border-color 0.3s ease;
+            }
+
+                .navbar-nav .nav-item .nav-link:hover {
+                    color: #FFD700; /* vàng nổi bật khi hover */
+                    border-color: #FFD700; /* viền vàng khi hover */
+                }
+
+                /* Hiệu ứng gạch chân chuyển động */
+                .navbar-nav .nav-item .nav-link::after {
+                    content: "";
+                    position: absolute;
+                    left: 10%;
+                    right: 10%;
+                    bottom: 2px;
+                    height: 2px;
+                    background: #FFD700;
+                    transform: scaleX(0);
+                    transition: transform 0.3s ease;
+                    border-radius: 1px;
+                }
+
+                .navbar-nav .nav-item .nav-link:hover::after {
+                    transform: scaleX(1);
+                }
+
+            /* Icon bars giữ nguyên màu trắng */
+            .navbar-nav .nav-item:first-child .nav-link {
+                border: none;
+                padding: 8px 10px;
+            }
+    </style>
+
 </head>
 
 
@@ -32,23 +89,23 @@
     <form id="form1" runat="server">
         <div>
             <nav class="navbar navbar-expand navbar-dark bg-primary">
-                <!-- Left navbar links -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="/frmVanningDateSCM.aspx" class="nav-link"><span style="font-size: 22px;">Home</span></a>
+                        <a href="/frmVanningDateSCM.aspx" class="nav-link">Home
+                        </a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <%--<a href="/InventoryInfra.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel schedule</span></a>--%>
-                        <a href="/frmMaterVessel.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master vessel</span></a>
+                        <a href="/frmMaterVessel.aspx" target="_blank" class="nav-link">Master vessel
+                        </a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="/frmMaterModel.aspx" target="_blank" class="nav-link"><span style="font-size: 22px;">Master model</span></a>
+                        <a href="/frmMaterModel.aspx" target="_blank" class="nav-link">Master model
+                        </a>
                     </li>
                 </ul>
-
             </nav>
         </div>
 
@@ -56,106 +113,136 @@
             <div class="card-header">
                 <div class="col-sm-12">
                     <h3><b style="font-size: 30px;">SHIPMENT PLAN BY DEMAND</b></h3>
-                    <br />
                     <p style="color: blue;">
                         <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
                     </p>
                 </div>
 
-                 <div class="col-sm-12">
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-     <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-     <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <%-- <asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="CAMERA" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <%--<input type="checkbox" id="check_history_search" style="width: 20px; height: 20px;" name="check_history_search" />Show History--%>
-     
-     <div class="col-md-1" style="float: left"> <asp:CheckBox ID="check_history_search" runat="server" Text="" />&nbsp;Show History </div>
-     <div class="col-md-1" style="float: left"> Select Upload No:                                            
-         <div class="form-group">
-             <%-- <label for="Group">Filter Cate</label>--%>
-             <asp:DropDownList ID="dr_filter_namegroup" runat="server"
-                 AppendDataBoundItems="true"
-                 DataTextField="NameGroup"
-                 DataValueField="NameGroup"
-                 CssClass="custom-select custom-select-sm form-control form-control-sm"  />
-             <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
-         </div>
-     </div>
-     <div class="col-md-1" style="float: left"> Model:  <input type="text" id="model_search" runat="server" /> </div>
-     <div class="col-md-1" style="float: left"> Country:  <input type="text" id="country_search" runat="server" /> </div>
- </div>
-
-
                 <div class="col-sm-12">
-                    <div style="float: left;">
-                        From Date:
-                                     <%--<input type="text" id="datepicker" runat="server">--%>
-                        <input type="date" id="Date1" name="date" runat="server">
-                        To Date:                                    
-                                     <input type="date" id="ngaychiid" name="date" runat="server">
-                    </div>
-                    <div class="col-md-1" style="float: left">
-                        <div class="form-group">
-                            <%-- <label for="Group">Filter Cate</label>--%>
-                            <asp:DropDownList ID="dr_filter_Cate" runat="server"
-                                AppendDataBoundItems="true"
-                                DataTextField="Description"
-                                DataValueField="Description"
-                                CssClass="custom-select custom-select-sm form-control form-control-sm"  />
-                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+                    <!-- Import file excel -->
+                    <div style="font: 14px Verdana;">
+                        <div style="display: flex; gap: 40px; margin-left: 5px;">
+                            <!-- Nhóm nút 1 -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+                                <div class="horizontal-radio-group">
+                                    <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" />
+                                    <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" />
+                                    <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" />--%>
+                                    <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" />
+                                    <%--<asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" />--%>
+                                    <%--<asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" />--%>
+                                    <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="DSC" />
+                                </div>
+                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">
+                                    <%--onserverclick="btnDownloadClick" --%>
+                                    <i class="fas fa-download"></i>Download Template
+                                </button>
+
+
+                            </div>
+
+                            <!-- Nhóm nút 2 -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+                                <p style="margin-top: 0px; margin-left: 20px; margin-bottom: 25px;">
+                                    <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
+                                </p>
+                                <input type="button" value="Import Demand" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" style="width: 250px;" />
+                            </div>
+
+                            <!-- Nhóm nút 3 -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+                                <button class="btn btn-primary" type="button" runat="server" onserverclick="btnTinhLichTau" style="margin-bottom: 10px; width: 250px;">
+                                    <i class="fa fa-calculator"></i>&nbsp; Define ETD Psnv
+                                </button>
+                                <button class="btn btn-primary" type="button" runat="server" onserverclick="btnSplitCont" style="width: 250px;">
+                                    <i class="fas fa-compress"></i>&nbsp; Balance Cont weekly
+                                </button>
+                            </div>
+                            <!-- Nhóm nút 4 -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+                                <button class="btn btn-primary" type="button" runat="server" onserverclick="btnRisK" style="margin-bottom: 10px; width: 250px;">
+                                    <i class="fas fa-exclamation-triangle"></i>&nbsp; Findout Risky
+                                </button>
+
+                                <button class="btn btn-primary" type="button" runat="server" onserverclick="btnRemark" style="width: 250px;">
+                                    <i class="fas fa-comment"></i>&nbsp; Explain reasons
+                                </button>
+                            </div>
+                            <!-- Nhóm nút 5 -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+                                <button class="btn btn-primary" type="button" runat="server" onserverclick="btnSaveHistory" style="margin-bottom: 10px; width: 250px;">
+                                    <i class="fas fa-save"></i>&nbsp; Save History
+                                </button>
+
+                                <button class="btn btn-primary" type="button" runat="server" onserverclick="Download_Click" style="width: 250px;">
+                                    <i class="fa fa-download"></i>&nbsp;Final Export
+                                </button>
+                            </div>
+
+
                         </div>
                     </div>
-                    <span style="padding-left: 20px;"></span>
-                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
-
-                        <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
-
-                    <!-- import file excel -->
-                    <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
-                    <div style="font: 14px Verdana; float: right">
-                        <p style="margin-top: 0px; margin-left: 20px;">
-                            Select file to upload:
-        <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
-                        </p>
-                        <p style="margin-top: 0px; margin-left: 20px;">
-                            <input type="button" value="Import Plan" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />
-
-                            &nbsp;&nbsp;&nbsp;<%--<input type="button" value="Import DECT" runat="server" onserverclick="ImportFromExcel1" class="btn btn-primary" />--%>
-
-         &nbsp;&nbsp;&nbsp;
-                            <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server">
-                                <%--onserverclick="btnDownloadClick" --%>
-                                <i class="fas fa-download"></i>Download template
-                            </button>
-                        </p>
-                        <p>
-                            <asp:Label ID="Label1" runat="server"></asp:Label>
-                        </p>
-                    </div>
-
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Download_Click"><i class="fa fa-download"></i>&nbsp; Export</button>&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnTinhLichTau"><i class="fa fa-calculator"></i>&nbsp; Calculate Date</button>
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSplitCont"><i class="fas fa-compress"></i>&nbsp; Split Cont</button>
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRisK"><i class="fas fa-exclamation-triangle"></i>&nbsp; Show Risky</button>
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnRemark"><i class="fas fa-comment"></i>&nbsp; Show Remark</button>
-                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="btnSaveHistory"><i class="fas fa-save"></i>&nbsp; Save History</button>
-                    <%--onserverclick="btnExport_Click"--%>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                       
-
                 </div>
 
-                <br />
+            </div>
 
-               
+            <div class="col-sm-12" style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <!-- Checkbox -->
+                <div style="display: flex; align-items: center;">
+                    <asp:CheckBox ID="check_history_search" runat="server" Text="" />
+                    <label style="margin-left: 5px;">Show History</label>
+                </div>
+
+                <!-- From / To Date -->
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label for="Date1" style="margin: 0;">From:</label>
+                    <input type="date" id="Date1" name="date" runat="server" class="form-control" style="width: 150px;" />
+                    <label for="ngaychiid" style="margin: 0;">To:</label>
+                    <input type="date" id="ngaychiid" name="date" runat="server" class="form-control" style="width: 150px;" />
+                </div>
+
+                <!-- Model -->
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label for="model_search" style="margin: 0;">Model:</label>
+                    <input type="text" id="model_search" runat="server" class="form-control" style="width: 150px;" />
+                </div>
+
+                <!-- Country -->
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label for="country_search" style="margin: 0;">Country:</label>
+                    <input type="text" id="country_search" runat="server" class="form-control" style="width: 150px;" />
+                </div>
+
+                <div style="display: flex; flex-direction: row; align-items: center; gap: 10px;">
+                    <div class="form-group" style="margin: 0;">
+                        <asp:DropDownList ID="dr_filter_namegroup" runat="server"
+                            AppendDataBoundItems="true"
+                            DataTextField="NameGroup"
+                            DataValueField="NameGroup"
+                            CssClass="custom-select custom-select-sm form-control form-control-sm" />
+                    </div>
+
+                    <div class="form-group" style="margin: 0;">
+                        <asp:DropDownList ID="dr_filter_Cate" runat="server"
+                            AppendDataBoundItems="true"
+                            DataTextField="Description"
+                            DataValueField="Description"
+                            CssClass="custom-select custom-select-sm form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <!-- Filter button -->
+                <div>
+                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
+                        <i class="fa fa-fw fa-lg fa-search"></i>Filter Data
+                    </button>
+                </div>
 
             </div>
+
+
         </div>
+
 
 
         <div>
@@ -172,22 +259,22 @@
                             <th>Destination</th>
                             <th>Model</th>
                             <th>Quantity</th>
-                           <%-- <th>ATPdate</th>--%>
-                             <th>ATP jit date</th>
+                            <%-- <th>ATPdate</th>--%>
+                            <th>ATP jit date</th>
 
                             <%--<th>Volume</th>--%>
                             <th>TTL gross weight (KG)</th>
                             <th>TTL Volume (M3)</th>
-                           <%-- <th>TTLcont</th>--%>
-                           <%-- <th>Qtycont</th>--%>
+                            <%-- <th>TTLcont</th>--%>
+                            <%-- <th>Qtycont</th>--%>
                             <%--<th>TTLcont2</th>--%>
                             <th>ETD PSNV</th>
                             <th>ETD Port</th>
                             <th>ETA Port</th>
                             <th>Remark</th>
                             <%--<th>Cancombine</th>--%>
-                           <%-- <th>Risky</th>--%>
-                           <%-- <th>NameGroup</th>--%>
+                            <%-- <th>Risky</th>--%>
+                            <%-- <th>NameGroup</th>--%>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -202,12 +289,13 @@
                         <%--<td><%=rows["Sheet"].ToString()%></td>--%>
 
                         <td><%=rows["Cat"].ToString()%></td>
-                        <%if (rows["Shipmode"].ToString() == "S") { 
-                            %>
+                        <%if (rows["Shipmode"].ToString() == "S")
+                            {
+                        %>
                         <td>SEA</td>
                         <%} %>
-                        <%else if(rows["Shipmode"].ToString() == "A")
-                        { %>
+                        <%else if (rows["Shipmode"].ToString() == "A")
+                            { %>
                         <td>AIR</td>
                         <%} %>
 
@@ -217,18 +305,18 @@
                         <td><%=rows["Model"].ToString()%></td>
                         <%--<td><%=rows["Quantity"].ToString()%></td>--%>
                         <td><%= String.Format("{0:N0}", Convert.ToInt32(rows["Quantity"])) %></td>
-                       <%-- <td><%=rows["ATPdate"].ToString()%></td>--%>
+                        <%-- <td><%=rows["ATPdate"].ToString()%></td>--%>
                         <td><%= Convert.ToDateTime(rows["ATPdate"]).ToString("dd/MM/yyyy") %></td>
-                        
+
                         <%--<td><%=rows["Volume"].ToString()%></td>--%>
                         <td>
                             <%--<%=rows["Grossweight"].ToString()%>--%>
                             <%= String.Format("{0:N2}", Convert.ToDouble(rows["Grossweight"])) %>
                         </td>
-                       <%-- <td><%=rows["TTLVolume"].ToString()%></td>--%>
+                        <%-- <td><%=rows["TTLVolume"].ToString()%></td>--%>
                         <td><%= String.Format("{0:N2}", Convert.ToDouble(rows["TTLVolume"])) %></td>
-                       <%-- <td><%=rows["TTLcont"].ToString()%></td>--%>
-                       <%-- <td><%=rows["Qtycont"].ToString()%></td>--%>
+                        <%-- <td><%=rows["TTLcont"].ToString()%></td>--%>
+                        <%-- <td><%=rows["Qtycont"].ToString()%></td>--%>
                         <%--<td><%=rows["TTLcont2"].ToString()%></td>--%>
                         <td>
                             <%--<%=rows["Exfactorydate"].ToString()%>--%>
@@ -237,8 +325,8 @@
     : ""  %>
                         </td>
                         <td>
-                           <%-- <%=rows["ETD"].ToString()%>--%>
-                             <%= (rows["ETD"] != DBNull.Value && rows["ETD"] != null && !string.IsNullOrEmpty(rows["ETD"].ToString())) 
+                            <%-- <%=rows["ETD"].ToString()%>--%>
+                            <%= (rows["ETD"] != DBNull.Value && rows["ETD"] != null && !string.IsNullOrEmpty(rows["ETD"].ToString())) 
     ? Convert.ToDateTime(rows["ETD"]).ToString("dd/MM/yyyy") 
     : "" %>
                         </td>
@@ -251,14 +339,14 @@
                         <td><%=rows["Remark"].ToString()%></td>
                         <%--<td><%=rows["Cancombine"].ToString()%></td>--%>
                         <%--<td><%=rows["Risky"].ToString()%></td>--%>
-                       <%-- <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
+                        <%-- <td style='<% if (rows["Risky"].ToString() == "Chú ý LCL") { %>background-color: yellow; color: red; <% } %>'>
                             <%=rows["Risky"].ToString()%>
                         </td>--%>
                         <%--<td><%=rows["NameGroup"].ToString()%></td>--%>
                         <td>
                             <!-- Cột trống này giữ nguyên -->
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["Exfactorydate"].ToString() %>','<%= rows["ETD"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
-                            <a href="#" class="btn btn-info btn-sm" title="detail item" onclick="openEditModal4('<%= rows["ID"].ToString() %>',
+                            <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["Exfactorydate"].ToString() %>','<%= rows["ETD"].ToString() %>')"><i class="fas fa-edit"></i></a>
+                            <a href="#" title="detail item" onclick="openEditModal4('<%= rows["ID"].ToString() %>',
                                 '<%= rows["Exfactorydate"].ToString() %>',
                                 '<%= rows["ETD"].ToString() %>',
                                 '<%= rows["Consignee"].ToString() %>',
@@ -271,41 +359,41 @@
                                 '<%= rows["TTLcont2"].ToString() %>',
                                 '<%= rows["Cancombine"].ToString() %>',
                                 '<%= rows["Risky"].ToString() %>',
-                                )" ><i class="fas fa-info-circle"></i>Detail</a>
+                                )"><i class="fas fa-info-circle"></i></a>
                         </td>
 
-                       
+
                     </tr>
                     <%} %>
                 </tbody>
                 <tfoot>
                     <tr>
-                         <th>ID</th>
-                         <%--<th>Sheet</th>--%>
-                         <th>Cat</th>
-                         <th>Shipmode</th>
-                         <th>Consignee</th>
-                         <th>Country</th>
-                         <th>Destination</th>
-                         <th>Model</th>
-                         <th>Quantity</th>
+                        <th>ID</th>
+                        <%--<th>Sheet</th>--%>
+                        <th>Cat</th>
+                        <th>Shipmode</th>
+                        <th>Consignee</th>
+                        <th>Country</th>
+                        <th>Destination</th>
+                        <th>Model</th>
+                        <th>Quantity</th>
                         <%-- <th>ATPdate</th>--%>
-                          <th>ATP jit date</th>
+                        <th>ATP jit date</th>
 
-                         <%--<th>Volume</th>--%>
-                         <th>TTL gross weight (KG)</th>
-                         <th>TTL Volume (M3)</th>
+                        <%--<th>Volume</th>--%>
+                        <th>TTL gross weight (KG)</th>
+                        <th>TTL Volume (M3)</th>
                         <%-- <th>TTLcont</th>--%>
                         <%-- <th>Qtycont</th>--%>
-                         <%--<th>TTLcont2</th>--%>
-                         <th>ETD PSNV</th>
-                         <th>ETD Port</th>
-                         <th>ETA Port</th>
-                         <th>Remark</th>
-                         <%--<th>Cancombine</th>--%>
+                        <%--<th>TTLcont2</th>--%>
+                        <th>ETD PSNV</th>
+                        <th>ETD Port</th>
+                        <th>ETA Port</th>
+                        <th>Remark</th>
+                        <%--<th>Cancombine</th>--%>
                         <%-- <th>Risky</th>--%>
                         <%-- <th>NameGroup</th>--%>
-                         <th>Action</th>
+                        <th>Action</th>
                     </tr>
                 </tfoot>
             </table>
@@ -313,178 +401,178 @@
 
 
         <div class="modal" id="myModal3">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="row">
-                    <div>
-                        <h4 class="modal-title" id="headerTag1" style="float: left">Cập nhật thông tin lịch vessel</h4>
-                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag1" style="float: left">Update vessel Information</h4>
+                                <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
-                            <span aria-hidden="true">&times;</span>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <%--<div class="col-md-3">--%>
+                            <%--<label for="exampleInputEmail1">Can_combine</label>
+                        <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
+                            <%--</div>--%>
+                            <div class="col-md-12">
+                                <label for="ID">ID</label>
+                                <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <%-- <div class="col-md-3"></div>--%>
+                            <%-- <div class="col-md-3"></div>--%>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exFactoryDate">Ex-factory Date</label>
+                                <asp:TextBox ID="IDexfactorydate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exFactoryDate"><i style="color: green">Update Ex-factory Date</i></label>
+                                <input type="date" id="exFactoryDate" class="form-control" name="exFactoryDate" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exETD">ETD Date</label>
+                                <asp:TextBox ID="IDETDdate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="etdDate"><i style="color: green">Update ETD Date</i></label>
+                                <input type="date" id="etdDate" class="form-control" name="etdDate" runat="server" />
+                            </div>
+                        </div>
+
+                        <!-- Lặp lại thêm các dòng -->
+                    </div>
+
+                    <%-- Modal footer --%>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                        <button type="button" runat="server" id="Button1" class="btn btn-primary" onserverclick="Updatethongtin">
+                            <i class="fas fa-download"></i>
+                            Ghi lại
                         </button>
                     </div>
-
                 </div>
-            </div>
-
-            <div class="modal-body">
-                
-                <div class="row">
-                    <%--<div class="col-md-3">--%>
-                        <%--<label for="exampleInputEmail1">Can_combine</label>
-                        <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
-                    <%--</div>--%>
-                    <div class="col-md-12">
-                        <label for="ID">ID</label>
-                        <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>
-                   <%-- <div class="col-md-3"></div>--%>
-                   <%-- <div class="col-md-3"></div>--%>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                           <label for="exFactoryDate">Ex-factory Date</label>
-                           <asp:TextBox ID="IDexfactorydate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>
-                     <div class="col-md-6">
-                            <label for="exFactoryDate"><i style="color:green">Update Ex-factory Date</i></label>
-                            <input type="date" id="exFactoryDate" class="form-control" name="exFactoryDate" runat="server" />
-                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                       <label for="exETD">ETD Date</label>
-                       <asp:TextBox ID="IDETDdate" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                </div>
-                     <div class="col-md-6">
-                         <label for="etdDate"><i style="color:green">Update ETD Date</i></label>
-                        <input type="date" id="etdDate" class="form-control" name="etdDate" runat="server" />
-                     </div>
-                </div>
-
-                <!-- Lặp lại thêm các dòng -->
-            </div>
-
-            <%-- Modal footer --%>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-                <button type="button" runat="server" id="Button1"  class="btn btn-primary" onserverclick="Updatethongtin"> 
-                    <i class="fas fa-download"></i>
-                    Ghi lại
-                </button>
             </div>
         </div>
-    </div>
-</div>
 
-                <div class="modal" id="myModal4">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="row">
-                    <div>
-                        <h4 class="modal-title" id="headerTag12" style="float: left">Thông tin chi tiết</h4>
-                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+        <div class="modal" id="myModal4">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag12" style="float: left">Detail Information</h4>
+                                <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
 
-                </div>
-            </div>
+                    <div class="modal-body">
 
-            <div class="modal-body">
-                
-                <div class="row">
-                    <%--<div class="col-md-3">--%>
-                        <%--<label for="exampleInputEmail1">Can_combine</label>
+                        <div class="row">
+                            <%--<div class="col-md-3">--%>
+                            <%--<label for="exampleInputEmail1">Can_combine</label>
                         <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
-                    <%--</div>--%>
-                    <%--<div class="col-md-12">
+                            <%--</div>--%>
+                            <%--<div class="col-md-12">
                         <label for="ID">ID</label>
                         <asp:TextBox ID="IDedit2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                     </div>--%>
-                   <%-- <div class="col-md-3"></div>--%>
-                   <%-- <div class="col-md-3"></div>--%>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                           <label for="exFactoryDate">Ex-factory Date</label>
-                           <asp:TextBox ID="IDexfactorydate2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            <%-- <div class="col-md-3"></div>--%>
+                            <%-- <div class="col-md-3"></div>--%>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exFactoryDate">Ex-factory Date</label>
+                                <asp:TextBox ID="IDexfactorydate2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="exFactoryDate">ETD Date</label>
+                                <asp:TextBox ID="IDETDdate2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exETD">Consignee</label>
+                                <asp:TextBox ID="idConsignee" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="etdDate">Country</label>
+                                <asp:TextBox ID="idCountry" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exETD">Destination</label>
+                                <asp:TextBox ID="idDestination" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="etdDate">Model</label>
+                                <asp:TextBox ID="idModel" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exETD">Quantity</label>
+                                <asp:TextBox ID="idQuantity" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="etdDate">TTLcont</label>
+                                <asp:TextBox ID="idTTLcont" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exETD">Qtycont</label>
+                                <asp:TextBox ID="idQtycont" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="etdDate">TTLcont2</label>
+                                <asp:TextBox ID="idTTLcont2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exETD">Cancombine</label>
+                                <asp:TextBox ID="idCancombine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="etdDate">Risky</label>
+                                <asp:TextBox ID="idRisky" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+                        </div>
+
+                        <!-- Lặp lại thêm các dòng -->
                     </div>
-                     <div class="col-md-6">
-                            <label for="exFactoryDate">ETD Date</label>
-                            <asp:TextBox ID="IDETDdate2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                       <label for="exETD">Consignee</label>
-                       <asp:TextBox ID="idConsignee" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                </div>
-                     <div class="col-md-6">
-                         <label for="etdDate">Country</label>
-                        <asp:TextBox ID="idCountry" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                       <label for="exETD">Destination</label>
-                       <asp:TextBox ID="idDestination" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                </div>
-                     <div class="col-md-6">
-                         <label for="etdDate">Model</label>
-                        <asp:TextBox ID="idModel" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                       <label for="exETD">Quantity</label>
-                       <asp:TextBox ID="idQuantity" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                </div>
-                     <div class="col-md-6">
-                         <label for="etdDate">TTLcont</label>
-                        <asp:TextBox ID="idTTLcont" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                       <label for="exETD">Qtycont</label>
-                       <asp:TextBox ID="idQtycont" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                </div>
-                     <div class="col-md-6">
-                         <label for="etdDate">TTLcont2</label>
-                        <asp:TextBox ID="idTTLcont2" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                     </div>
-                </div>
-                 <div class="row">
-                     <div class="col-md-6">
-                        <label for="exETD">Cancombine</label>
-                        <asp:TextBox ID="idCancombine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                 </div>
-                      <div class="col-md-6">
-                          <label for="etdDate">Risky</label>
-                         <asp:TextBox ID="idRisky" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                      </div>
-                 </div>
 
-                <!-- Lặp lại thêm các dòng -->
-            </div>
-
-            <%-- Modal footer --%>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-               <%-- <button type="button" runat="server" id="Button2"  class="btn btn-primary" onserverclick="Updatethongtin"> 
+                    <%-- Modal footer --%>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                        <%-- <button type="button" runat="server" id="Button2"  class="btn btn-primary" onserverclick="Updatethongtin"> 
                     <i class="fas fa-download"></i>
                     Ghi lại
                 </button>--%>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 
     </form>
@@ -515,6 +603,10 @@
             $('#IDedit').prop("readonly", true);
             $('#example thead th').slice(0, 9).css('background-color', '#FFDAB9');
             $('#example thead th').slice(9).css('background-color', '#B0E0E6');
+
+            // Footer cũng tô màu tương tự
+            $('#example tfoot th').slice(0, 9).css('background-color', '#FFDAB9');
+            $('#example tfoot th').slice(9).css('background-color', '#B0E0E6');
         });
 
         $(function () {
@@ -540,7 +632,7 @@
             // Ensure the date is in YYYY-MM-DD format
             $("#IDexfactorydate").val(exfactory_date);
             $("#IDETDdate").val(ETA_Date);
-            
+
             $('#myModal3').modal('show');
         }
 
@@ -565,7 +657,7 @@
             $('#myModal4').modal('show');
         }
 
-        
+
 
 
 
