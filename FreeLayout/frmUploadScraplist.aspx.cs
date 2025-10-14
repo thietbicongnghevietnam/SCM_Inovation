@@ -67,337 +67,337 @@ namespace FreeLayout
 
         protected void ImportFromExcel(object sender, EventArgs e) 
         {
-            DataTable dtcheck = new DataTable();
-            string _fromdate = Request.Form[Date1.UniqueID];
-            string _todate = Request.Form[ngaychiid.UniqueID];
+            //DataTable dtcheck = new DataTable();
+            //string _fromdate = Request.Form[Date1.UniqueID];
+            //string _todate = Request.Form[ngaychiid.UniqueID];
 
-            if (FileUpload.HasFile) 
-            {
-                if (FileUpload.PostedFile.ContentLength > 0) 
-                {
-                    // Save the uploaded file to the server.
-                    FileUpload.SaveAs(Server.MapPath(".") + "\\" + FileUpload.FileName);
+            //if (FileUpload.HasFile) 
+            //{
+            //    if (FileUpload.PostedFile.ContentLength > 0) 
+            //    {
+            //        // Save the uploaded file to the server.
+            //        FileUpload.SaveAs(Server.MapPath(".") + "\\" + FileUpload.FileName);
 
-                    // Set connection string with the Excel file.
-                    //string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
-                    //                      Server.MapPath(".") + "\\" + FileUpload.FileName +
-                    //                      "; Extended Properties=Excel 12.0;"
+            //        // Set connection string with the Excel file.
+            //        //string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
+            //        //                      Server.MapPath(".") + "\\" + FileUpload.FileName +
+            //        //                      "; Extended Properties=Excel 12.0;"
 
-                    //new
-                    string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
-                      Server.MapPath(".") + "\\" + FileUpload.FileName +
-                      "; Extended Properties='Excel 12.0; HDR=YES; IMEX=1;'"; // HDR=YES để xử lý header, IMEX=1 để xử lý cả dữ liệu chuỗi và số
+            //        //new
+            //        string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
+            //          Server.MapPath(".") + "\\" + FileUpload.FileName +
+            //          "; Extended Properties='Excel 12.0; HDR=YES; IMEX=1;'"; // HDR=YES để xử lý header, IMEX=1 để xử lý cả dữ liệu chuỗi và số
 
-                    OleDbConnection excelConn = null;
-                    OleDbDataReader objBulkReader = null;
-                    try
-                    {
-                        DataTable dt_checkupload = new DataTable();
-                        DataTable dt_new = new DataTable();
-                        int countlap = 0;
+            //        OleDbConnection excelConn = null;
+            //        OleDbDataReader objBulkReader = null;
+            //        try
+            //        {
+            //            DataTable dt_checkupload = new DataTable();
+            //            DataTable dt_new = new DataTable();
+            //            int countlap = 0;
 
-                        dt_new.Columns.Add("ID", typeof(Int32));
-                        dt_new.Columns.Add("SanctionId", typeof(Int32));
-                        dt_new.Columns.Add("Material", typeof(String));
-                        dt_new.Columns.Add("Qty", typeof(float));
-                        dt_new.Columns.Add("QtyActual", typeof(float));
-                        dt_new.Columns.Add("UnitPrice", typeof(float));
-                        dt_new.Columns.Add("Amount", typeof(float));
-                        dt_new.Columns.Add("CostCenter", typeof(String));
-                        dt_new.Columns.Add("Reason", typeof(String));
-                        dt_new.Columns.Add("Plant", typeof(String));
-                        dt_new.Columns.Add("Sloc", typeof(String));
-                        dt_new.Columns.Add("NameCost", typeof(String));
-                        dt_new.Columns.Add("Pallet", typeof(String));
-                        dt_new.Columns.Add("Barcode", typeof(String));
-                        dt_new.Columns.Add("ScrapSloc", typeof(String));
-                        dt_new.Columns.Add("ControlNo", typeof(String));
-                        dt_new.Columns.Add("FaTool", typeof(String));
+            //            dt_new.Columns.Add("ID", typeof(Int32));
+            //            dt_new.Columns.Add("SanctionId", typeof(Int32));
+            //            dt_new.Columns.Add("Material", typeof(String));
+            //            dt_new.Columns.Add("Qty", typeof(float));
+            //            dt_new.Columns.Add("QtyActual", typeof(float));
+            //            dt_new.Columns.Add("UnitPrice", typeof(float));
+            //            dt_new.Columns.Add("Amount", typeof(float));
+            //            dt_new.Columns.Add("CostCenter", typeof(String));
+            //            dt_new.Columns.Add("Reason", typeof(String));
+            //            dt_new.Columns.Add("Plant", typeof(String));
+            //            dt_new.Columns.Add("Sloc", typeof(String));
+            //            dt_new.Columns.Add("NameCost", typeof(String));
+            //            dt_new.Columns.Add("Pallet", typeof(String));
+            //            dt_new.Columns.Add("Barcode", typeof(String));
+            //            dt_new.Columns.Add("ScrapSloc", typeof(String));
+            //            dt_new.Columns.Add("ControlNo", typeof(String));
+            //            dt_new.Columns.Add("FaTool", typeof(String));
                         
 
-                        // Open connection to Excel file.
-                        excelConn = new OleDbConnection(excelConnStr);
-                        excelConn.Open();
-                        // Lấy danh sách các sheet trong Excel
-                        DataTable sheets = excelConn.GetSchema("Tables");
-                        // Lấy tên sheet đầu tiên (vì chỉ có một sheet)
-                        string sheetName = sheets.Rows[0]["TABLE_NAME"].ToString();
-                        Console.WriteLine("Tên sheet: " + sheetName);
+            //            // Open connection to Excel file.
+            //            excelConn = new OleDbConnection(excelConnStr);
+            //            excelConn.Open();
+            //            // Lấy danh sách các sheet trong Excel
+            //            DataTable sheets = excelConn.GetSchema("Tables");
+            //            // Lấy tên sheet đầu tiên (vì chỉ có một sheet)
+            //            string sheetName = sheets.Rows[0]["TABLE_NAME"].ToString();
+            //            Console.WriteLine("Tên sheet: " + sheetName);
 
-                        // Xử lý tên sheet (nếu có ký tự đặc biệt)
-                        string sanitizedSheetName = SanitizeSheetName(sheetName);
-                        // Tạo câu truy vấn SQL với tên sheet đã xử lý
-                        OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sanitizedSheetName}$]", excelConn);
+            //            // Xử lý tên sheet (nếu có ký tự đặc biệt)
+            //            string sanitizedSheetName = SanitizeSheetName(sheetName);
+            //            // Tạo câu truy vấn SQL với tên sheet đã xử lý
+            //            OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sanitizedSheetName}$]", excelConn);
 
-                        objBulkReader = objOleDB.ExecuteReader();
+            //            objBulkReader = objOleDB.ExecuteReader();
 
-                        if (objBulkReader.HasRows)
-                        {
-                            DataTable dtExcelData = new DataTable();
-                            dtExcelData.Load(objBulkReader); // Load data into DataTable.
-                            string Sheet = sheetName.Replace("$", "");
+            //            if (objBulkReader.HasRows)
+            //            {
+            //                DataTable dtExcelData = new DataTable();
+            //                dtExcelData.Load(objBulkReader); // Load data into DataTable.
+            //                string Sheet = sheetName.Replace("$", "");
 
-                            string bophan = "";
-                            if (dr_filter_Cate.Text != "==Section==") 
-                            {
-                                bophan = dr_filter_Cate.Text;
-                            }
+            //                string bophan = "";
+            //                if (dr_filter_Cate.Text != "==Section==") 
+            //                {
+            //                    bophan = dr_filter_Cate.Text;
+            //                }
 
-                            int SanctionId = 0;
+            //                int SanctionId = 0;
 
-                            string tensanction = "";
+            //                string tensanction = "";
 
-                            string Material = "";
-                            float Qty = 0;
-                            float QtyActual = 0;
-                            float UnitPrice = 0;
-                            float Amount = 0;
-                            string CostCenter = "";
-                            string Reason = "";
-                            string Plant = "";
-                            string Sloc = "";                            
-                            string NameCost = "";
-                            string Pallet = "";                            
-                            string Barcode = "";
-                            string ScrapSloc = "";
+            //                string Material = "";
+            //                float Qty = 0;
+            //                float QtyActual = 0;
+            //                float UnitPrice = 0;
+            //                float Amount = 0;
+            //                string CostCenter = "";
+            //                string Reason = "";
+            //                string Plant = "";
+            //                string Sloc = "";                            
+            //                string NameCost = "";
+            //                string Pallet = "";                            
+            //                string Barcode = "";
+            //                string ScrapSloc = "";
 
-                            string ControlNo = "";
-                            string FaTool = "";
+            //                string ControlNo = "";
+            //                string FaTool = "";
 
-                            string type_upload = "";
+            //                string type_upload = "";
 
-                            //string test3 = dtExcelData.Rows[2][1].ToString();
+            //                //string test3 = dtExcelData.Rows[2][1].ToString();
 
-                            if (rblMCS.Checked == true)
-                            {
-                                // format cua MCS
-                                if (bophan == "")
-                                {
-                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon bo phan!'); ", true);
-                                }
-                                else
-                                {
-                                    //lay ten sacntion
-                                    tensanction = dtExcelData.Rows[4][3].ToString();
-                                    if (tensanction == "")
-                                    {
-                                        //khong ton tai sanction 
-                                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Fomat input sai dinh dang!'); ", true);
-                                    }
-                                    else
-                                    {
-                                        //kiem tra sanction co trong danh sach chua de lay ra id sanction
-                                        DataTable dt_getidsacntion = new DataTable();
-                                        dt_getidsacntion = DataConn.StoreFillDS2("Get_idsanction", System.Data.CommandType.StoredProcedure, tensanction, bophan);
+            //                if (rblMCS.Checked == true)
+            //                {
+            //                    // format cua MCS
+            //                    if (bophan == "")
+            //                    {
+            //                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon bo phan!'); ", true);
+            //                    }
+            //                    else
+            //                    {
+            //                        //lay ten sacntion
+            //                        tensanction = dtExcelData.Rows[4][3].ToString();
+            //                        if (tensanction == "")
+            //                        {
+            //                            //khong ton tai sanction 
+            //                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Fomat input sai dinh dang!'); ", true);
+            //                        }
+            //                        else
+            //                        {
+            //                            //kiem tra sanction co trong danh sach chua de lay ra id sanction
+            //                            DataTable dt_getidsacntion = new DataTable();
+            //                            dt_getidsacntion = DataConn.StoreFillDS2("Get_idsanction", System.Data.CommandType.StoredProcedure, tensanction, bophan);
 
-                                        if (dt_getidsacntion.Rows[0][0].ToString() != "")
-                                        {
-                                            SanctionId = Int32.Parse(dt_getidsacntion.Rows[0][0].ToString());
-                                        }
-                                        //else 
-                                        //{
-                                        //    //nothing
-                                        //    //SanctionId = 0
-                                        //}
+            //                            if (dt_getidsacntion.Rows[0][0].ToString() != "")
+            //                            {
+            //                                SanctionId = Int32.Parse(dt_getidsacntion.Rows[0][0].ToString());
+            //                            }
+            //                            //else 
+            //                            //{
+            //                            //    //nothing
+            //                            //    //SanctionId = 0
+            //                            //}
 
-                                        for (int i = 9; i < dtExcelData.Rows.Count; i++)
-                                        {
-                                            countlap = 0;
-                                            // check cac cot co du lieu va khong co du lieu
-                                            //mahang + Plant + issue sloc + scrap loc + st price
-                                            if (dtExcelData.Rows[i][1].ToString() != "" && dtExcelData.Rows[i][4].ToString() != "" && dtExcelData.Rows[i][5].ToString() != "" && dtExcelData.Rows[i][6].ToString() != "" && dtExcelData.Rows[i][7].ToString() != "")
-                                            {
-                                                Material = dtExcelData.Rows[i][1].ToString();
-                                                float.TryParse(dtExcelData.Rows[i][8].ToString(), out Qty);
+            //                            for (int i = 9; i < dtExcelData.Rows.Count; i++)
+            //                            {
+            //                                countlap = 0;
+            //                                // check cac cot co du lieu va khong co du lieu
+            //                                //mahang + Plant + issue sloc + scrap loc + st price
+            //                                if (dtExcelData.Rows[i][1].ToString() != "" && dtExcelData.Rows[i][4].ToString() != "" && dtExcelData.Rows[i][5].ToString() != "" && dtExcelData.Rows[i][6].ToString() != "" && dtExcelData.Rows[i][7].ToString() != "")
+            //                                {
+            //                                    Material = dtExcelData.Rows[i][1].ToString();
+            //                                    float.TryParse(dtExcelData.Rows[i][8].ToString(), out Qty);
 
-                                                float.TryParse(dtExcelData.Rows[i][8].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
-                                                                                                                   //QtyActual = 0;
-                                                float.TryParse(dtExcelData.Rows[i][7].ToString(), out UnitPrice);
-                                                float.TryParse(dtExcelData.Rows[i][10].ToString(), out Amount);
-                                                CostCenter = "";
-                                                Reason = dtExcelData.Rows[i][12].ToString();
-                                                Plant = dtExcelData.Rows[i][4].ToString();
-                                                Sloc = dtExcelData.Rows[i][5].ToString();
-                                                NameCost = "";
-                                                Pallet = dtExcelData.Rows[i][14].ToString();
-                                                Barcode = tensanction + ";" + Pallet + ";" + bophan;
+            //                                    float.TryParse(dtExcelData.Rows[i][8].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
+            //                                                                                                       //QtyActual = 0;
+            //                                    float.TryParse(dtExcelData.Rows[i][7].ToString(), out UnitPrice);
+            //                                    float.TryParse(dtExcelData.Rows[i][10].ToString(), out Amount);
+            //                                    CostCenter = "";
+            //                                    Reason = dtExcelData.Rows[i][12].ToString();
+            //                                    Plant = dtExcelData.Rows[i][4].ToString();
+            //                                    Sloc = dtExcelData.Rows[i][5].ToString();
+            //                                    NameCost = "";
+            //                                    Pallet = dtExcelData.Rows[i][14].ToString();
+            //                                    Barcode = tensanction + ";" + Pallet + ";" + bophan;
 
-                                                ScrapSloc = dtExcelData.Rows[i][6].ToString();
+            //                                    ScrapSloc = dtExcelData.Rows[i][6].ToString();
 
-                                                ControlNo = "";
-                                                FaTool = "";
+            //                                    ControlNo = "";
+            //                                    FaTool = "";
 
-                                                //float.TryParse(dtExcelData.Rows[i]["Model_Vol"].ToString(), out Model_Vol);
-                                                //int.TryParse(dtExcelData.Rows[i]["CTN_vol"].ToString(), out CTN_vol);
+            //                                    //float.TryParse(dtExcelData.Rows[i]["Model_Vol"].ToString(), out Model_Vol);
+            //                                    //int.TryParse(dtExcelData.Rows[i]["CTN_vol"].ToString(), out CTN_vol);
 
-                                                type_upload = "MCS";
+            //                                    type_upload = "MCS";
 
-                                                dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_upload, ControlNo, FaTool);
-                                                if (dt_checkupload.Rows[0][0].ToString() == "1")
-                                                {
-                                                    //da ton tai roi
-                                                    //nothing
-                                                    countlap = countlap + 1;
-                                                }
-                                                else
-                                                {
-                                                    //insert model moi
-                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool);
-                                                }
-                                            }
+            //                                    dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_upload, ControlNo, FaTool);
+            //                                    if (dt_checkupload.Rows[0][0].ToString() == "1")
+            //                                    {
+            //                                        //da ton tai roi
+            //                                        //nothing
+            //                                        countlap = countlap + 1;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        //insert model moi
+            //                                        dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool);
+            //                                    }
+            //                                }
 
-                                            //mahang + Plant + issue sloc + scrap loc + st price  ==> Tong scrap (10)
-                                            if (dtExcelData.Rows[i][1].ToString() == "" && dtExcelData.Rows[i][4].ToString() == "" && dtExcelData.Rows[i][5].ToString() == "" && dtExcelData.Rows[i][6].ToString() == "" && dtExcelData.Rows[i][7].ToString() == "" && dtExcelData.Rows[i][10].ToString() == "")
-                                            {
-                                                break;
-                                            }
-                                        }
+            //                                //mahang + Plant + issue sloc + scrap loc + st price  ==> Tong scrap (10)
+            //                                if (dtExcelData.Rows[i][1].ToString() == "" && dtExcelData.Rows[i][4].ToString() == "" && dtExcelData.Rows[i][5].ToString() == "" && dtExcelData.Rows[i][6].ToString() == "" && dtExcelData.Rows[i][7].ToString() == "" && dtExcelData.Rows[i][10].ToString() == "")
+            //                                {
+            //                                    break;
+            //                                }
+            //                            }
                                        
-                                    }
-                                }
-                            }
-                            else if (rblOther.Checked == true)
-                            {
-                                //format other  FA/Tool  fixed asset
-                                if (bophan == "")
-                                {
-                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon bo phan!'); ", true);
-                                }
-                                else
-                                {
-                                    //lay ten sacntion
-                                    tensanction = dtExcelData.Rows[3][20].ToString();
-                                    if (tensanction == "")
-                                    {
-                                        //khong ton tai sanction 
-                                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Fomat input sai dinh dang!'); ", true);
-                                    }
-                                    else
-                                    {
-                                        //kiem tra sanction co trong danh sach chua de lay ra id sanction
-                                        DataTable dt_getidsacntion = new DataTable();
-                                        dt_getidsacntion = DataConn.StoreFillDS2("Get_idsanction", System.Data.CommandType.StoredProcedure, tensanction, bophan);
+            //                        }
+            //                    }
+            //                }
+            //                else if (rblOther.Checked == true)
+            //                {
+            //                    //format other  FA/Tool  fixed asset
+            //                    if (bophan == "")
+            //                    {
+            //                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon bo phan!'); ", true);
+            //                    }
+            //                    else
+            //                    {
+            //                        //lay ten sacntion
+            //                        tensanction = dtExcelData.Rows[3][20].ToString();
+            //                        if (tensanction == "")
+            //                        {
+            //                            //khong ton tai sanction 
+            //                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Fomat input sai dinh dang!'); ", true);
+            //                        }
+            //                        else
+            //                        {
+            //                            //kiem tra sanction co trong danh sach chua de lay ra id sanction
+            //                            DataTable dt_getidsacntion = new DataTable();
+            //                            dt_getidsacntion = DataConn.StoreFillDS2("Get_idsanction", System.Data.CommandType.StoredProcedure, tensanction, bophan);
 
-                                        if (dt_getidsacntion.Rows[0][0].ToString() != "")
-                                        {
-                                            SanctionId = Int32.Parse(dt_getidsacntion.Rows[0][0].ToString());
-                                        }
+            //                            if (dt_getidsacntion.Rows[0][0].ToString() != "")
+            //                            {
+            //                                SanctionId = Int32.Parse(dt_getidsacntion.Rows[0][0].ToString());
+            //                            }
 
-                                        for (int i = 3; i < dtExcelData.Rows.Count; i++)
-                                        {
-                                            countlap = 0;
-                                            if (dtExcelData.Rows[i][8].ToString() != "" && dtExcelData.Rows[i][6].ToString() != "" && dtExcelData.Rows[i][7].ToString() != "" && dtExcelData.Rows[i][10].ToString() != "")
-                                            {
-                                                Material = dtExcelData.Rows[i][8].ToString();
-                                                float.TryParse(dtExcelData.Rows[i][6].ToString(), out Qty);
-                                                float.TryParse(dtExcelData.Rows[i][6].ToString(), out QtyActual);
+            //                            for (int i = 3; i < dtExcelData.Rows.Count; i++)
+            //                            {
+            //                                countlap = 0;
+            //                                if (dtExcelData.Rows[i][8].ToString() != "" && dtExcelData.Rows[i][6].ToString() != "" && dtExcelData.Rows[i][7].ToString() != "" && dtExcelData.Rows[i][10].ToString() != "")
+            //                                {
+            //                                    Material = dtExcelData.Rows[i][8].ToString();
+            //                                    float.TryParse(dtExcelData.Rows[i][6].ToString(), out Qty);
+            //                                    float.TryParse(dtExcelData.Rows[i][6].ToString(), out QtyActual);
 
-                                                float.TryParse(dtExcelData.Rows[i][10].ToString(), out UnitPrice);
-                                                //float.TryParse(dtExcelData.Rows[i][10].ToString(), out Amount);
-                                                Amount = 0;
-                                                CostCenter = "";
-                                                Reason = dtExcelData.Rows[i][18].ToString();
-                                                Plant = "";
-                                                Sloc = "";
-                                                NameCost = "";
-                                                Pallet = dtExcelData.Rows[i][19].ToString();
-                                                Barcode = tensanction + ";" + Pallet + ";" + bophan;
+            //                                    float.TryParse(dtExcelData.Rows[i][10].ToString(), out UnitPrice);
+            //                                    //float.TryParse(dtExcelData.Rows[i][10].ToString(), out Amount);
+            //                                    Amount = 0;
+            //                                    CostCenter = "";
+            //                                    Reason = dtExcelData.Rows[i][18].ToString();
+            //                                    Plant = "";
+            //                                    Sloc = "";
+            //                                    NameCost = "";
+            //                                    Pallet = dtExcelData.Rows[i][19].ToString();
+            //                                    Barcode = tensanction + ";" + Pallet + ";" + bophan;
 
-                                                ScrapSloc = "";
-                                                type_upload = "other";
+            //                                    ScrapSloc = "";
+            //                                    type_upload = "other";
 
-                                                ControlNo = dtExcelData.Rows[i][1].ToString();
-                                                FaTool = dtExcelData.Rows[i][13].ToString();
+            //                                    ControlNo = dtExcelData.Rows[i][1].ToString();
+            //                                    FaTool = dtExcelData.Rows[i][13].ToString();
 
-                                                dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_upload, ControlNo, FaTool);
-                                                if (dt_checkupload.Rows[0][0].ToString() == "1")
-                                                {
-                                                    //da ton tai roi
-                                                    //nothing
-                                                    countlap = countlap + 1;
-                                                }
-                                                else
-                                                {
-                                                    //insert model moi
-                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool);
-                                                }
-                                            }
+            //                                    dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_upload, ControlNo, FaTool);
+            //                                    if (dt_checkupload.Rows[0][0].ToString() == "1")
+            //                                    {
+            //                                        //da ton tai roi
+            //                                        //nothing
+            //                                        countlap = countlap + 1;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        //insert model moi
+            //                                        dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool);
+            //                                    }
+            //                                }
 
-                                            //mahang + soluong + unit  + price
-                                            if (dtExcelData.Rows[i][8].ToString() == "" && dtExcelData.Rows[i][6].ToString() == "" && dtExcelData.Rows[i][7].ToString() == "" && dtExcelData.Rows[i][10].ToString() == "" )
-                                            {
-                                                break;
-                                            }
-                                        }
-                                    }
+            //                                //mahang + soluong + unit  + price
+            //                                if (dtExcelData.Rows[i][8].ToString() == "" && dtExcelData.Rows[i][6].ToString() == "" && dtExcelData.Rows[i][7].ToString() == "" && dtExcelData.Rows[i][10].ToString() == "" )
+            //                                {
+            //                                    break;
+            //                                }
+            //                            }
+            //                        }
 
 
 
-                                }
-                            }
-                            else 
-                            {
-                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon template upload!!'); ", true);
-                            }
+            //                    }
+            //                }
+            //                else 
+            //                {
+            //                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon template upload!!'); ", true);
+            //                }
 
-                            //upload buckcopy tai day
-                            string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
-                                            "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
-                                            "Connect Timeout=30;";
+            //                //upload buckcopy tai day
+            //                string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+            //                                "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
+            //                                "Connect Timeout=30;";
 
-                            using (SqlConnection con = new SqlConnection(sqlConnStr))
-                            {
-                                con.Open();
+            //                using (SqlConnection con = new SqlConnection(sqlConnStr))
+            //                {
+            //                    con.Open();
 
-                                // Initialize SqlBulkCopy.
-                                using (SqlBulkCopy oSqlBulk = new SqlBulkCopy(con))
-                                {
-                                    oSqlBulk.DestinationTableName = "ScrapDetails"; // Table name in database.
-                                                                                    //oSqlBulk.WriteToServer(dtExcelData); // Write data from DataTable to database.
-                                    oSqlBulk.WriteToServer(dt_new);
-                                }
-                            }
-                            if (countlap > 0)
-                            {
-                                lblConfirm.Text = "Ban ghi lap : " + countlap;
-                                lblConfirm.Attributes.Add("style", "color:green");
-                            }
-                            else
-                            {
-                                lblConfirm.Text = "DATA IMPORTED SUCCESSFULLY.";
-                                lblConfirm.Attributes.Add("style", "color:green");
-                            }
+            //                    // Initialize SqlBulkCopy.
+            //                    using (SqlBulkCopy oSqlBulk = new SqlBulkCopy(con))
+            //                    {
+            //                        oSqlBulk.DestinationTableName = "ScrapDetails"; // Table name in database.
+            //                                                                        //oSqlBulk.WriteToServer(dtExcelData); // Write data from DataTable to database.
+            //                        oSqlBulk.WriteToServer(dt_new);
+            //                    }
+            //                }
+            //                if (countlap > 0)
+            //                {
+            //                    lblConfirm.Text = "Ban ghi lap : " + countlap;
+            //                    lblConfirm.Attributes.Add("style", "color:green");
+            //                }
+            //                else
+            //                {
+            //                    lblConfirm.Text = "DATA IMPORTED SUCCESSFULLY.";
+            //                    lblConfirm.Attributes.Add("style", "color:green");
+            //                }
 
-                            Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Upload thành công!');", true);
-                            dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
+            //                Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Upload thành công!');", true);
+            //                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
 
-                        }
+            //            }
 
-                    }
-                    catch (Exception ex)
-                    {
-                        lblConfirm.Text = "Lỗi : " + ex.Message;
-                        lblConfirm.Attributes.Add("style", "color:red");
-                        //throw;
-                    }
-                    finally
-                    {
-                        // Close and dispose objects.
-                        if (objBulkReader != null && !objBulkReader.IsClosed)
-                        {
-                            objBulkReader.Close();
-                        }
-                        if (excelConn != null && excelConn.State == ConnectionState.Open)
-                        {
-                            excelConn.Close();
-                        }
-                        // Delete the uploaded file (optional).
-                        File.Delete(Server.MapPath(".") + "\\" + FileUpload.FileName);
-                        // Reload grid or perform other necessary actions.
-                        //dt_phanca = Db_connect.StoreFillDS("HR_List_phanca", System.Data.CommandType.StoredProcedure);
-                    }
-                }
-            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            lblConfirm.Text = "Lỗi : " + ex.Message;
+            //            lblConfirm.Attributes.Add("style", "color:red");
+            //            //throw;
+            //        }
+            //        finally
+            //        {
+            //            // Close and dispose objects.
+            //            if (objBulkReader != null && !objBulkReader.IsClosed)
+            //            {
+            //                objBulkReader.Close();
+            //            }
+            //            if (excelConn != null && excelConn.State == ConnectionState.Open)
+            //            {
+            //                excelConn.Close();
+            //            }
+            //            // Delete the uploaded file (optional).
+            //            File.Delete(Server.MapPath(".") + "\\" + FileUpload.FileName);
+            //            // Reload grid or perform other necessary actions.
+            //            //dt_phanca = Db_connect.StoreFillDS("HR_List_phanca", System.Data.CommandType.StoredProcedure);
+            //        }
+            //    }
+            //}
         }
 
         public static string SanitizeSheetName(string sheetName)
