@@ -242,6 +242,31 @@ namespace FreeLayout
             //}
         }
 
+        protected void delete_item(object sender, EventArgs e)
+        {
+            DataTable dt_update = new DataTable();
+            string IDdel = txtid.Text.ToString();
+            string userid = txtuser.Text.ToString();
+            if (userid != "")
+            {
+                dt_update = DataConn.StoreFillDS("Delete_EXfactory_ETD", System.Data.CommandType.StoredProcedure, IDdel, userid);
+                if (dt_update.Rows[0][0].ToString() == "1")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Delete data sucessful!');", true);
+                    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check information again!'); ", true);
+                }
+            }
+            else 
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG,user null!'); ", true);
+            }
+                
+        }
+
         //Updatethongtin
         protected void Updatethongtin(object sender, EventArgs e) 
         {
@@ -400,83 +425,90 @@ namespace FreeLayout
                 try
                 {
                     if (Category_ == "DECT")
-                    {
+                    { 
                         for (int i = 0; i < dt_remark.Rows.Count; i++)
                         {
-                            //lay ngay ETD PSNV = ngay ex-factory date
-                            string Exfactorydate = dt_remark.Rows[i]["Exfactorydate"].ToString(); //lay ngay exfactory date
-                            //lay ngay ATP jit date
-                            string ATPdate = dt_remark.Rows[i]["ATPdate"].ToString();
-
-                            //lay ngay ETD 
-                            string ETDdate = dt_remark.Rows[i]["ETD"].ToString();
-
-                            //****pending
-                            //float TTLvol = 0;
-                            string ID_lichtau = dt_remark.Rows[i]["ID"].ToString();
-                            string modelname = dt_remark.Rows[i]["Model"].ToString();
-                            string Country = dt_remark.Rows[i]["Country"].ToString();
-                            //string cancombine = dt_remark.Rows[i]["Cancombine"].ToString();
-                            string Destination = dt_remark.Rows[i]["Destination"].ToString();
-
-                            DateTime date_exfactory = DateTime.ParseExact(Exfactorydate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-                            DateTime date_ATP = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
-
-                            //check hai ngay tren co khac tuan hay khong?
-                            //tuan exfactory date co som hon ATP hay khong?
-                            ////Nếu ngày ETD PSNV trước tuần ATP jit date --> Show lý do
-                            bool isValue2InPreviousWeek = IsDateInPreviousWeek(date_exfactory, date_ATP);
-
-                            //Response.Write($"Giá trị 2 có thuộc tuần trước so với giá trị 1? {isValue2InPreviousWeek}");
-
-                            string note_remark = "";
-
-                            if (isValue2InPreviousWeek == true)
+                            if (dt_remark.Rows[i]["Destination"].ToString() == "")
                             {
-                                //kiem tra xem co special note hay khong???
-                                dt_check_specialnote = DataConn.StoreFillDS("Check_special_note_remark", System.Data.CommandType.StoredProcedure, Category_, modelname, Country, Destination);
-                                if (dt_check_specialnote.Rows[0][0].ToString() != "0")
-                                {
-                                    //ton tai trong mater
-                                    string Special_exfactory_date = dt_check_specialnote.Rows[0][1].ToString();     //theo ngày xuất hàng muộn nhất của tháng
-                                    string SpecialETD_week = dt_check_specialnote.Rows[0][2].ToString();            //theo tuan
-                                    string Special_ETA_Date = dt_check_specialnote.Rows[0][3].ToString();           //theo ngay ETA
-                                    //Nếu ngày ETD PSNV(ex-factorydate)  trước tuần ATP jit date --> Show lý do
-
-                                    if (Special_exfactory_date != "")
-                                    {
-                                        note_remark = "Customer request special exfactory date : " + Special_exfactory_date;
-                                    }
-                                    else if (SpecialETD_week != "")
-                                    {
-                                        note_remark = "Customer request special ETD week : " + SpecialETD_week; // + "/Date :" + ETDdate.Substring(0, 9);
-                                    }
-                                    else if (Special_ETA_Date != "")
-                                    {
-                                        //note_remark = "Customer request ETA date by : " + Special_ETA_Date;
-                                        note_remark = "Customer request by ETA : " + Special_ETA_Date +"th";
-                                    }
-                                    else
-                                    {
-                                        //truong hop khong co sepecial note  => Show rõ "Carrier request early cut-off time"
-                                        //note_remark = "Carrier request early cut-off time (no special note)";
-                                        note_remark = "Vessel cut-off ";
-                                    }
-                                    //update remark  theo rule tren sql
-                                    dt_update = DataConn.StoreFillDS("update_infor_remark", System.Data.CommandType.StoredProcedure, note_remark, ID_lichtau);
-
-                                }
-                                else
-                                {
-                                    //khong ton tai trong mater
-                                    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, du lieu model khong co trong mater!!!'); ", true);
-                                    //nothing
-                                }
+                                //nothing khong tinh remark
                             }
                             else 
                             {
-                                //nothing
-                            }                                                                                                                           
+                                //lay ngay ETD PSNV = ngay ex-factory date
+                                string Exfactorydate = dt_remark.Rows[i]["Exfactorydate"].ToString(); //lay ngay exfactory date
+                                                                                                      //lay ngay ATP jit date
+                                string ATPdate = dt_remark.Rows[i]["ATPdate"].ToString();
+
+                                //lay ngay ETD 
+                                string ETDdate = dt_remark.Rows[i]["ETD"].ToString();
+
+                                //****pending
+                                //float TTLvol = 0;
+                                string ID_lichtau = dt_remark.Rows[i]["ID"].ToString();
+                                string modelname = dt_remark.Rows[i]["Model"].ToString();
+                                string Country = dt_remark.Rows[i]["Country"].ToString();
+                                //string cancombine = dt_remark.Rows[i]["Cancombine"].ToString();
+                                string Destination = dt_remark.Rows[i]["Destination"].ToString();
+
+                                DateTime date_exfactory = DateTime.ParseExact(Exfactorydate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+                                DateTime date_ATP = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
+
+                                //check hai ngay tren co khac tuan hay khong?
+                                //tuan exfactory date co som hon ATP hay khong?
+                                ////Nếu ngày ETD PSNV trước tuần ATP jit date --> Show lý do
+                                bool isValue2InPreviousWeek = IsDateInPreviousWeek(date_exfactory, date_ATP);
+
+                                //Response.Write($"Giá trị 2 có thuộc tuần trước so với giá trị 1? {isValue2InPreviousWeek}");
+
+                                string note_remark = "";
+
+                                if (isValue2InPreviousWeek == true)
+                                {
+                                    //kiem tra xem co special note hay khong???
+                                    dt_check_specialnote = DataConn.StoreFillDS("Check_special_note_remark", System.Data.CommandType.StoredProcedure, Category_, modelname, Country, Destination);
+                                    if (dt_check_specialnote.Rows[0][0].ToString() != "0")
+                                    {
+                                        //ton tai trong mater
+                                        string Special_exfactory_date = dt_check_specialnote.Rows[0][1].ToString();     //theo ngày xuất hàng muộn nhất của tháng
+                                        string SpecialETD_week = dt_check_specialnote.Rows[0][2].ToString();            //theo tuan
+                                        string Special_ETA_Date = dt_check_specialnote.Rows[0][3].ToString();           //theo ngay ETA
+                                                                                                                        //Nếu ngày ETD PSNV(ex-factorydate)  trước tuần ATP jit date --> Show lý do
+
+                                        if (Special_exfactory_date != "")
+                                        {
+                                            note_remark = "Customer request special exfactory date : " + Special_exfactory_date;
+                                        }
+                                        else if (SpecialETD_week != "")
+                                        {
+                                            note_remark = "Customer request special ETD week : " + SpecialETD_week; // + "/Date :" + ETDdate.Substring(0, 9);
+                                        }
+                                        else if (Special_ETA_Date != "")
+                                        {
+                                            //note_remark = "Customer request ETA date by : " + Special_ETA_Date;
+                                            note_remark = "Customer request by ETA : " + Special_ETA_Date + "th";
+                                        }
+                                        else
+                                        {
+                                            //truong hop khong co sepecial note  => Show rõ "Carrier request early cut-off time"
+                                            //note_remark = "Carrier request early cut-off time (no special note)";
+                                            note_remark = "Vessel cut-off ";
+                                        }
+                                        //update remark  theo rule tren sql
+                                        dt_update = DataConn.StoreFillDS("update_infor_remark", System.Data.CommandType.StoredProcedure, note_remark, ID_lichtau);
+
+                                    }
+                                    else
+                                    {
+                                        //khong ton tai trong mater
+                                        //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, du lieu model khong co trong mater!!!'); ", true);
+                                        //nothing
+                                    }
+                                }
+                                else
+                                {
+                                    //nothing
+                                }
+                            }                                                                                                                         
                         }
 
                         //load lai du lieu
