@@ -44,7 +44,7 @@ namespace FreeLayout
                 //ngaychiid.Value = DateTime.Now.ToString("dd-MM-yyyy");
                 dtcate = DataConn.StoreFillDS("pro_get_categogy", System.Data.CommandType.StoredProcedure);
                 DataRow newRow1 = dtcate.NewRow();
-                newRow1["Description"] = "==Categogy==";
+                newRow1["Description"] = "==Category==";
                 dtcate.Rows.InsertAt(newRow1, 0);
                 dr_filter_Cate.DataSource = dtcate;
                 dr_filter_Cate.DataBind();
@@ -94,7 +94,7 @@ namespace FreeLayout
             }
             else
             {
-                if (category == "==Categogy==")
+                if (category == "==Category==")
                 {
                     //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);                                     
                     dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno, _modelname, _countryname);
@@ -123,7 +123,7 @@ namespace FreeLayout
             //string _fromdate = Request.Form[Date1.UniqueID];
             //string _todate = Request.Form[ngaychiid.UniqueID];
             //string category = dr_filter_Cate.SelectedValue;
-            //if (category == "==Categogy==")
+            //if (category == "==Category==")
             //{
             //    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
             //    dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
@@ -449,16 +449,18 @@ namespace FreeLayout
                                     }
                                     else if (SpecialETD_week != "")
                                     {
-                                        note_remark = "Customer request special ETD week : " + SpecialETD_week + "/Date :" + ETDdate.Substring(0, 9);
+                                        note_remark = "Customer request special ETD week : " + SpecialETD_week; // + "/Date :" + ETDdate.Substring(0, 9);
                                     }
                                     else if (Special_ETA_Date != "")
                                     {
-                                        note_remark = "Customer request ETA date by : " + Special_ETA_Date;
+                                        //note_remark = "Customer request ETA date by : " + Special_ETA_Date;
+                                        note_remark = "Customer request by ETA : " + Special_ETA_Date +"th";
                                     }
                                     else
                                     {
                                         //truong hop khong co sepecial note  => Show rõ "Carrier request early cut-off time"
-                                        note_remark = "Carrier request early cut-off time (no special note)";
+                                        //note_remark = "Carrier request early cut-off time (no special note)";
+                                        note_remark = "Vessel cut-off ";
                                     }
                                     //update remark  theo rule tren sql
                                     dt_update = DataConn.StoreFillDS("update_infor_remark", System.Data.CommandType.StoredProcedure, note_remark, ID_lichtau);
@@ -2241,6 +2243,10 @@ namespace FreeLayout
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
             string _checkpartno = Request.Form["check_history_search"];
+            string _checkrisky = Request.Form["ck_export_risky"];
+            string _checkTLLsum = Request.Form["ck_export_TLL_sum"];
+
+
             string category = dr_filter_Cate.SelectedValue;
             string uploadno = dr_filter_namegroup.SelectedValue;
 
@@ -2248,141 +2254,401 @@ namespace FreeLayout
             string _countryname = country_search.Value.ToString();
 
             string statushistory = "off";
+
+            string status_ex_risky = "off";
+            string status_TLL_sum = "off";
+
             if (_checkpartno == "on")
             {
                 statushistory = "on";
             }
-            //loc theo ngay
-            if (_fromdate == "" || _fromdate == "")
-            {                
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
-                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
+
+            if (_checkrisky == "on")
+            {
+                //truong hop xuat bao cao risky
+                status_ex_risky = "on";
+                string relativePath = "Mau_Report_Risky.xlsx";                                                                             
+                string localPath = Server.MapPath(relativePath);
+
+                // Đường dẫn để lưu file Excel mới
+                string newFileName = "Report_Risky.xlsx"; // Tên file mới
+                string newFilePath = Server.MapPath("Textfile/" + newFileName); // Đường dẫn đầy đủ
+
+                // Gọi phương thức để xử lý file Excel và lưu file mới
+                ProcessExcelFile(localPath, newFilePath, _fromdate, _todate, category, status_ex_risky);
+
+                // Tải xuống file mới
+                DownloadFile(newFilePath, newFileName);
+            }
+            else if (_checkTLLsum == "on") 
+            {
+                //truong hop xuat bao cao tong TLL
+                status_TLL_sum = "on";
+                
             }
             else
             {
-                if (category == "==Categogy==")
-                {                                                       
-                    dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno, _modelname, _countryname);
-                    if (_checkpartno == "on")
-                    {
-                        check_history_search.Checked = true;
-                    }
+                //truong hop export detail  (normal)
+                //loc theo ngay
+                if (_fromdate == "" || _fromdate == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
+                    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
                 }
                 else
                 {
-                    dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno, _modelname, _countryname);
-                    if (_checkpartno == "on")
+                    if (category == "==Category==")
                     {
-                        check_history_search.Checked = true;
+                        dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno, _modelname, _countryname);
+                        if (_checkpartno == "on")
+                        {
+                            check_history_search.Checked = true;
+                        }
                     }
+                    else
+                    {
+                        dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno, _modelname, _countryname);
+                        if (_checkpartno == "on")
+                        {
+                            check_history_search.Checked = true;
+                        }
+                    }
+
+                    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan_theongay", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
+                    //ngaychiid.Value = ngay + "-" + thang + "-" + nam;
                 }
 
-                //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan_theongay", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
-                //ngaychiid.Value = ngay + "-" + thang + "-" + nam;
-            }
-
-            //using (ExcelPackage pck = new ExcelPackage())
-            //{
-            //    ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
-
-            //    // Ghi header
-            //    for (int col = 0; col < dt_dowload.Columns.Count; col++)
-            //    {
-            //        ws.Cells[1, col + 1].Value = dt_dowload.Columns[col].ColumnName;
-            //    }
-
-            //    // Ghi dữ liệu
-            //    //for (int row = 0; row < dt_dowload.Rows.Count; row++)
-            //    //{
-            //    //    for (int col = 0; col < dt_dowload.Columns.Count; col++)
-            //    //    {
-            //    //        ws.Cells[row + 2, col + 1].Value = dt_dowload.Rows[row][col];
-            //    //    }
-            //    //}
-            //    for (int row = 0; row < dt_dowload.Rows.Count; row++)
-            //    {
-            //        for (int col = 0; col < dt_dowload.Columns.Count; col++)
-            //        {
-            //            var cell = ws.Cells[row + 2, col + 1];
-            //            var value = dt_dowload.Rows[row][col];
-
-            //            if (value is DateTime)
-            //            {
-            //                cell.Value = ((DateTime)value);
-            //                //cell.Style.Numberformat.Format = "dd/MM/yyyy";  // hoặc "yyyy-MM-dd"
-            //                cell.Style.Numberformat.Format = "MM/dd/yyyy";  // hoặc "yyyy-MM-dd"
-            //            }
-            //            else
-            //            {
-            //                cell.Value = value;
-            //            }
-            //        }
-            //    }
-
-            //    Response.Clear();
-            //    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            //    Response.AddHeader("content-disposition", "attachment; filename=Baocao_Vessel.xlsx");
-            //    Response.BinaryWrite(pck.GetAsByteArray());
-            //    Response.End();
-            //}
-            using (ExcelPackage pck = new ExcelPackage())
-            {
-                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
-
-                // Ghi header
-                for (int col = 0; col < dt_dowload.Columns.Count; col++)
+                using (ExcelPackage pck = new ExcelPackage())
                 {
-                    ws.Cells[1, col + 1].Value = dt_dowload.Columns[col].ColumnName;
-                    ws.Cells[1, col + 1].Style.Font.Bold = true; // cho đẹp
-                }
+                    ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
 
-                // Ghi dữ liệu
-                for (int row = 0; row < dt_dowload.Rows.Count; row++)
-                {
+                    // Ghi header
                     for (int col = 0; col < dt_dowload.Columns.Count; col++)
                     {
-                        var cell = ws.Cells[row + 2, col + 1];
-                        var value = dt_dowload.Rows[row][col];
+                        ws.Cells[1, col + 1].Value = dt_dowload.Columns[col].ColumnName;
+                        ws.Cells[1, col + 1].Style.Font.Bold = true; // cho đẹp
+                    }
 
-                        if (value is string s)
+                    // Ghi dữ liệu
+                    for (int row = 0; row < dt_dowload.Rows.Count; row++)
+                    {
+                        for (int col = 0; col < dt_dowload.Columns.Count; col++)
                         {
-                            if (double.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double d))
+                            var cell = ws.Cells[row + 2, col + 1];
+                            var value = dt_dowload.Rows[row][col];
+
+                            if (value is string s)
                             {
-                                cell.Value = d;
+                                if (double.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double d))
+                                {
+                                    cell.Value = d;
+                                    cell.Style.Numberformat.Format = "#,##0.00";
+                                }
+                                else
+                                {
+                                    cell.Value = s;
+                                }
+                            }
+                            else if (value is double || value is decimal || value is int || value is long || value is float)
+                            {
+                                cell.Value = Convert.ToDouble(value);
                                 cell.Style.Numberformat.Format = "#,##0.00";
+                            }
+                            else if (value is DateTime dt)
+                            {
+                                cell.Value = dt;
+                                cell.Style.Numberformat.Format = "MM/dd/yyyy";
                             }
                             else
                             {
-                                cell.Value = s;
+                                cell.Value = value?.ToString();
                             }
                         }
-                        else if (value is double || value is decimal || value is int || value is long || value is float)
+                    }
+
+                    // (tùy chọn) Tự động điều chỉnh độ rộng cột
+                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+                    Response.Clear();
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment; filename=Baocao_Vessel.xlsx");
+                    Response.BinaryWrite(pck.GetAsByteArray());
+                    Response.End();
+                }
+            }   
+
+        }
+
+        static void ProcessExcelFile(string filePath, string newFilePath, string tungay, string denngay, string category, string status_ex_risky)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            // Đảm bảo file tồn tại
+            if (!fileInfo.Exists)
+            {
+                throw new FileNotFoundException("File không tồn tại", filePath);
+            }
+
+            // Tạo file mới để lưu kết quả
+            FileInfo newFileInfo = new FileInfo(newFilePath);
+
+            //tao bang tam de zen vao excel file
+            DataTable dt_new = new DataTable();
+            dt_new.Columns.Add("id", typeof(Int32));
+            dt_new.Columns.Add("Cat", typeof(String));  
+            dt_new.Columns.Add("Shipmode", typeof(String));  
+            dt_new.Columns.Add("Consignee", typeof(String));  
+            dt_new.Columns.Add("Country", typeof(String));  
+            dt_new.Columns.Add("Destination", typeof(String));  
+            dt_new.Columns.Add("Model", typeof(String));  
+            dt_new.Columns.Add("Quantity", typeof(Int32));  
+            dt_new.Columns.Add("ATPdate", typeof(String));  
+            dt_new.Columns.Add("TTLcont", typeof(float));  
+            dt_new.Columns.Add("Exfactorydate", typeof(String));  
+            dt_new.Columns.Add("ETD", typeof(String));  
+            dt_new.Columns.Add("ETA", typeof(String));  
+            dt_new.Columns.Add("Cancombine", typeof(String));  
+            dt_new.Columns.Add("Risky", typeof(String));  
+            
+
+            DataTable dt_all = new DataTable();
+            DataTable dt_all_NG = new DataTable();
+            DataTable dt_group = new DataTable();
+            DataTable dt_sum_qty_TLL = new DataTable();
+
+            dt_group = DataConn.StoreFillDS("Select_Report_Risky_group", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
+            dt_all = DataConn.StoreFillDS("Select_Report_Risky", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
+
+            //dt_all_NG = DataConn.StoreFillDS("Select_Report_Risky_NG", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
+
+            dt_sum_qty_TLL = DataConn.StoreFillDS("Select_Report_Sum", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
+
+            int Sum_qty = 0;
+            float Sum_TTL_Volum = 0;
+
+            for (int i = 0; i < dt_group.Rows.Count; i++)
+            {
+                if (dt_group.Rows[i]["Cancombine"].ToString() == "OK")
+                {
+                    //lay all cate , tinh tong all cac ban ghi
+                    for (int j = 0; j < dt_all.Rows.Count; j++)
+                    {
+                        if (dt_all.Rows[j]["Shipmode"].ToString() == dt_group.Rows[i]["Shipmode"].ToString() && dt_all.Rows[j]["Destination"].ToString() == dt_group.Rows[i]["Destination"].ToString() 
+                            && dt_all.Rows[j]["Exfactorydate"].ToString() == dt_group.Rows[i]["Exfactorydate"].ToString() && dt_all.Rows[j]["Cancombine"].ToString() == dt_group.Rows[i]["Cancombine"].ToString())
                         {
-                            cell.Value = Convert.ToDouble(value);
-                            cell.Style.Numberformat.Format = "#,##0.00";
-                        }
-                        else if (value is DateTime dt)
-                        {
-                            cell.Value = dt;
-                            cell.Style.Numberformat.Format = "MM/dd/yyyy";
-                        }
-                        else
-                        {
-                            cell.Value = value?.ToString();
+                            Sum_qty = Sum_qty + Int32.Parse(dt_all.Rows[j]["Quantity"].ToString());
+                            Sum_TTL_Volum = Sum_TTL_Volum+ float.Parse(dt_all.Rows[j]["TTLcont"].ToString());
+
+                            dt_new.Rows.Add(i, dt_all.Rows[j]["Cat"].ToString(), dt_all.Rows[j]["Shipmode"].ToString(), dt_all.Rows[j]["Consignee"].ToString(), dt_all.Rows[j]["Country"].ToString(), dt_all.Rows[j]["Destination"].ToString(), dt_all.Rows[j]["Model"].ToString(), dt_all.Rows[j]["Quantity"].ToString(), dt_all.Rows[j]["ATPdate"].ToString(), dt_all.Rows[j]["TTLcont"].ToString(), dt_all.Rows[j]["Exfactorydate"].ToString(), dt_all.Rows[j]["ETD"].ToString(), dt_all.Rows[j]["ETA"].ToString(), dt_all.Rows[j]["Cancombine"].ToString(), dt_all.Rows[j]["Risky"].ToString());
                         }
                     }
                 }
+                else 
+                {
+                    //truong hop NG chi lay theo cate
+                    for (int j = 0; j < dt_all.Rows.Count; j++)
+                    {
+                        if (dt_all.Rows[j]["Shipmode"].ToString() == dt_group.Rows[i]["Shipmode"].ToString() 
+                            && dt_all.Rows[j]["Destination"].ToString() == dt_group.Rows[i]["Destination"].ToString()
+                            && dt_all.Rows[j]["Exfactorydate"].ToString() == dt_group.Rows[i]["Exfactorydate"].ToString()
+                            && dt_all.Rows[j]["Cancombine"].ToString() == dt_group.Rows[i]["Cancombine"].ToString() 
+                            && dt_all.Rows[j]["Cat"].ToString() == dt_group.Rows[i]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
+                        {
+                            Sum_qty = Sum_qty + Int32.Parse(dt_all.Rows[j]["Quantity"].ToString());
+                            Sum_TTL_Volum = Sum_TTL_Volum + float.Parse(dt_all.Rows[j]["TTLcont"].ToString());
 
-                // (tùy chọn) Tự động điều chỉnh độ rộng cột
-                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+                            dt_new.Rows.Add(i, dt_all.Rows[j]["Cat"].ToString(), dt_all.Rows[j]["Shipmode"].ToString(), dt_all.Rows[j]["Consignee"].ToString(), dt_all.Rows[j]["Country"].ToString(), dt_all.Rows[j]["Destination"].ToString(), dt_all.Rows[j]["Model"].ToString(), dt_all.Rows[j]["Quantity"].ToString(), dt_all.Rows[j]["ATPdate"].ToString(), dt_all.Rows[j]["TTLcont"].ToString(), dt_all.Rows[j]["Exfactorydate"].ToString(), dt_all.Rows[j]["ETD"].ToString(), dt_all.Rows[j]["ETA"].ToString(), dt_all.Rows[j]["Cancombine"].ToString(), dt_all.Rows[j]["Risky"].ToString());
+                        }
+                    }
 
-                Response.Clear();
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment; filename=Baocao_Vessel.xlsx");
-                Response.BinaryWrite(pck.GetAsByteArray());
-                Response.End();
+                }
+                //tinh tong bao cao risky theo group o day 
+                dt_new.Rows.Add(0, "TTL", "", "", "", "", "", Sum_qty, "", Sum_TTL_Volum, "", "", "", "", "");
+                //reset tong ve 0
+                Sum_qty = 0;
+                Sum_TTL_Volum = 0;
             }
 
+
+
+            DataTable dtexcel = new DataTable();
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets["Sheet1"];
+                //ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                //worksheet.Cells["D5"].Value = tungay;// "Thông tin mới";
+
+                //if (worksheet == null)
+                //{
+                //    throw new Exception("Không tìm thấy sheet 'Sheet1' trong file Excel.");
+                //}
+
+                int row = 3;
+                int i = 0;
+                DateTime currentDate = DateTime.Today;
+                // Lấy ngày hiện tại +1, +2, +3, ...
+                //DateTime datePlus1 = currentDate.AddDays(1);
+                //DateTime datePlus2 = currentDate.AddDays(2);
+                //DateTime datePlus3 = currentDate.AddDays(3);
+                //DateTime datePlus4 = currentDate.AddDays(4);
+                //DateTime datePlus5 = currentDate.AddDays(5);
+
+                // Ghi ngày vào các ô trong Excel (chú ý rằng chỉ số cột bắt đầu từ 1)
+                worksheet.Cells[1, 9].Value = dt_sum_qty_TLL.Rows[0][0].ToString();
+                worksheet.Cells[1, 11].Value = dt_sum_qty_TLL.Rows[0][1].ToString();
+                //worksheet.Cells[1, 16].Value = datePlus1.ToString("dd");
+                //worksheet.Cells[1, 17].Value = datePlus3.ToString("dd");
+                //worksheet.Cells[1, 18].Value = datePlus4.ToString("dd");
+                //worksheet.Cells[1, 19].Value = datePlus5.ToString("dd");
+
+                //foreach (DataRow dataRow in dtexcel.Rows)
+                foreach (DataRow dataRow in dt_new.Rows)
+                {
+                    i++;
+                    worksheet.Cells[row, 2].Value = dataRow["id"]; //i;
+                    worksheet.Cells[row, 3].Value = dataRow["Cat"];                   
+                    worksheet.Cells[row, 4].Value = dataRow["Shipmode"];
+                    worksheet.Cells[row, 5].Value = dataRow["Consignee"];
+                    worksheet.Cells[row, 6].Value = dataRow["Country"]; //
+                    worksheet.Cells[row, 7].Value = dataRow["Destination"];
+                    worksheet.Cells[row, 8].Value = dataRow["Model"];
+                    worksheet.Cells[row, 9].Value = dataRow["Quantity"];
+                    //worksheet.Cells[row, 10].Value = dataRow["ATPdate"];
+
+                    if (dataRow["ATPdate"] != DBNull.Value)
+                    {
+                        DateTime atpDate;
+                        if (DateTime.TryParse(dataRow["ATPdate"].ToString(), out atpDate))
+                        {
+                            worksheet.Cells[row, 10].Value = atpDate;
+                            worksheet.Cells[row, 10].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 10].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 10].Value = "";
+                    }
+
+                    //worksheet.Cells[row, 11].Value = dataRow["TTLcont"]; 
+                    if (dataRow["TTLcont"] != DBNull.Value)
+                    {
+                        double ttlContValue;
+                        if (double.TryParse(dataRow["TTLcont"].ToString(), out ttlContValue))
+                        {
+                            // Làm tròn 3 chữ số thập phân
+                            ttlContValue = Math.Round(ttlContValue, 3);
+
+                            worksheet.Cells[row, 11].Value = ttlContValue;
+                            worksheet.Cells[row, 11].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 11].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 11].Value = "";
+                    }
+
+                    //worksheet.Cells[row, 12].Value = dataRow["Exfactorydate"];
+                    if (dataRow["Exfactorydate"] != DBNull.Value)
+                    {
+                        DateTime exFactoryDate;
+                        if (DateTime.TryParse(dataRow["Exfactorydate"].ToString(), out exFactoryDate))
+                        {
+                            worksheet.Cells[row, 12].Value = exFactoryDate;
+                            worksheet.Cells[row, 12].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 12].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 12].Value = "";
+                    }
+
+                    //worksheet.Cells[row, 13].Value = dataRow["ETD"];
+                    if (dataRow["ETD"] != DBNull.Value)
+                    {
+                        DateTime ETD;
+                        if (DateTime.TryParse(dataRow["ETD"].ToString(), out ETD))
+                        {
+                            worksheet.Cells[row, 13].Value = ETD;
+                            worksheet.Cells[row, 13].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 13].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 13].Value = "";
+                    }
+
+                    //worksheet.Cells[row, 14].Value = dataRow["ETA"];
+                    if (dataRow["ETA"] != DBNull.Value)
+                    {
+                        DateTime eta;
+                        if (DateTime.TryParse(dataRow["ETA"].ToString(), out eta))
+                        {
+                            worksheet.Cells[row, 14].Value = eta;
+                            worksheet.Cells[row, 14].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 14].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 14].Value = "";
+                    }
+
+                    worksheet.Cells[row, 15].Value = dataRow["Cancombine"];
+                    worksheet.Cells[row, 16].Value = dataRow["Risky"];                                      
+
+                    row++;
+                }
+                // Lưu vào file mới
+                package.SaveAs(newFileInfo);
+            }
+        }
+
+
+
+        private void DownloadFile(string filePath, string fileName)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            if (fileInfo.Exists)
+            {
+                // Đặt các header cho tải xuống
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName);
+                Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+
+                // Ghi nội dung file vào response
+                Response.WriteFile(fileInfo.FullName);
+                Response.End();
+            }
+            else
+            {
+                Response.Write("File không tồn tại.");
+            }
         }
 
         //so sanh tuong quan giua 2 ngay trong tuan
@@ -2494,6 +2760,8 @@ namespace FreeLayout
                     OleDbConnection excelConn = null;
                     OleDbDataReader objBulkReader = null;
 
+                    int dongloi = 0;
+
                     try
                     {
                         DataTable dt_checkupload = new DataTable();
@@ -2596,11 +2864,15 @@ namespace FreeLayout
                             DateTime ngayATP;
 
 
+                            //int dongloi = 0;
+
+
                             if (Category_ == "DECT")
                             {
                                 for (int i = 0; i < dtExcelData.Rows.Count; i++)
                                 {
                                     countlap = 0;
+                                    dongloi = i;
 
                                     Model = dtExcelData.Rows[i]["produce_model"].ToString().Trim();
                                     Cat = dtExcelData.Rows[i]["Category"].ToString();
@@ -2845,7 +3117,7 @@ namespace FreeLayout
                     }
                     catch (Exception ex)
                     {
-                        lblConfirm.Text = ex.Message;
+                        lblConfirm.Text = ex.Message + dongloi;
                         lblConfirm.Attributes.Add("style", "color:red");
                         //throw;
                     }

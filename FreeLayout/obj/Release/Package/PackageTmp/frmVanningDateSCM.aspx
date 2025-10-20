@@ -27,6 +27,11 @@
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
 
     <style>
+    table.dataTable th,
+table.dataTable td {
+    text-align: center !important;
+}
+
         .horizontal-radio-group {
             display: flex;
             flex-wrap: wrap; /* Tự xuống hàng nếu màn hình nhỏ */
@@ -152,7 +157,7 @@
                             <!-- Nhóm nút 3 -->
                             <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
                                 <button class="btn btn-primary" type="button" runat="server" onserverclick="btnTinhLichTau" style="margin-bottom: 10px; width: 250px;">
-                                    <i class="fa fa-calculator"></i>&nbsp; Define ETD Psnv
+                                    <i class="fa fa-calculator"></i>&nbsp; Define ETD PSNV
                                 </button>
                                 <button class="btn btn-primary" type="button" runat="server" onserverclick="btnSplitCont" style="width: 250px;">
                                     <i class="fas fa-compress"></i>&nbsp; Balance Cont weekly
@@ -161,7 +166,7 @@
                             <!-- Nhóm nút 4 -->
                             <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
                                 <button class="btn btn-primary" type="button" runat="server" onserverclick="btnRisK" style="margin-bottom: 10px; width: 250px;">
-                                    <i class="fas fa-exclamation-triangle"></i>&nbsp; Findout Risky
+                                    <i class="fas fa-exclamation-triangle"></i>&nbsp; Find out Risky
                                 </button>
 
                                 <button class="btn btn-primary" type="button" runat="server" onserverclick="btnRemark" style="width: 250px;">
@@ -190,7 +195,7 @@
                 <!-- Checkbox -->
                 <div style="display: flex; align-items: center;">
                     <asp:CheckBox ID="check_history_search" runat="server" Text="" />
-                    <label style="margin-left: 5px;">Show History</label>
+                    <label style="margin-left: 5px; margin-top:7px;">Show History</label>
                 </div>
 
                 <!-- From / To Date -->
@@ -231,6 +236,15 @@
                     </div>
                 </div>
 
+             <div style="display: flex; align-items: center;">
+                 <asp:CheckBox ID="ck_export_risky" runat="server" Text="" />
+                 <label style="margin-left: 5px; margin-top:7px;">Ex_Risky</label>
+             </div>
+             <div style="display: flex; align-items: center;">
+                <asp:CheckBox ID="ck_export_TLL_sum" runat="server" Text="" />
+                <label style="margin-left: 5px; margin-top:7px;">Ex_TLL_Summary</label>
+            </div>
+
                 <!-- Filter button -->
                 <div>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
@@ -263,8 +277,8 @@
                             <th>ATP jit date</th>
 
                             <%--<th>Volume</th>--%>
-                            <th>TTL gross weight (KG)</th>
-                            <th>TTL Volume (M3)</th>
+                            <th>Gross weight (KG)</th>
+                            <th>Volume (M3)</th>
                             <%-- <th>TTLcont</th>--%>
                             <%-- <th>Qtycont</th>--%>
                             <%--<th>TTLcont2</th>--%>
@@ -275,7 +289,7 @@
                             <%--<th>Cancombine</th>--%>
                             <%-- <th>Risky</th>--%>
                             <%-- <th>NameGroup</th>--%>
-                            <th>Action</th>
+                            <th>Adjustment</th>
                         </tr>
                     </tr>
                 </thead>
@@ -381,8 +395,8 @@
                         <th>ATP jit date</th>
 
                         <%--<th>Volume</th>--%>
-                        <th>TTL gross weight (KG)</th>
-                        <th>TTL Volume (M3)</th>
+                        <th>Gross weight (KG)</th>
+                        <th>Volume (M3)</th>
                         <%-- <th>TTLcont</th>--%>
                         <%-- <th>Qtycont</th>--%>
                         <%--<th>TTLcont2</th>--%>
@@ -393,7 +407,7 @@
                         <%--<th>Cancombine</th>--%>
                         <%-- <th>Risky</th>--%>
                         <%-- <th>NameGroup</th>--%>
-                        <th>Action</th>
+                        <th>Adjustment</th>
                     </tr>
                 </tfoot>
             </table>

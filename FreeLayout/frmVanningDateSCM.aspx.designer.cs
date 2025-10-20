@@ -141,6 +141,24 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.DropDownList dr_filter_Cate;
 
         /// <summary>
+        /// ck_export_risky control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ck_export_risky;
+
+        /// <summary>
+        /// ck_export_TLL_sum control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ck_export_TLL_sum;
+
+        /// <summary>
         /// IDedit control.
         /// </summary>
         /// <remarks>
