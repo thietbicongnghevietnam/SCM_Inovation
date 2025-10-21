@@ -37,7 +37,7 @@ namespace FreeLayout
             {
                 //Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
                 //ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
-               
+
 
                 dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                 //Date1.Value = DateTime.Now.ToString("dd-MM-yyyy");
@@ -104,7 +104,7 @@ namespace FreeLayout
                     }
                 }
                 else
-                {                   
+                {
                     dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno, _modelname, _countryname);
                     if (_checkpartno == "on")
                     {
@@ -140,7 +140,7 @@ namespace FreeLayout
             //this.Controls.Add(lblMessage);
         }
 
-        protected void btnSplitCont(object sender, EventArgs e) 
+        protected void btnSplitCont(object sender, EventArgs e)
         {
             DataTable dt_splitcont = new DataTable();
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -161,7 +161,7 @@ namespace FreeLayout
                 //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
             }
-            else 
+            else
             {
                 //chia cont
                 if (Category_ == "DECT")
@@ -208,7 +208,7 @@ namespace FreeLayout
                 //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
             }
-            else 
+            else
             {
                 try
                 {
@@ -238,7 +238,7 @@ namespace FreeLayout
             //}
             //else
             //{
-                
+
             //}
         }
 
@@ -260,15 +260,15 @@ namespace FreeLayout
                     Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check information again!'); ", true);
                 }
             }
-            else 
+            else
             {
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG,user null!'); ", true);
             }
-                
+
         }
 
         //Updatethongtin
-        protected void Updatethongtin(object sender, EventArgs e) 
+        protected void Updatethongtin(object sender, EventArgs e)
         {
             DataTable dt_update = new DataTable();
             string Exfactory_date = Request.Form[exFactoryDate.UniqueID];
@@ -290,7 +290,7 @@ namespace FreeLayout
                         Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
                         dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                     }
-                    else 
+                    else
                     {
                         Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Kiem tra lai thong tin!'); ", true);
                     }
@@ -302,7 +302,7 @@ namespace FreeLayout
             }
 
         }
-        protected void btnRisK(object sender, EventArgs e) 
+        protected void btnRisK(object sender, EventArgs e)
         {
             DataTable dt_tinhlichtau = new DataTable();
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -323,7 +323,7 @@ namespace FreeLayout
                 //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon ngay tinh lich tau!'); ", true);
             }
-            else if (Category_ == "") 
+            else if (Category_ == "")
             {
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
             }
@@ -392,7 +392,7 @@ namespace FreeLayout
             return value2.Date >= startOfPreviousWeek && value2.Date <= endOfPreviousWeek;
         }
 
-        protected void btnRemark(object sender, EventArgs e) 
+        protected void btnRemark(object sender, EventArgs e)
         {
             DataTable dt_remark = new DataTable();
             DataTable dt_check_specialnote = new DataTable();
@@ -418,21 +418,21 @@ namespace FreeLayout
             {
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon category!'); ", true);
             }
-            else 
+            else
             {
                 DataTable dt_update = new DataTable();
                 dt_remark = DataConn.StoreFillDS("Calculator_lichtau", System.Data.CommandType.StoredProcedure, Category_, _fromdate, _todate);
                 try
                 {
                     if (Category_ == "DECT")
-                    { 
+                    {
                         for (int i = 0; i < dt_remark.Rows.Count; i++)
                         {
                             if (dt_remark.Rows[i]["Destination"].ToString() == "")
                             {
                                 //nothing khong tinh remark
                             }
-                            else 
+                            else
                             {
                                 //lay ngay ETD PSNV = ngay ex-factory date
                                 string Exfactorydate = dt_remark.Rows[i]["Exfactorydate"].ToString(); //lay ngay exfactory date
@@ -508,7 +508,7 @@ namespace FreeLayout
                                 {
                                     //nothing
                                 }
-                            }                                                                                                                         
+                            }
                         }
 
                         //load lai du lieu
@@ -532,7 +532,7 @@ namespace FreeLayout
 
         }
 
-        protected void btnTinhLichTau(object sender, EventArgs e) 
+        protected void btnTinhLichTau(object sender, EventArgs e)
         {
             DataTable dt_tinhlichtau = new DataTable();
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -569,7 +569,7 @@ namespace FreeLayout
                         //tinh toan lich tau trong code C#
                         int count = 0;
                         if (Category_ == "DECT")
-                        {                            
+                        {
                             for (int i = 0; i < dt_tinhlichtau.Rows.Count; i++)
                             {
                                 string ID_lichtau = dt_tinhlichtau.Rows[i]["ID"].ToString();
@@ -633,19 +633,19 @@ namespace FreeLayout
                                     //check truong hop ca 2 lich deu khac tuan ==> so sanh ngay 
                                     bool isFCL = false;
                                     bool isLCL = false;
-                                    if (day1.HasValue && day1b.HasValue) 
+                                    if (day1.HasValue && day1b.HasValue)
                                     {
                                         isFCL = IsDifferentWeek2(day1, day1b);
                                     }
-                                    if (day2.HasValue && day2b.HasValue) 
+                                    if (day2.HasValue && day2b.HasValue)
                                     {
                                         isLCL = IsDifferentWeek2(day2, day2b);
-                                    }                                        
+                                    }
                                     if (isFCL == true && isLCL == true)   //check truong hop ca 2 lich deu khac tuan ==> so sanh ngay 
                                     {
                                         chk_khactuan = true;
                                     }
-                                    else 
+                                    else
                                     {
                                         chk_khactuan = false;
                                     }
@@ -703,7 +703,7 @@ namespace FreeLayout
 
                                                         count = count + 1;
                                                     }
-                                                    else 
+                                                    else
                                                     {
                                                         //(int)day2 = (int)day1 //*** truon hop nay tam thoi cu lay theo lich FCL
                                                         string inputDay = FCL_Ex_factory;
@@ -719,7 +719,7 @@ namespace FreeLayout
                                                         count = count + 1;
                                                     }
                                                 }
-                                                else 
+                                                else
                                                 {
                                                     if ((int)day1 < (int)day2)
                                                     {
@@ -799,7 +799,7 @@ namespace FreeLayout
 
 
                                                         }
-                                                        else 
+                                                        else
                                                         {
                                                             //bool isDiffWeek = IsDifferentWeek(day2, day2b);  //lay day2b lam goc
                                                             bool isDiffWeek = IsDifferentWeek2(day2, day2b);  //lay day2b lam goc
@@ -868,7 +868,7 @@ namespace FreeLayout
                                                                 count = count + 1;
                                                             }
                                                         }
-                                                        
+
                                                     }
                                                     else if ((int)day2 < (int)day1)
                                                     {
@@ -883,7 +883,7 @@ namespace FreeLayout
                                                         if (weekOfMonth_rq == 1) //&& (int)day2 < (int)day1b //tuan dau cua thang  ****tuan dau - thang 9
                                                         //if (isFirstWeekOfMonth == true)
                                                         {
-                                                            
+
                                                             //lay ngay ETD => cua FCL so sanh voi ngay ATP co cung thang hay khong????
                                                             string check_ETD = FCL_ETD;   //lay ngay ETD => cua FCL
                                                             DayOfWeek ck_ETD = ConvertToDayOfWeek(check_ETD);
@@ -953,7 +953,7 @@ namespace FreeLayout
                                                             }
 
                                                         }
-                                                        else 
+                                                        else
                                                         {
                                                             //1*so sánh tương quan ngày Ex-factory và ngày ETD xem có cùng tuần hay không? 
                                                             //neu khac tuan thi phai lay lich tau khac
@@ -1110,7 +1110,7 @@ namespace FreeLayout
 
                                                     }
                                                 }
-                                                
+
                                             }
                                             else if (day1.HasValue && !day2.HasValue)
                                             {
@@ -1122,7 +1122,7 @@ namespace FreeLayout
                                                 DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
                                                 DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                                 DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                                                                                        
+
                                                 //tinh ra ngay ETA =  Ngay ETD + transitime
                                                 DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
                                                 dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
@@ -1211,7 +1211,7 @@ namespace FreeLayout
 
                                                         count = count + 1;
                                                     }
-                                                    else 
+                                                    else
                                                     {
                                                         //(int)day2 = (int)day1 //*** truon hop nay tam thoi cu lay theo lich FCL
                                                         //lay theo lich FCL
@@ -1229,7 +1229,7 @@ namespace FreeLayout
                                                     }
 
                                                 }
-                                                else 
+                                                else
                                                 {
                                                     if ((int)day1 < (int)day2)
                                                     {
@@ -1368,7 +1368,7 @@ namespace FreeLayout
                                                         //*****de y xem con truong hop so sanh theo transit time theo truong hop nay khong????
                                                     }
                                                 }
-  
+
                                             }
                                             else if (day1.HasValue && !day2.HasValue)
                                             {
@@ -1379,12 +1379,12 @@ namespace FreeLayout
 
                                                 DateTime resultDay = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay);   // tinh ra ngay Ex-factory day  //ngay tuan dac biet  //test 2******
                                                 DateTime resultDay2 = GetSpecificDayInWeek(mondayOfSpecialWeek, targetDay2);  //tinh ra ngay ETD
-                                                                                                                             
+
                                                 DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
                                                 dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                 count = count + 1;
                                             }
-                                            else if (!day1.HasValue && day2.HasValue) 
+                                            else if (!day1.HasValue && day2.HasValue)
                                             {
                                                 string inputDay = LLC_Ex_factory;// "TUE"; // giá trị truyền vào thu 3
                                                 DayOfWeek targetDay = ConvertToDayOfWeek(inputDay);
@@ -1416,7 +1416,7 @@ namespace FreeLayout
                                         //DateTime ngayCongSoNgay = ngayGoc.AddDays(soNgay); // ngày sau khi cộng 14 ngày
                                         DateTime ngayThay = new DateTime(ngayGoc.Year, ngayGoc.Month, soNgay);
                                         DateTime ketQua = ngayThay;
-     
+
                                         //dua vao so ngay transit time la bao nhieu ? thi cong them so thang
                                         //co 2 transit time => chon transitme cua lich tau nao???
                                         //??? tam lay transit time cua lich tau 1
@@ -1424,7 +1424,7 @@ namespace FreeLayout
                                         {
                                             ketQua = ngayThay.AddMonths(1); // cộng thêm 1 tháng vào ngày trên   
                                         }
-                                        else 
+                                        else
                                         {
                                             ketQua = ngayThay.AddMonths(2);
                                         }
@@ -1466,7 +1466,7 @@ namespace FreeLayout
 
                                                     count = count + 1;
                                                 }
-                                                else 
+                                                else
                                                 {
                                                     //khac tuan nhau => so sanh xem tuan nao truoc thi lay
                                                     if (date_request1.Date < ngayDatru1.Date)
@@ -1487,7 +1487,7 @@ namespace FreeLayout
 
                                                         count = count + 1;
                                                     }
-                                                    else 
+                                                    else
                                                     {
                                                         // giu nguyen cach tinh cu *****
                                                         string inputDay = FCL_ETD;
@@ -1506,7 +1506,7 @@ namespace FreeLayout
                                                         count = count + 1;
                                                     }
                                                 }
-    
+
                                             }
                                             else if ((int)day22 < (int)day11)
                                             {
@@ -1538,7 +1538,7 @@ namespace FreeLayout
 
                                                     count = count + 1;
                                                 }
-                                                else 
+                                                else
                                                 {
                                                     //khac tuan nhau => so sanh xem tuan nao truoc thi lay
                                                     if (date_request1.Date < ngayDatru2.Date)
@@ -1551,13 +1551,13 @@ namespace FreeLayout
 
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay);   //tinh ra ngay ETD
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay2);  // tinh ra ngay Ex-factory day  (***truoc 1 tuan tau chay***)                                                                                                                            
-                                                                                                                                   
+
                                                         DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
                                                         dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
 
                                                         count = count + 1;
                                                     }
-                                                    else 
+                                                    else
                                                     {
                                                         // giu nguyen cach tinh cu *****
                                                         string inputDay = LLC_ETD;// "MON"; // giá trị truyền vào thu2
@@ -1567,14 +1567,14 @@ namespace FreeLayout
 
                                                         DateTime resultDay2 = GetSpecificDayInWeek(ngayDatru2, targetDay);   //tinh ra ngay ETD
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(ngayDatru2, targetDay2);  // tinh ra ngay Ex-factory day  (***truoc 1 tuan tau chay***)                                                                                                                            
-                                                                                                                                    
+
                                                         DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
                                                         dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
 
                                                         count = count + 1;
                                                     }
                                                 }
-    
+
                                             }
                                             else if (Int32.Parse(stansit_time) > Int32.Parse(stansit_time2))
                                             {
@@ -1610,7 +1610,7 @@ namespace FreeLayout
 
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay);   //tinh ra ngay ETD
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay2);  // tinh ra ngay Ex-factory day
-                                                                                                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                                                                                                       //tinh ra ngay ETA =  Ngay ETD + transitime
                                                         DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
                                                         dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                         count = count + 1;
@@ -1668,8 +1668,8 @@ namespace FreeLayout
 
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay);   //tinh ra ngay ETD
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay2);  // tinh ra ngay Ex-factory day  (***truoc 1 tuan tau chay***)
-                                                                                                                                    //DateTime ngayTru1Tuan2 = resultDay2.AddDays(-7); // Trừ 7 ngày
-                                                                                                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                                                                                                       //DateTime ngayTru1Tuan2 = resultDay2.AddDays(-7); // Trừ 7 ngày
+                                                                                                                                       //tinh ra ngay ETA =  Ngay ETD + transitime
                                                         DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time2));
                                                         dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
 
@@ -1693,9 +1693,9 @@ namespace FreeLayout
                                                         count = count + 1;
                                                     }
                                                 }
-  
+
                                             }
-                                            else 
+                                            else
                                             {
                                                 //lay teho trantsit time1  //lay theo FCL
                                                 DateTime ngayDatru1 = ketQua.AddDays(-Int32.Parse(stansit_time));
@@ -1729,7 +1729,7 @@ namespace FreeLayout
 
                                                         DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay);   //tinh ra ngay ETD
                                                         DateTime resultDay = GetSpecificDayInPreviousWeek(date_request1, targetDay2);  // tinh ra ngay Ex-factory day
-                                                                                                                                    //tinh ra ngay ETA =  Ngay ETD + transitime
+                                                                                                                                       //tinh ra ngay ETA =  Ngay ETD + transitime
                                                         DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
                                                         dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
                                                         count = count + 1;
@@ -1750,7 +1750,7 @@ namespace FreeLayout
                                                         count = count + 1;
                                                     }
                                                 }
-    
+
                                             }
                                         }
                                         else if ((int)day1 < (int)day2)
@@ -1815,8 +1815,8 @@ namespace FreeLayout
                                                     count = count + 1;
                                                 }
                                             }
-                                            
-                                            
+
+
                                         }
                                         else if ((int)day2 < (int)day1)
                                         {
@@ -1888,7 +1888,7 @@ namespace FreeLayout
                                     {
                                         //truong hop 2  => cate dect khong co truong hop 2
                                     }
-                                    else 
+                                    else
                                     {
                                         //truong hop khong co ngay special note => quy ra tuần ATP -> Đối chiếu lịch tàu trong tuần đó 
 
@@ -1936,7 +1936,7 @@ namespace FreeLayout
 
                                                     count = count + 1;
                                                 }
-                                                else 
+                                                else
                                                 {
                                                     //(int)day2 = (int)day1 //*** truon hop nay tam thoi cu lay theo lich FCL
                                                     string inputDay = FCL_Ex_factory;
@@ -1954,7 +1954,7 @@ namespace FreeLayout
                                                     count = count + 1;
                                                 }
                                             }
-                                            else 
+                                            else
                                             {
                                                 if ((int)day1 < (int)day2)
                                                 {
@@ -2190,7 +2190,7 @@ namespace FreeLayout
                                             DayOfWeek targetDay2 = ConvertToDayOfWeek(inputDay2);
                                             DateTime resultDay = GetSpecificDayInWeek(date_request1, targetDay);   // tinh ra ngay Ex-factory day
                                             DateTime resultDay2 = GetSpecificDayInWeek(date_request1, targetDay2);  //tinh ra ngay ETD
-                                                                                                                   
+
                                             //tinh ra ngay ETA =  Ngay ETD + transitime
                                             DateTime dateETA = resultDay2.AddDays(Int32.Parse(stansit_time));
                                             dt_update = DataConn.StoreFillDS("Update_lichtau2", System.Data.CommandType.StoredProcedure, resultDay, resultDay2, ID_lichtau, dateETA);
@@ -2224,9 +2224,9 @@ namespace FreeLayout
                                 }
                             }
                         }
-                        else if (Category_ == "MW") 
+                        else if (Category_ == "MW")
                         {
-                        
+
                         }
                         else if (Category_ == "DP")
                         {
@@ -2241,7 +2241,7 @@ namespace FreeLayout
                             //load lai du lieu
                             dt_plan = DataConn.StoreFillDS("Select_Upload_VanningDate", System.Data.CommandType.StoredProcedure);
                         }
-                        else 
+                        else
                         {
                             lblConfirm.Text = "so ban ghi duoc update : " + count;
                             lblConfirm.Attributes.Add("style", "color:red");
@@ -2259,9 +2259,9 @@ namespace FreeLayout
                         throw ex;
                     }
 
-                   
+
                 }
- 
+
             }
 
 
@@ -2269,9 +2269,9 @@ namespace FreeLayout
         }
 
         public void Download_Click(object sender, EventArgs e)
-        {            
+        {
 
-            DataTable dt_dowload = new DataTable();            
+            DataTable dt_dowload = new DataTable();
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
             string _checkpartno = Request.Form["check_history_search"];
@@ -2299,7 +2299,7 @@ namespace FreeLayout
             {
                 //truong hop xuat bao cao risky
                 status_ex_risky = "on";
-                string relativePath = "Mau_Report_Risky.xlsx";                                                                             
+                string relativePath = "Mau_Report_Risky.xlsx";
                 string localPath = Server.MapPath(relativePath);
 
                 // Đường dẫn để lưu file Excel mới
@@ -2312,102 +2312,244 @@ namespace FreeLayout
                 // Tải xuống file mới
                 DownloadFile(newFilePath, newFileName);
             }
-            else if (_checkTLLsum == "on") 
+            else if (_checkTLLsum == "on")
             {
                 //truong hop xuat bao cao tong TLL
                 status_TLL_sum = "on";
-                
+
             }
             else
             {
                 //truong hop export detail  (normal)
-                //loc theo ngay
-                if (_fromdate == "" || _fromdate == "")
+
+                string relativePath = "Mau_Report_Detail.xlsx";
+                string localPath = Server.MapPath(relativePath);
+
+                // Đường dẫn để lưu file Excel mới
+                string newFileName = "Report_Detail.xlsx"; // Tên file mới
+                string newFilePath = Server.MapPath("Textfile/" + newFileName); // Đường dẫn đầy đủ
+
+                // Gọi phương thức để xử lý file Excel và lưu file mới
+                ProcessExcelFile1(localPath, newFilePath, _fromdate, _todate, category, statushistory);
+
+                // Tải xuống file mới
+                DownloadFile(newFilePath, newFileName);
+
+            }
+
+        }
+
+        static void ProcessExcelFile1(string filePath, string newFilePath, string tungay, string denngay, string category, string status_ex) 
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            // Đảm bảo file tồn tại
+            if (!fileInfo.Exists)
+            {
+                throw new FileNotFoundException("File không tồn tại", filePath);
+            }
+            // Tạo file mới để lưu kết quả
+            FileInfo newFileInfo = new FileInfo(newFilePath);
+            
+            DataTable dt_all = new DataTable();
+            DataTable dt_sum_qty_TLL = new DataTable();
+            string uploadno = "";
+            string _modelname = "";
+            string _countryname = "";
+
+            dt_sum_qty_TLL = DataConn.StoreFillDS("Select_Report_Sum", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex);
+            //loc theo ngay
+            if (category == "==Category==")
+            {
+                dt_all = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, tungay, denngay, status_ex, uploadno, _modelname, _countryname);                
+            }
+            else
+            {
+                dt_all = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex, uploadno, _modelname, _countryname);                
+            }
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets["Sheet1"];
+                //ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                //worksheet.Cells["D5"].Value = tungay;// "Thông tin mới";
+
+                if (worksheet == null)
                 {
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
-                    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
+                    throw new Exception("Không tìm thấy sheet 'Sheet1' trong file Excel.");
                 }
-                else
+
+                int row = 3;
+                int i = 0;
+                //DateTime currentDate = DateTime.Today;
+               
+                //tinh tong cac cot va zen vo o cell
+                worksheet.Cells[1, 8].Value = dt_sum_qty_TLL.Rows[0][0].ToString();
+                worksheet.Cells[1, 10].Value = dt_sum_qty_TLL.Rows[0][2].ToString();
+                worksheet.Cells[1, 11].Value = dt_sum_qty_TLL.Rows[0][3].ToString();
+               
+
+                //foreach (DataRow dataRow in dtexcel.Rows)
+                foreach (DataRow dataRow in dt_all.Rows)
                 {
-                    if (category == "==Category==")
+                    i++;
+                    worksheet.Cells[row, 1].Value = i; // dataRow["id"]; //
+                    worksheet.Cells[row, 2].Value = dataRow["Cat"];
+                    worksheet.Cells[row, 3].Value = dataRow["Shipmode"];
+                    worksheet.Cells[row, 4].Value = dataRow["Consignee"];
+                    worksheet.Cells[row, 5].Value = dataRow["Country"]; //
+                    worksheet.Cells[row, 6].Value = dataRow["Destination"];
+                    worksheet.Cells[row, 7].Value = dataRow["Model"];
+                    worksheet.Cells[row, 8].Value = dataRow["Quantity"];
+                    //worksheet.Cells[row, 10].Value = dataRow["ATPdate"];
+                    if (dataRow["ATPdate"] != DBNull.Value)
                     {
-                        dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, statushistory, uploadno, _modelname, _countryname);
-                        if (_checkpartno == "on")
+                        DateTime atpDate;
+                        if (DateTime.TryParse(dataRow["ATPdate"].ToString(), out atpDate))
                         {
-                            check_history_search.Checked = true;
+                            worksheet.Cells[row, 9].Value = atpDate;
+                            worksheet.Cells[row, 9].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 9].Value = "";
                         }
                     }
                     else
                     {
-                        dt_dowload = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, _fromdate, _todate, category, statushistory, uploadno, _modelname, _countryname);
-                        if (_checkpartno == "on")
+                        worksheet.Cells[row, 9].Value = "";
+                    }
+                    //worksheet.Cells[row, 10].Value = dataRow["Grossweight"];
+                    if (dataRow["Grossweight"] != DBNull.Value)
+                    {
+                        double GWeight;
+                        if (double.TryParse(dataRow["Grossweight"].ToString(), out GWeight))
                         {
-                            check_history_search.Checked = true;
+                            // Làm tròn 3 chữ số thập phân
+                            GWeight = Math.Round(GWeight, 3);
+
+                            worksheet.Cells[row, 10].Value = GWeight;
+                            worksheet.Cells[row, 10].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 10].Value = "";
                         }
                     }
-
-                    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan_theongay", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
-                    //ngaychiid.Value = ngay + "-" + thang + "-" + nam;
-                }
-
-                using (ExcelPackage pck = new ExcelPackage())
-                {
-                    ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Report");
-
-                    // Ghi header
-                    for (int col = 0; col < dt_dowload.Columns.Count; col++)
+                    else
                     {
-                        ws.Cells[1, col + 1].Value = dt_dowload.Columns[col].ColumnName;
-                        ws.Cells[1, col + 1].Style.Font.Bold = true; // cho đẹp
+                        worksheet.Cells[row, 10].Value = "";
                     }
 
-                    // Ghi dữ liệu
-                    for (int row = 0; row < dt_dowload.Rows.Count; row++)
+                    if (dataRow["TTLVolume"] != DBNull.Value)
                     {
-                        for (int col = 0; col < dt_dowload.Columns.Count; col++)
+                        double ttlValue;
+                        if (double.TryParse(dataRow["TTLVolume"].ToString(), out ttlValue))
                         {
-                            var cell = ws.Cells[row + 2, col + 1];
-                            var value = dt_dowload.Rows[row][col];
+                            // Làm tròn 3 chữ số thập phân
+                            ttlValue = Math.Round(ttlValue, 3);
 
-                            if (value is string s)
-                            {
-                                if (double.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double d))
-                                {
-                                    cell.Value = d;
-                                    cell.Style.Numberformat.Format = "#,##0.00";
-                                }
-                                else
-                                {
-                                    cell.Value = s;
-                                }
-                            }
-                            else if (value is double || value is decimal || value is int || value is long || value is float)
-                            {
-                                cell.Value = Convert.ToDouble(value);
-                                cell.Style.Numberformat.Format = "#,##0.00";
-                            }
-                            else if (value is DateTime dt)
-                            {
-                                cell.Value = dt;
-                                cell.Style.Numberformat.Format = "MM/dd/yyyy";
-                            }
-                            else
-                            {
-                                cell.Value = value?.ToString();
-                            }
+                            worksheet.Cells[row, 11].Value = ttlValue;
+                            worksheet.Cells[row, 11].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 11].Value = "";
                         }
                     }
+                    else
+                    {
+                        worksheet.Cells[row, 11].Value = "";
+                    }
+                    //worksheet.Cells[row, 12].Value = dataRow["Exfactorydate"];
+                    if (dataRow["Exfactorydate"] != DBNull.Value)
+                    {
+                        DateTime exFactoryDate;
+                        if (DateTime.TryParse(dataRow["Exfactorydate"].ToString(), out exFactoryDate))
+                        {
+                            worksheet.Cells[row, 12].Value = exFactoryDate;
+                            worksheet.Cells[row, 12].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 12].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 12].Value = "";
+                    }
 
-                    // (tùy chọn) Tự động điều chỉnh độ rộng cột
-                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
+                    //worksheet.Cells[row, 13].Value = dataRow["ETD"];
+                    if (dataRow["ETD"] != DBNull.Value)
+                    {
+                        DateTime ETD;
+                        if (DateTime.TryParse(dataRow["ETD"].ToString(), out ETD))
+                        {
+                            worksheet.Cells[row, 13].Value = ETD;
+                            worksheet.Cells[row, 13].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 13].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 13].Value = "";
+                    }
 
-                    Response.Clear();
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment; filename=Baocao_Vessel.xlsx");
-                    Response.BinaryWrite(pck.GetAsByteArray());
-                    Response.End();
+                    //worksheet.Cells[row, 14].Value = dataRow["ETA"];
+                    if (dataRow["ETA"] != DBNull.Value)
+                    {
+                        DateTime eta;
+                        if (DateTime.TryParse(dataRow["ETA"].ToString(), out eta))
+                        {
+                            worksheet.Cells[row, 14].Value = eta;
+                            worksheet.Cells[row, 14].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 14].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 14].Value = "";
+                    }
+
+                    worksheet.Cells[row, 15].Value = dataRow["Cancombine"];
+                    worksheet.Cells[row, 16].Value = dataRow["Risky"];
+                    //worksheet.Cells[row, 18].Value = dataRow["CreateTime"];
+                    if (dataRow["CreateTime"] != DBNull.Value)
+                    {
+                        DateTime createtime;
+                        if (DateTime.TryParse(dataRow["CreateTime"].ToString(), out createtime))
+                        {
+                            worksheet.Cells[row, 17].Value = createtime;
+                            worksheet.Cells[row, 17].Style.Numberformat.Format = "m/d/yyyy";
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 17].Value = "";
+                        }
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 17].Value = "";
+                    }
+
+                    row++;
                 }
-            }   
+                // Lưu vào file mới
+                package.SaveAs(newFileInfo);
+            }
+
+
 
         }
 
@@ -2910,9 +3052,13 @@ namespace FreeLayout
                                     Cat = dtExcelData.Rows[i]["Category"].ToString();
                                     Shipmode = dtExcelData.Rows[i]["s/a"].ToString().Trim();
                                     Consignee = dtExcelData.Rows[i]["name"].ToString().Trim();
-
+                                    //fix loi co dong trong phi duoi file
+                                    if (Model == "" || Cat=="" || Shipmode=="" || Consignee=="")
+                                    {
+                                        break;
+                                    }
                                     Quantity = Int32.Parse(dtExcelData.Rows[i]["jit_qty"].ToString().Trim());
-
+                                    
                                     //kiem tra xem tren csdl co chua? chua co thi moi them
 
                                     dt_getmodel = DataConn.StoreFillDS("Get_infor_mater_model", System.Data.CommandType.StoredProcedure, Model, Cat);

@@ -312,6 +312,10 @@ table.dataTable td {
                             { %>
                         <td>AIR</td>
                         <%} %>
+                         <%else 
+                             { %>
+                         <td><%=rows["Shipmode"].ToString()%></td>
+                         <%} %>
 
                         <td><%=rows["Consignee"].ToString()%></td>
                         <td><%=rows["Country"].ToString()%></td>
@@ -374,6 +378,8 @@ table.dataTable td {
                                 '<%= rows["Cancombine"].ToString() %>',
                                 '<%= rows["Risky"].ToString() %>',
                                 )"><i class="fas fa-info-circle"></i></a>
+
+                            <a href="#" title="delete item" onclick="openEditModal5('<%= rows["ID"].ToString() %>')"><i class="fas fa-trash"></i></a>
                         </td>
 
 
@@ -588,6 +594,54 @@ table.dataTable td {
             </div>
         </div>
 
+        <div class="modal" id="myModal5">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div>
+                        <h4 class="modal-title" id="headerTag" style="float: left">Delete Item?</h4>
+                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <%-- Modal footer --%>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">                                
+                        <div class="col-md-6">
+                            <div class="form-group">
+                               <label for="exampleInputEmail1">ID</label>                                        
+                                <asp:TextBox ID="txtid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                        
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                    <label for="exampleInputEmail1">UserID</label>                                        
+                                <asp:TextBox ID="txtuser" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                  
+                            </div>
+                        </div>
+                    </div> 
+    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                <button type="button" runat="server" id="btnOrder" class="btn btn-primary" onserverclick="delete_item"> 
+                    <i class="fas fa-download"></i>
+                    Ghi lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     </form>
 
@@ -672,7 +726,10 @@ table.dataTable td {
         }
 
 
-
+        function openEditModal5(id) {
+            $('#txtid').val(id);
+            $('#myModal5').modal('show');
+        }
 
 
     </script>
