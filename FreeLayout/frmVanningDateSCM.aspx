@@ -236,14 +236,14 @@ table.dataTable td {
                     </div>
                 </div>
 
-             <div style="display: flex; align-items: center;">
+            <%-- <div style="display: flex; align-items: center;">
                  <asp:CheckBox ID="ck_export_risky" runat="server" Text="" />
                  <label style="margin-left: 5px; margin-top:7px;">Ex_Risky</label>
              </div>
              <div style="display: flex; align-items: center;">
                 <asp:CheckBox ID="ck_export_TLL_sum" runat="server" Text="" />
                 <label style="margin-left: 5px; margin-top:7px;">Ex_TLL_Summary</label>
-            </div>
+            </div>--%>
 
                 <!-- Filter button -->
                 <div>
