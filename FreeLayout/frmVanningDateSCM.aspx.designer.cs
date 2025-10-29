@@ -33,6 +33,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.Label lblConfirm;
 
         /// <summary>
+        /// rblAll control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rblAll;
+
+        /// <summary>
         /// rblDECT control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rblMW;
+
+        /// <summary>
+        /// rblSound control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rblSound;
 
         /// <summary>
         /// rblCAM control.

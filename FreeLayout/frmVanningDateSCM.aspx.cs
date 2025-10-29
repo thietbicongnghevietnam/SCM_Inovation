@@ -3414,6 +3414,14 @@ namespace FreeLayout
                             {
                                 Category_ = rblDECT.Text;
                             }
+                            else if (rblMW.Checked)
+                            {
+                                Category_ = rblMW.Text;
+                            }
+                            else if (rblSound.Checked)
+                            {
+                                Category_ = rblSound.Text;
+                            }
 
                             string Sheet = sheetName.Replace("$","");
                             string Cat = "";

@@ -128,13 +128,14 @@ table.dataTable td {
                     <div style="font: 14px Verdana;">
                         <div style="display: flex; gap: 40px; margin-left: 5px;">
                             <!-- Nhóm nút 1 -->
-                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+                            <div style="display: flex; flex-direction: column; align-items: flex-start; width: 400px;">
                                 <div class="horizontal-radio-group">
+                                    <asp:RadioButton ID="rblAll" runat="server" GroupName="rblOptions" Text="ALL" Checked="true" />
                                     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" />
                                     <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" />
                                     <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" />--%>
                                     <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" />
-                                    <%--<asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" />--%>
+                                    <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" />
                                     <%--<asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" />--%>
                                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="DSC" />
                                 </div>
@@ -236,14 +237,14 @@ table.dataTable td {
                     </div>
                 </div>
 
-             <div style="display: flex; align-items: center;">
+            <%-- <div style="display: flex; align-items: center;">
                  <asp:CheckBox ID="ck_export_risky" runat="server" Text="" />
                  <label style="margin-left: 5px; margin-top:7px;">Ex_Risky</label>
              </div>
              <div style="display: flex; align-items: center;">
                 <asp:CheckBox ID="ck_export_TLL_sum" runat="server" Text="" />
                 <label style="margin-left: 5px; margin-top:7px;">Ex_TLL_Summary</label>
-            </div>
+            </div>--%>
 
                 <!-- Filter button -->
                 <div>
