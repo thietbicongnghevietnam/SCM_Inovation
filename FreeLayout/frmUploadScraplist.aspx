@@ -32,7 +32,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="col-sm-12">
-                    <h3><b style="font-size: 30px;">List upload</b></h3>
+                    <h3><b style="font-size: 30px;">Scrap List Management</b></h3>
                     <br />
                     <p style="color: blue;">
                         <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
@@ -40,10 +40,10 @@
                 </div>
                 <div class="col-sm-12">
                     <div style="float: left;">
-                        Từ ngày:
+                        From Date:
                              <%--<input type="text" id="datepicker" runat="server">--%>
                         <input type="date" id="Date1" name="date" runat="server">
-                        Đến ngày:                                    
+                        To Date:                                    
                              <input type="date" id="ngaychiid" name="date" runat="server">
                     </div>
                     <div class="col-md-1" style="float: left">
@@ -67,24 +67,31 @@
 
                         <i class="fa fa-fw fa-lg fa-search"></i>Lọc</button>
 
-                    <span style="padding-left: 20px;"></span>
+                    <%--<span style="padding-left: 20px;"></span>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         Thêm mới
-                    </button>
+                    </button>--%>
 
                     <!-- import file excel -->
                     <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
                     <div style="font: 14px Verdana; float: right">
-                       <%-- <p style="margin-top: 0px; margin-left: 20px;">
-                            Chọn file để upload:
+                        <p style="margin-top: 0px; margin-left: 20px;">
+                            Chose file to upload:
                             <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
                         </p>
                         <p style="margin-top: 0px; margin-left: 20px;">
-                            <input type="button" value="Import ScrapList" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />--%>
+                            <input type="button" value="Import ScrapList" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />
 
-                            &nbsp;&nbsp;&nbsp;<%--<input type="button" value="Import DECT" runat="server" onserverclick="ImportFromExcel1" class="btn btn-primary" />--%>
+                            &nbsp;&nbsp;&nbsp;
+                           
+                                <asp:RadioButton ID="rblNG" runat="server" GroupName="rblOptions" Text="NG list" Checked="true" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:RadioButton ID="rblDesktock" runat="server" GroupName="rblOptions" Text="Deadstock list" />
+                           
 
- &nbsp;&nbsp;&nbsp;
+                        </p>
+
+                        <%--<input type="button" value="Import DECT" runat="server" onserverclick="ImportFromExcel1" class="btn btn-primary" />--%>
+
                    <%-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;" runat="server" onserverclick="btnDownloadClick">
                         <i class="fas fa-download"></i>Tải file mẫu upload
                     </button>
@@ -94,19 +101,19 @@
                         </p>--%>
                     </div>
 
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export</button>&nbsp;&nbsp;&nbsp;             
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Issue Out</button>&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Disposition Property List</button>&nbsp;&nbsp;&nbsp;             
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp;             
             <%--onserverclick="btnExport_Click"--%>
-             <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Template upload :
+                    <%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Template upload :
 <asp:RadioButton ID="rblOther" runat="server" GroupName="rblOptions" Text="Fixed Asset" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <asp:RadioButton ID="rblMCS" runat="server" GroupName="rblOptions" Text="MCS" CssClass="horizontal-radio-buttons" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                     
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                         <%-- Checked="true"--%>
-
+                    <%-- Checked="true"--%>
                 </div>
 
                 <div class="col-sm-12">
-                     
                 </div>
 
             </div>

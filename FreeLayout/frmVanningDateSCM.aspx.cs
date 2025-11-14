@@ -652,7 +652,7 @@ namespace FreeLayout
 
                                     DateTime date_request1 = DateTime.ParseExact(ATPdate, "M/d/yyyy h:mm:ss tt", CultureInfo.InvariantCulture);
 
-                                    if (SpecialETD_week != "")
+                                    if (SpecialETD_week != "" && SpecialETD_week != "0") 
                                     {
                                         //truong hop 1
                                         //tinh ra tuan cua special note //neu bang thi lay theo truoc do?
@@ -1405,7 +1405,7 @@ namespace FreeLayout
 
                                         }
                                     }
-                                    else if (Special_ETA_Date != "")
+                                    else if (Special_ETA_Date != "" && SpecialETD_week != "0")
                                     {
                                         //truong hop 3
                                         //dựa vào ngày ship date tháng hiện tại là tháng nào  
@@ -1884,7 +1884,7 @@ namespace FreeLayout
 
                                         }
                                     }
-                                    else if (Special_exfactory_date != "")
+                                    else if (Special_exfactory_date != "" && SpecialETD_week != "0")
                                     {
                                         //truong hop 2  => cate dect khong co truong hop 2
                                     }
@@ -3459,9 +3459,7 @@ namespace FreeLayout
 
                             DateTime ngayATP;
 
-
                             //int dongloi = 0;
-
 
                             if (Category_ == "DECT")
                             {
