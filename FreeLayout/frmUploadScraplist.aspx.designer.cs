@@ -69,6 +69,15 @@ namespace FreeLayout
         protected global::System.Web.UI.HtmlControls.HtmlInputText filterSanction;
 
         /// <summary>
+        /// filterIssueout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText filterIssueout;
+
+        /// <summary>
         /// FileUpload control.
         /// </summary>
         /// <remarks>

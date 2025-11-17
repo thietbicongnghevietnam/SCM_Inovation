@@ -62,6 +62,10 @@
                         <input type="text" id="filterSanction" runat="server" placeholder="Nhập Sacntion" style="height: 34px;" />
                     </div>
 
+                    <div style="float: left; padding-right: 10px;">
+                        <input type="text" id="filterIssueout" runat="server" placeholder="Nhập IusseOut" style="height: 34px;" />                        
+                    </div>
+
                     <span style="padding-left: 20px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
 
@@ -101,7 +105,7 @@
                         </p>--%>
                     </div>
 
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Issue Out</button>&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"  onserverclick="Export_IssueOut"><i class="fa fa-download"></i>&nbsp; Export Issue Out</button>&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Disposition Property List</button>&nbsp;&nbsp;&nbsp;             
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp;             
             <%--onserverclick="btnExport_Click"--%>
