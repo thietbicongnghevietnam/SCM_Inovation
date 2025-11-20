@@ -159,6 +159,7 @@
     <Content Include="Exportexcel\bootstrap.min.css" />
     <Content Include="Exportexcel\jquery.min.js" />
     <Content Include="Exportexcel\jquery.table2excel.min.js" />
+    <Content Include="frmConvertToll.aspx" />
     <Content Include="frmExportImage.aspx" />
     <Content Include="frmMaterialName.aspx" />
     <Content Include="frmMaterModel.aspx" />
@@ -1858,6 +1859,13 @@
       <DependentUpon>EquipmentBorrowHistory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Excel\Application.cs" />
+    <Compile Include="frmConvertToll.aspx.cs">
+      <DependentUpon>frmConvertToll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmConvertToll.aspx.designer.cs">
+      <DependentUpon>frmConvertToll.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmExportImage.aspx.cs">
       <DependentUpon>frmExportImage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

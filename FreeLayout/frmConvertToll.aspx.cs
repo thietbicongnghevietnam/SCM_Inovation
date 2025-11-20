@@ -1,0 +1,493 @@
+﻿using FreeLayout.App_Code;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Windows.Input;
+
+namespace FreeLayout
+{
+    public partial class frmConvertToll : System.Web.UI.Page
+    {
+        public DataTable dt_plan = new DataTable();
+        public DataTable dt_checkupload = new DataTable();
+        public DataTable dtcate = new DataTable();
+        public DataTable dt_update = new DataTable();
+        public DataTable dt_setting = new DataTable();
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                string Typeconvert = "";
+                if (rblNG.Checked == true)
+                {
+                    Typeconvert = "NGList";
+                }
+                else
+                {
+                    Typeconvert = "deskstock";
+                }
+                string _fromdate = Date1.Value;
+                string _todate = ngaychiid.Value;
+                string tensanction = "";
+                //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList", System.Data.CommandType.StoredProcedure);
+                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
+
+                dt_setting = DataConn.StoreFillDS2("Select_setting_tool", System.Data.CommandType.StoredProcedure, Typeconvert);
+                if (dt_setting.Rows.Count > 0) 
+                {
+                    if (rblNG.Checked == true)
+                    {
+                        //Typeconvert = "NGList";
+                        txtplan.Value = dt_setting.Rows[0]["Plant"].ToString();
+                        txtmaterial.Value = dt_setting.Rows[0]["Material"].ToString();
+                        txtQty.Value = dt_setting.Rows[0]["IssueQty"].ToString();
+                        txtunitpriceST.Value = dt_setting.Rows[0]["UnitpriceST"].ToString();
+                        txtamountST.Value = dt_setting.Rows[0]["AmountST"].ToString();
+                        txtremark.Value = dt_setting.Rows[0]["remark"].ToString();
+                        txtvendorname.Value = dt_setting.Rows[0]["vendorname"].ToString();
+
+                        txtissueoutsloc.Value = dt_setting.Rows[0]["issueoutsloc"].ToString();
+                    }
+                    else
+                    {
+                        //Typeconvert = "deskstock";
+                    }                                        
+                }
+               
+                //danh sach bo phan
+                dtcate = DataConn.StoreFillDS2("pro_get_categogy", System.Data.CommandType.StoredProcedure);
+                DataRow newRow1 = dtcate.NewRow();
+                newRow1["Description"] = "==Section==";
+                dtcate.Rows.InsertAt(newRow1, 0);
+                dr_filter_Cate.DataSource = dtcate;
+                dr_filter_Cate.DataBind();
+            }
+        }
+
+        protected void Search_Date_Click(object sender, EventArgs e)
+        {
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
+            string bophan = dr_filter_Cate.SelectedValue;
+            string sacnctionid = filterSanction.Value;
+            //loc theo ngay
+            if (_fromdate == "" || _todate == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban nen chon ngay!!!'); ", true);
+                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
+            }
+            else
+            {
+                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
+                //if (bophan == "==Section==")
+                //{
+                //    //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
+                //    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
+                //}
+                //else
+                //{
+                //    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, sacnctionid, _fromdate, _todate);
+                //}
+
+            }
+        }
+
+        protected void Save_setting_Click(object sender, EventArgs e)
+        {
+            //string _fromdate = Request.Form[Date1.UniqueID];
+            //string _todate = Request.Form[ngaychiid.UniqueID];
+
+            string Plant = txtplan.Value.ToString();
+            string Sloc = txtsloc.Value.ToString();
+            string CostCenter = txtCostcenter.Value.ToString();
+            string Namecost = txtnamecost.Value.ToString();
+            string Material = txtmaterial.Value.ToString();
+            string IssueQty = txtQty.Value.ToString();
+
+            string UnitpriceST = txtunitpriceST.Value.ToString();
+            string AmountST = txtamountST.Value.ToString();
+
+            string UnitpriceAC = txtunitpriceAC.Value.ToString();
+            string AmountAC = txtamountAC.Value.ToString();
+
+            string remark = txtremark.Value.ToString();
+            string vendorname = txtvendorname.Value.ToString();
+            string issueoutsloc = txtissueoutsloc.Value.ToString();
+
+            string typecontent = txttype.Value.ToString();
+            string MVT = txtMVT.Value.ToString();
+            string typeMVT = txttypeMVT.Value.ToString();
+
+            string Typeconvert = "";
+
+            if (rblNG.Checked == true)
+            {
+                Typeconvert = "NGList";
+            }
+            else 
+            {
+                Typeconvert = "deskstock";
+            }
+
+            if (Plant =="" && Material =="" && IssueQty =="" && issueoutsloc=="")  //&& Sloc =="" && CostCenter =="" && Namecost ==""
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Thieu thong tin!'); ", true);
+            }
+            else 
+            {
+                dt_checkupload = DataConn.StoreFillDS2("Update_setting_toolconvert", System.Data.CommandType.StoredProcedure, Plant, Sloc, CostCenter, Namecost, Material, IssueQty, UnitpriceST, AmountST, UnitpriceAC, AmountAC, remark, vendorname, issueoutsloc, typecontent, MVT, typeMVT, Typeconvert);
+                if (dt_checkupload.Rows[0][0].ToString() == "1")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Update thành công!');", true);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Insert thành công!');", true);
+                }
+            }
+
+        }
+
+        protected void ImportFromExcel(object sender, EventArgs e)
+        {
+            string saction_name = filterSanction.Value.ToString();
+            if (saction_name == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban phai nhap ten sanction!'); ", true);
+            }
+            else
+            {
+                DataTable dtcheck = new DataTable();
+                string _fromdate = Request.Form[Date1.UniqueID];
+                string _todate = Request.Form[ngaychiid.UniqueID];
+
+                if (FileUpload.HasFile)
+                {
+                    if (FileUpload.PostedFile.ContentLength > 0)
+                    {
+                        // Save the uploaded file to the server.
+                        FileUpload.SaveAs(Server.MapPath(".") + "\\" + FileUpload.FileName);
+
+                        // Set connection string with the Excel file.
+                        //string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
+                        //                      Server.MapPath(".") + "\\" + FileUpload.FileName +
+                        //                      "; Extended Properties=Excel 12.0;"
+
+                        //new
+                        string excelConnStr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" +
+                          Server.MapPath(".") + "\\" + FileUpload.FileName +
+                          "; Extended Properties='Excel 12.0; HDR=YES; IMEX=1;'"; // HDR=YES để xử lý header, IMEX=1 để xử lý cả dữ liệu chuỗi và số
+
+                        OleDbConnection excelConn = null;
+                        OleDbDataReader objBulkReader = null;
+                        try
+                        {
+                            DataTable dt_checkupload = new DataTable();
+                            DataTable dt_new = new DataTable();
+                            int countlap = 0;
+
+                            dt_new.Columns.Add("ID", typeof(Int32));
+                            dt_new.Columns.Add("SanctionId", typeof(string));
+                            dt_new.Columns.Add("Material", typeof(String));
+                            dt_new.Columns.Add("Qty", typeof(float));
+                            dt_new.Columns.Add("QtyActual", typeof(float));
+                            dt_new.Columns.Add("UnitPrice", typeof(float));
+                            dt_new.Columns.Add("Amount", typeof(float));
+                            dt_new.Columns.Add("CostCenter", typeof(String));
+                            dt_new.Columns.Add("Reason", typeof(String));
+                            dt_new.Columns.Add("Plant", typeof(String));
+                            dt_new.Columns.Add("Sloc", typeof(String));
+                            dt_new.Columns.Add("NameCost", typeof(String));
+                            dt_new.Columns.Add("Pallet", typeof(String));
+                            dt_new.Columns.Add("Barcode", typeof(String));
+                            dt_new.Columns.Add("ScrapSloc", typeof(String));
+                            dt_new.Columns.Add("ControlNo", typeof(String));
+                            dt_new.Columns.Add("FaTool", typeof(String));
+
+                            //tool covert
+                            dt_new.Columns.Add("TypeName", typeof(String));
+                            dt_new.Columns.Add("MVT", typeof(String));                           
+                            dt_new.Columns.Add("MoveType", typeof(String));
+
+                            dt_new.Columns.Add("UnitPriceAC", typeof(float));
+                            dt_new.Columns.Add("AmountAC", typeof(float));
+                            dt_new.Columns.Add("Vendor", typeof(String));
+                            //type_convert
+                            dt_new.Columns.Add("type_convert", typeof(String));
+
+                            // Open connection to Excel file.
+                            excelConn = new OleDbConnection(excelConnStr);
+                            excelConn.Open();
+                            // Lấy danh sách các sheet trong Excel
+                            DataTable sheets = excelConn.GetSchema("Tables");
+                            // Lấy tên sheet đầu tiên (vì chỉ có một sheet)
+                            string sheetName = sheets.Rows[0]["TABLE_NAME"].ToString();
+                            Console.WriteLine("Tên sheet: " + sheetName);
+
+                            // Xử lý tên sheet (nếu có ký tự đặc biệt)
+                            string sanitizedSheetName = SanitizeSheetName(sheetName);
+                            // Tạo câu truy vấn SQL với tên sheet đã xử lý
+                            OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sanitizedSheetName}$]", excelConn);
+
+                            objBulkReader = objOleDB.ExecuteReader();
+
+                            if (objBulkReader.HasRows)
+                            {
+                                DataTable dtExcelData = new DataTable();
+                                dtExcelData.Load(objBulkReader); // Load data into DataTable.
+                                string Sheet = sheetName.Replace("$", "");
+
+                                string bophan = "";
+                                if (dr_filter_Cate.Text != "==Section==")
+                                {
+                                    bophan = dr_filter_Cate.Text;
+                                }
+
+                                string SanctionId = filterSanction.Value.ToString();
+
+                                string tensanction = "";
+
+                                string Material = "";
+                                float Qty = 0;
+                                float QtyActual = 0;
+                                float UnitPrice = 0;
+                                float Amount = 0;
+                                string CostCenter = "";
+                                string Reason = "";
+                                string Plant = "";
+                                string Sloc = "";
+                                string NameCost = "";
+                                string Pallet = "";
+                                string Barcode = "";
+                                string ScrapSloc = "";
+                                string ControlNo = "";
+                                string FaTool = "";
+                                string type_convert = "";
+
+                                //tool convert
+                                string TypeName = "";
+                                string MVT = "";                                
+                                string MoveType = "";
+
+                                float UnitPriceAC = 0;
+                                float AmountAC = 0;
+                                string Vendor = "";
+
+                                //fix cot theo tool convert
+                                int col_plan = Int32.Parse(txtplan.Value.ToString());
+                                int col_material = Int32.Parse(txtmaterial.Value.ToString());
+                                int col_qty = Int32.Parse(txtQty.Value.ToString());
+                                int col_unitpriceST = Int32.Parse(txtunitpriceST.Value.ToString());
+                                int col_amountST = Int32.Parse(txtamountST.Value.ToString());
+                                int col_scraploc = Int32.Parse(txtissueoutsloc.Value.ToString());
+
+                                int col_vendorname = Int32.Parse(txtvendorname.Value.ToString());
+                                int col_remark = Int32.Parse(txtremark.Value.ToString());
+
+
+                                //string test3 = dtExcelData.Rows[2][1].ToString();
+
+                                if (SanctionId == "")
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG,Ten Sanction bat buoc phai nhap!'); ", true);
+                                }
+                                else 
+                                {
+                                    if (rblNG.Checked == true)
+                                    {
+                                        // format file NG list                                    
+                                        //kiem tra sanction co trong danh sach chua de lay ra id sanction
+                                        DataTable dt_getmater_sloc = new DataTable();
+                                        DataTable dt_getmater_MVT = new DataTable();
+                                        string type_cost = "psnvcost";
+
+                                        for (int i = 2; i < dtExcelData.Rows.Count; i++)
+                                        {
+                                            //countlap = 0;
+                                            // check cac cot co du lieu va khong co du lieu
+                                            //mahang + Plant + issue sloc + scrap loc + st price
+                                            if (dtExcelData.Rows[i][1].ToString() != "" && dtExcelData.Rows[i][2].ToString() != "" && dtExcelData.Rows[i][3].ToString() != "" && dtExcelData.Rows[i][4].ToString() != "" && dtExcelData.Rows[i][5].ToString() != "")
+                                            {
+
+                                                Plant = dtExcelData.Rows[i][col_plan].ToString();
+                                                ScrapSloc = dtExcelData.Rows[i][col_scraploc].ToString();
+
+                                                Material = dtExcelData.Rows[i][col_material].ToString();
+
+                                                float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out Qty);         //QtyActual = 0;
+                                                float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
+
+                                                float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
+                                                float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
+                                                UnitPriceAC = 0;
+                                                AmountAC = 0;
+
+                                                //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
+                                                Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name
+                                                                                                          //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
+                                                Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
+                                                Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
+                                                CostCenter = "";  //lay mater MVT
+                                                NameCost = "";  //lay mater sloc
+
+                                                dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
+                                                if (dt_getmater_sloc.Rows.Count > 0)
+                                                {
+                                                    Sloc = dt_getmater_sloc.Rows[0]["ScrapSloc"].ToString();
+                                                    NameCost = dt_getmater_sloc.Rows[0]["Plant2"].ToString();
+                                                }
+                                                if (dtExcelData.Rows[i][12].ToString() != "")
+                                                {
+                                                    type_cost = "vendorcost";
+                                                }
+                                                else
+                                                {
+                                                    type_cost = "psnvcost";   //(dtExcelData.Rows[i][14].ToString() != ""
+                                                }
+
+                                                MVT = "";
+                                                TypeName = "";
+                                                MoveType = dtExcelData.Rows[i][2].ToString();  //ROH  or halb  
+                                                dt_getmater_MVT = DataConn.StoreFillDS2("Get_infor_MVT_pus", System.Data.CommandType.StoredProcedure, Sloc, MoveType, type_cost);
+                                                //quy tac lay ra 3 truong MVT - TypeName
+                                                if (dt_getmater_MVT.Rows.Count > 0)
+                                                {
+                                                    TypeName = dt_getmater_MVT.Rows[0][0].ToString();
+                                                    MVT = dt_getmater_MVT.Rows[0][1].ToString();
+                                                    CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
+                                                }
+
+                                                Pallet = "";
+                                                Barcode = "";
+                                                ControlNo = "";
+                                                FaTool = "";
+
+                                                type_convert = "NGList";  //deskstock
+
+                                                dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
+                                                if (dt_checkupload.Rows[0][0].ToString() == "1")
+                                                {
+                                                    //da ton tai roi
+                                                    //nothing
+                                                    countlap = countlap + 1;
+                                                }
+                                                else
+                                                {
+                                                    //insert model moi
+                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert);
+                                                }
+                                            }
+
+                                            //mahang + Plant + issue sloc + scrap loc + st price  ==> Tong scrap (10)
+                                            if (dtExcelData.Rows[i][1].ToString() == "" && dtExcelData.Rows[i][2].ToString() == "" && dtExcelData.Rows[i][3].ToString() == "" && dtExcelData.Rows[i][4].ToString() == "" && dtExcelData.Rows[i][5].ToString() == "" && dtExcelData.Rows[i][6].ToString() == "")
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else if (rblDesktock.Checked == true)
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon template upload!!'); ", true);
+                                    }
+
+                                    //upload buckcopy tai day
+                                    string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                                                    "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
+                                                    "Connect Timeout=30;";
+
+                                    using (SqlConnection con = new SqlConnection(sqlConnStr))
+                                    {
+                                        con.Open();
+
+                                        // Initialize SqlBulkCopy.
+                                        using (SqlBulkCopy oSqlBulk = new SqlBulkCopy(con))
+                                        {
+                                            oSqlBulk.DestinationTableName = "ScrapDetails_convert"; // bang covnert
+                                                                                            //oSqlBulk.WriteToServer(dtExcelData); // Write data from DataTable to database.
+                                            oSqlBulk.WriteToServer(dt_new);
+                                        }
+                                    }
+                                    if (countlap > 0)
+                                    {
+                                        lblConfirm.Text = "Ban ghi lap : " + countlap;
+                                        lblConfirm.Attributes.Add("style", "color:green");
+                                    }
+                                    else
+                                    {
+                                        lblConfirm.Text = "DATA IMPORTED SUCCESSFULLY.";
+                                        lblConfirm.Attributes.Add("style", "color:green");
+                                    }
+
+                                    Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Upload thành công!');", true);
+                                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);   //bang convert
+                                }
+
+                                
+
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            lblConfirm.Text = "Lỗi : " + ex.Message;
+                            lblConfirm.Attributes.Add("style", "color:red");
+                            //throw;
+                        }
+                        finally
+                        {
+                            // Close and dispose objects.
+                            if (objBulkReader != null && !objBulkReader.IsClosed)
+                            {
+                                objBulkReader.Close();
+                            }
+                            if (excelConn != null && excelConn.State == ConnectionState.Open)
+                            {
+                                excelConn.Close();
+                            }
+                            // Delete the uploaded file (optional).
+                            File.Delete(Server.MapPath(".") + "\\" + FileUpload.FileName);
+                            // Reload grid or perform other necessary actions.
+                            //dt_phanca = Db_connect.StoreFillDS("HR_List_phanca", System.Data.CommandType.StoredProcedure);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        public static string SanitizeSheetName(string sheetName)
+        {
+            // Loại bỏ các ký tự không hợp lệ cho tên sheet trong Excel
+            // Các ký tự không hợp lệ bao gồm: :, \, /, ?, *, [, ], và dấu cách đầu hoặc cuối
+            string pattern = @"[^a-zA-Z0-9\s]";  // Giữ lại chữ cái, số và dấu cách
+            sheetName = Regex.Replace(sheetName, pattern, "");
+
+            // Cắt tên sheet nếu quá dài (tối đa 31 ký tự)
+            if (sheetName.Length > 31)
+            {
+                sheetName = sheetName.Substring(0, 31);
+            }
+
+            // Đảm bảo rằng tên sheet kết thúc với dấu $
+            return sheetName;
+        }
+
+
+
+    }
+}
