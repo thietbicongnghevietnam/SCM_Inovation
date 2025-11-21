@@ -86,15 +86,17 @@
 
                             &nbsp;&nbsp;&nbsp;
                            
-                                <asp:RadioButton ID="rblNG" runat="server" GroupName="rblOptions" Text="NG list" Checked="true" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <asp:RadioButton ID="rblDesktock" runat="server" GroupName="rblOptions" Text="Deadstock list" />
+                                <asp:RadioButton ID="rblNG" runat="server" GroupName="rblOptions" Text="NG list" Checked="true" AutoPostBack="true"
+    OnCheckedChanged="RadioButton_CheckedChanged" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:RadioButton ID="rblDesktock" runat="server" GroupName="rblOptions" Text="Deadstock list" AutoPostBack="true"
+    OnCheckedChanged="RadioButton_CheckedChanged" />
                         </p>
                     </div>
                 </div>
 
             </div>
             <div class="col-sm-12">
-                <b style="float: left; padding-top: 25px; margin-right: 5px;">Setting Colums  </b>
+                <b style="float: left; padding-top: 25px; margin-right: 5px;">Colums :</b>
                 <div style="float: left; padding-right: 5px;">
                     <b style="color:red">plan</b><br />
                     <input type="text" id="txtplan" runat="server" placeholder="Plan" style="height: 34px; width: 100px;" />
@@ -159,9 +161,16 @@
                     typeMVT<br />
                     <input type="text" id="txttypeMVT" runat="server" placeholder="typeMVT" style="height: 34px; width: 100px;" />
                 </div>
+
+                 <b style="float: left; padding-top: 25px;">Row: </b>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">Row</b> <br />
+                    <input type="text" id="txtrow" runat="server" placeholder="" style="height: 34px; width: 50px;" />
+                </div>
+
                 <div style="float: left; padding-right: 5px; padding-top: 22px;">
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Save_setting_Click">
-                        <i class="fa fa-fw fa-lg fa-search"></i>Save
+                        <i class="fa fa-save fa-fw fa-lg"></i>Save
                     </button>
                 </div>
 

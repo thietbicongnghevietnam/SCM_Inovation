@@ -50,18 +50,40 @@ namespace FreeLayout
                     {
                         //Typeconvert = "NGList";
                         txtplan.Value = dt_setting.Rows[0]["Plant"].ToString();
+                        txtsloc.Value = dt_setting.Rows[0]["Sloc"].ToString();
+                        txtCostcenter.Value = dt_setting.Rows[0]["CostCenter"].ToString();
+                        txtnamecost.Value = dt_setting.Rows[0]["Namecost"].ToString();
                         txtmaterial.Value = dt_setting.Rows[0]["Material"].ToString();
                         txtQty.Value = dt_setting.Rows[0]["IssueQty"].ToString();
                         txtunitpriceST.Value = dt_setting.Rows[0]["UnitpriceST"].ToString();
                         txtamountST.Value = dt_setting.Rows[0]["AmountST"].ToString();
+                        txtunitpriceAC.Value = dt_setting.Rows[0]["UnitpriceAC"].ToString();
+                        txtamountAC.Value = dt_setting.Rows[0]["AmountAC"].ToString(); ;
                         txtremark.Value = dt_setting.Rows[0]["remark"].ToString();
                         txtvendorname.Value = dt_setting.Rows[0]["vendorname"].ToString();
-
                         txtissueoutsloc.Value = dt_setting.Rows[0]["issueoutsloc"].ToString();
+
+                        txtrow.Value = dt_setting.Rows[0]["index_row"].ToString();
                     }
                     else
                     {
                         //Typeconvert = "deskstock";
+                        //Typeconvert = "deskstock";
+                        txtplan.Value = dt_setting.Rows[0]["Plant"].ToString();
+                        txtsloc.Value = dt_setting.Rows[0]["Sloc"].ToString();
+                        txtCostcenter.Value = dt_setting.Rows[0]["CostCenter"].ToString();
+                        txtnamecost.Value = dt_setting.Rows[0]["Namecost"].ToString();
+                        txtmaterial.Value = dt_setting.Rows[0]["Material"].ToString();
+                        txtQty.Value = dt_setting.Rows[0]["IssueQty"].ToString();
+                        txtunitpriceST.Value = dt_setting.Rows[0]["UnitpriceST"].ToString();
+                        txtamountST.Value = dt_setting.Rows[0]["AmountST"].ToString();
+                        txtunitpriceAC.Value = dt_setting.Rows[0]["UnitpriceAC"].ToString();
+                        txtamountAC.Value = dt_setting.Rows[0]["AmountAC"].ToString(); ;
+                        txtremark.Value = dt_setting.Rows[0]["remark"].ToString();
+                        txtvendorname.Value = dt_setting.Rows[0]["vendorname"].ToString();
+                        txtissueoutsloc.Value = dt_setting.Rows[0]["issueoutsloc"].ToString();
+
+                        txtrow.Value = dt_setting.Rows[0]["index_row"].ToString();
                     }                                        
                 }
                
@@ -72,6 +94,61 @@ namespace FreeLayout
                 dtcate.Rows.InsertAt(newRow1, 0);
                 dr_filter_Cate.DataSource = dtcate;
                 dr_filter_Cate.DataBind();
+            }
+        }
+
+        protected void RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            string Typeconvert = "";            
+            if (rblNG.Checked == true)
+            {
+                Typeconvert = "NGList";
+            }
+            else
+            {
+                Typeconvert = "deskstock";
+            }
+            dt_setting = DataConn.StoreFillDS2("Select_setting_tool", System.Data.CommandType.StoredProcedure, Typeconvert);
+            if (dt_setting.Rows.Count > 0)
+            {
+                if (rblNG.Checked == true)
+                {
+                    //Typeconvert = "NGList";
+                    txtplan.Value = dt_setting.Rows[0]["Plant"].ToString();
+                    txtsloc.Value = dt_setting.Rows[0]["Sloc"].ToString();
+                    txtCostcenter.Value = dt_setting.Rows[0]["CostCenter"].ToString();
+                    txtnamecost.Value = dt_setting.Rows[0]["Namecost"].ToString();
+                    txtmaterial.Value = dt_setting.Rows[0]["Material"].ToString();
+                    txtQty.Value = dt_setting.Rows[0]["IssueQty"].ToString();
+                    txtunitpriceST.Value = dt_setting.Rows[0]["UnitpriceST"].ToString();
+                    txtamountST.Value = dt_setting.Rows[0]["AmountST"].ToString();
+                    txtunitpriceAC.Value = dt_setting.Rows[0]["UnitpriceAC"].ToString();
+                    txtamountAC.Value = dt_setting.Rows[0]["AmountAC"].ToString(); ;
+                    txtremark.Value = dt_setting.Rows[0]["remark"].ToString();
+                    txtvendorname.Value = dt_setting.Rows[0]["vendorname"].ToString();
+                    txtissueoutsloc.Value = dt_setting.Rows[0]["issueoutsloc"].ToString();
+
+                    txtrow.Value = dt_setting.Rows[0]["index_row"].ToString();
+                }
+                else
+                {
+                    //Typeconvert = "deskstock";
+                    txtplan.Value = dt_setting.Rows[0]["Plant"].ToString();
+                    txtsloc.Value = dt_setting.Rows[0]["Sloc"].ToString();
+                    txtCostcenter.Value = dt_setting.Rows[0]["CostCenter"].ToString();
+                    txtnamecost.Value = dt_setting.Rows[0]["Namecost"].ToString();
+                    txtmaterial.Value = dt_setting.Rows[0]["Material"].ToString();
+                    txtQty.Value = dt_setting.Rows[0]["IssueQty"].ToString();
+                    txtunitpriceST.Value = dt_setting.Rows[0]["UnitpriceST"].ToString();
+                    txtamountST.Value = dt_setting.Rows[0]["AmountST"].ToString();
+                    txtunitpriceAC.Value = dt_setting.Rows[0]["UnitpriceAC"].ToString();
+                    txtamountAC.Value = dt_setting.Rows[0]["AmountAC"].ToString(); ;
+                    txtremark.Value = dt_setting.Rows[0]["remark"].ToString();
+                    txtvendorname.Value = dt_setting.Rows[0]["vendorname"].ToString();
+                    txtissueoutsloc.Value = dt_setting.Rows[0]["issueoutsloc"].ToString();
+
+                    txtrow.Value = dt_setting.Rows[0]["index_row"].ToString();
+                }
             }
         }
 
@@ -129,6 +206,8 @@ namespace FreeLayout
             string MVT = txtMVT.Value.ToString();
             string typeMVT = txttypeMVT.Value.ToString();
 
+            string index_row = txtrow.Value.ToString();
+
             string Typeconvert = "";
 
             if (rblNG.Checked == true)
@@ -139,14 +218,14 @@ namespace FreeLayout
             {
                 Typeconvert = "deskstock";
             }
-
-            if (Plant =="" && Material =="" && IssueQty =="" && issueoutsloc=="")  //&& Sloc =="" && CostCenter =="" && Namecost ==""
+            //hang trong file excel bat buoc phai nhap
+            if (Plant =="" && Material =="" && IssueQty =="" && issueoutsloc=="" && index_row =="")  //&& Sloc =="" && CostCenter =="" && Namecost ==""
             {
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Thieu thong tin!'); ", true);
             }
             else 
             {
-                dt_checkupload = DataConn.StoreFillDS2("Update_setting_toolconvert", System.Data.CommandType.StoredProcedure, Plant, Sloc, CostCenter, Namecost, Material, IssueQty, UnitpriceST, AmountST, UnitpriceAC, AmountAC, remark, vendorname, issueoutsloc, typecontent, MVT, typeMVT, Typeconvert);
+                dt_checkupload = DataConn.StoreFillDS2("Update_setting_toolconvert", System.Data.CommandType.StoredProcedure, Plant, Sloc, CostCenter, Namecost, Material, IssueQty, UnitpriceST, AmountST, UnitpriceAC, AmountAC, remark, vendorname, issueoutsloc, typecontent, MVT, typeMVT, Typeconvert, index_row);
                 if (dt_checkupload.Rows[0][0].ToString() == "1")
                 {
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Update thành công!');", true);
@@ -286,14 +365,30 @@ namespace FreeLayout
 
                                 //fix cot theo tool convert
                                 int col_plan = Int32.Parse(txtplan.Value.ToString());
+
+                                //3 cot tinh theo rule mater
+                                //int col_sloc = Int32.Parse(txtsloc.Value.ToString());
+                                //int col_costcenter = Int32.Parse(txtCostcenter.Value.ToString());
+                                //int col_namecost = Int32.Parse(txtnamecost.Value.ToString());
+
                                 int col_material = Int32.Parse(txtmaterial.Value.ToString());
                                 int col_qty = Int32.Parse(txtQty.Value.ToString());
                                 int col_unitpriceST = Int32.Parse(txtunitpriceST.Value.ToString());
                                 int col_amountST = Int32.Parse(txtamountST.Value.ToString());
+
+                                int col_unitpriceAC = Int32.Parse(txtunitpriceAC.Value.ToString());
+                                int col_amountAC = Int32.Parse(txtamountAC.Value.ToString());
+
+                                int col_remark = Int32.Parse(txtremark.Value.ToString());
+                                //int col_vendorname = Int32.Parse(txtvendorname.Value.ToString());
+                                int col_vendorname = int.TryParse(txtvendorname?.Value?.ToString(), out int value)? value: 0;
+
                                 int col_scraploc = Int32.Parse(txtissueoutsloc.Value.ToString());
 
-                                int col_vendorname = Int32.Parse(txtvendorname.Value.ToString());
-                                int col_remark = Int32.Parse(txtremark.Value.ToString());
+
+                                int row_index = Int32.Parse(txtrow.Value.ToString());
+
+
 
 
                                 //string test3 = dtExcelData.Rows[2][1].ToString();
@@ -312,7 +407,8 @@ namespace FreeLayout
                                         DataTable dt_getmater_MVT = new DataTable();
                                         string type_cost = "psnvcost";
 
-                                        for (int i = 2; i < dtExcelData.Rows.Count; i++)
+                                        //for (int i = 2; i < dtExcelData.Rows.Count; i++)
+                                        for (int i = row_index; i < dtExcelData.Rows.Count; i++)
                                         {
                                             //countlap = 0;
                                             // check cac cot co du lieu va khong co du lieu
@@ -398,7 +494,98 @@ namespace FreeLayout
                                     }
                                     else if (rblDesktock.Checked == true)
                                     {
-                                        
+                                        // format file NG list                                    
+                                        //kiem tra sanction co trong danh sach chua de lay ra id sanction
+                                        DataTable dt_getmater_sloc = new DataTable();
+                                        DataTable dt_getmater_MVT = new DataTable();
+                                        string type_cost = "psnvcost";
+
+                                        //for (int i = 2; i < dtExcelData.Rows.Count; i++)
+                                        for (int i = row_index; i < dtExcelData.Rows.Count; i++)
+                                        {
+                                            //countlap = 0;
+                                            // check cac cot co du lieu va khong co du lieu
+                                            //mahang + Plant + issue sloc + scrap loc + st price
+                                            if (dtExcelData.Rows[i][1].ToString() != "" && dtExcelData.Rows[i][2].ToString() != "" && dtExcelData.Rows[i][3].ToString() != "" && dtExcelData.Rows[i][4].ToString() != "" && dtExcelData.Rows[i][5].ToString() != "")
+                                            {
+
+                                                Plant = dtExcelData.Rows[i][col_plan].ToString();
+                                                ScrapSloc = dtExcelData.Rows[i][col_scraploc].ToString();
+
+                                                Material = dtExcelData.Rows[i][col_material].ToString();
+
+                                                float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out Qty);         //QtyActual = 0;
+                                                float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
+
+                                                float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
+                                                float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
+
+                                                float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
+                                                float.TryParse(dtExcelData.Rows[i][col_amountAC].ToString(), out AmountAC);
+                                                 
+
+                                                //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
+                                                Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name
+                                                                                                          //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
+                                                Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
+                                                Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
+                                                CostCenter = "";  //lay mater MVT
+                                                NameCost = "";  //lay mater sloc
+
+                                                dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
+                                                if (dt_getmater_sloc.Rows.Count > 0)
+                                                {
+                                                    Sloc = dt_getmater_sloc.Rows[0]["ScrapSloc"].ToString();
+                                                    NameCost = dt_getmater_sloc.Rows[0]["Plant2"].ToString();
+                                                }
+                                                if (dtExcelData.Rows[i][12].ToString() != "")
+                                                {
+                                                    type_cost = "vendorcost";
+                                                }
+                                                else
+                                                {
+                                                    type_cost = "psnvcost";   //(dtExcelData.Rows[i][14].ToString() != ""
+                                                }
+
+                                                MVT = "";
+                                                TypeName = "";
+                                                MoveType = dtExcelData.Rows[i][2].ToString();  //ROH  or halb  
+                                                dt_getmater_MVT = DataConn.StoreFillDS2("Get_infor_MVT_pus", System.Data.CommandType.StoredProcedure, Sloc, MoveType, type_cost);
+                                                //quy tac lay ra 3 truong MVT - TypeName
+                                                if (dt_getmater_MVT.Rows.Count > 0)
+                                                {
+                                                    TypeName = dt_getmater_MVT.Rows[0][0].ToString();
+                                                    MVT = dt_getmater_MVT.Rows[0][1].ToString();
+                                                    CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
+                                                }
+
+                                                Pallet = "";
+                                                Barcode = "";
+                                                ControlNo = "";
+                                                FaTool = "";
+
+                                                type_convert = "deskstock";  //deskstock
+
+                                                dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
+                                                if (dt_checkupload.Rows[0][0].ToString() == "1")
+                                                {
+                                                    //da ton tai roi
+                                                    //nothing
+                                                    countlap = countlap + 1;
+                                                }
+                                                else
+                                                {
+                                                    //insert model moi
+                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert);
+                                                }
+                                            }
+
+                                            //mahang + Plant + issue sloc + scrap loc + st price  ==> Tong scrap (10)
+                                            if (dtExcelData.Rows[i][1].ToString() == "" && dtExcelData.Rows[i][2].ToString() == "" && dtExcelData.Rows[i][3].ToString() == "" && dtExcelData.Rows[i][4].ToString() == "" && dtExcelData.Rows[i][5].ToString() == "" && dtExcelData.Rows[i][6].ToString() == "")
+                                            {
+                                                break;
+                                            }
+                                        }
                                     }
                                     else
                                     {
