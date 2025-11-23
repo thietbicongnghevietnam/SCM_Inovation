@@ -376,8 +376,10 @@ namespace FreeLayout
                                 int col_unitpriceST = Int32.Parse(txtunitpriceST.Value.ToString());
                                 int col_amountST = Int32.Parse(txtamountST.Value.ToString());
 
-                                int col_unitpriceAC = Int32.Parse(txtunitpriceAC.Value.ToString());
-                                int col_amountAC = Int32.Parse(txtamountAC.Value.ToString());
+                                //int col_unitpriceAC = Int32.Parse(txtunitpriceAC.Value.ToString());
+                                //int col_amountAC = Int32.Parse(txtamountAC.Value.ToString());
+                                int col_unitpriceAC = int.TryParse(txtunitpriceAC.Value?.ToString() ?? "0", out int temp1) ? temp1 : 0;
+                                int col_amountAC = int.TryParse(txtamountAC.Value?.ToString() ?? "0", out int temp2) ? temp2 : 0;
 
                                 int col_remark = Int32.Parse(txtremark.Value.ToString());
                                 //int col_vendorname = Int32.Parse(txtvendorname.Value.ToString());
@@ -593,9 +595,15 @@ namespace FreeLayout
                                     }
 
                                     //upload buckcopy tai day
-                                    string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
-                                                    "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
-                                                    "Connect Timeout=30;";
+                                    //string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                                    //                "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
+                                    //                "Connect Timeout=30;";
+
+                                    string sqlConnStr = @"Data Source=LT-DE2302026;
+                      Initial Catalog=ScrapSystem;
+                      Integrated Security=True;
+                      Connect Timeout=30;
+                      TrustServerCertificate=True;";
 
                                     using (SqlConnection con = new SqlConnection(sqlConnStr))
                                     {

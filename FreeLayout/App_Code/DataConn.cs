@@ -30,9 +30,10 @@ namespace FreeLayout.App_Code
             //source = @"Data Source=192.168.128.1;Initial Catalog=FREE_LOCATION;User ID=sa;Password=Psnvdb2013";
             //source = @"Data Source=192.168.128.1;Initial Catalog=PC_Inventory_Infra;User ID=sa;Password=Psnvdb2013";
             source = @"Data Source=10.92.186.30;Initial Catalog=PC_Inventory_Infra;User ID=sa;Password=Psnvdb2013";
-            source2 = @"Data Source=10.92.186.30;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
+            //source2 = @"Data Source=10.92.186.30;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
             //local
-            //source = @"Data Source=./;Initial Catalog=FREE_LOCATION;User ID='';Password=''";
+            //source2 = @"Data Source=./;Initial Catalog=ScrapSystem;User ID='LT-DE2302026\pcvhit';Password=''";
+            source2 = @"Data Source=LT-DE2302026;Initial Catalog=ScrapSystem;Integrated Security=True;TrustServerCertificate=True;";
 
             con = new SqlConnection(source);
             try
