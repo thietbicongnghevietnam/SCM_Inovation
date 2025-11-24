@@ -56,18 +56,34 @@
                         </div>
                     </div>
 
+                    <div class="col-md-1" style="float: left">
+    <div class="form-group">
+        <%-- <label for="Group">Filter Cate</label>--%>
+        <asp:DropDownList ID="dr_filter_Sanction" runat="server"
+            AppendDataBoundItems="true"
+            DataTextField="SanctionId"
+            DataValueField="SanctionId"
+            CssClass="custom-select custom-select-sm form-control form-control-sm" />
+        <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+    </div>
+</div>
+
                     <div style="float: left; padding-right: 10px;">
                         <input type="text" id="filterSanction" runat="server" placeholder="Input Sacntion" style="height: 34px;" />
                     </div>
 
-                    <div style="float: left; padding-right: 10px;">
+                   <%-- <div style="float: left; padding-right: 10px;">
                         <input type="text" id="filterIssueout" runat="server" placeholder="Input IusseOut" style="height: 34px;" />
-                    </div>
+                    </div>--%>
 
-                    <span style="padding-left: 20px;"></span>
+                    <span style="padding-left: 10px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
 
                         <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
+                    <span style="padding-left: 5px;"></span>
+                     <button class="btn btn-primary" type="button" runat="server" onserverclick="export_craplist_Click">
+
+     <i class="fa fa-download"></i>Export scraplist</button>
 
                     <%--<span style="padding-left: 20px;"></span>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">

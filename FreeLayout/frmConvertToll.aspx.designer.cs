@@ -60,6 +60,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.DropDownList dr_filter_Cate;
 
         /// <summary>
+        /// dr_filter_Sanction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_Sanction;
+
+        /// <summary>
         /// filterSanction control.
         /// </summary>
         /// <remarks>
@@ -67,15 +76,6 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText filterSanction;
-
-        /// <summary>
-        /// filterIssueout control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText filterIssueout;
 
         /// <summary>
         /// FileUpload control.
