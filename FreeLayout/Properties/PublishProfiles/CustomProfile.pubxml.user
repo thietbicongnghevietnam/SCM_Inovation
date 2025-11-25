@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>E:\SCM_Inovation_Deloy</_PublishTargetUrl>
-    <History>True|2025-10-29T01:28:11.7552873Z;True|2025-10-21T11:11:46.9256023+07:00;True|2025-10-21T08:19:48.7980940+07:00;True|2025-10-14T08:17:56.0831956+07:00;True|2025-09-29T08:42:32.2006697+07:00;True|2025-09-23T08:45:00.1135751+07:00;False|2025-09-23T08:40:54.7342280+07:00;False|2025-09-23T08:39:23.8691389+07:00;True|2025-09-04T15:54:48.6577316+07:00;True|2025-09-03T08:16:43.7385692+07:00;</History>
+    <History>True|2025-11-25T09:58:47.8965751Z;True|2025-10-29T08:28:11.7552873+07:00;True|2025-10-21T11:11:46.9256023+07:00;True|2025-10-21T08:19:48.7980940+07:00;True|2025-10-14T08:17:56.0831956+07:00;True|2025-09-29T08:42:32.2006697+07:00;True|2025-09-23T08:45:00.1135751+07:00;False|2025-09-23T08:40:54.7342280+07:00;False|2025-09-23T08:39:23.8691389+07:00;True|2025-09-04T15:54:48.6577316+07:00;True|2025-09-03T08:16:43.7385692+07:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -18,10 +18,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/15/2025 21:57:10</publishTime>
     </File>
     <File Include="bin/FreeLayout.dll">
-      <publishTime>10/29/2025 08:27:15</publishTime>
+      <publishTime>11/25/2025 16:57:49</publishTime>
     </File>
     <File Include="bin/FreeLayout.pdb">
-      <publishTime>10/29/2025 08:27:15</publishTime>
+      <publishTime>11/25/2025 16:57:49</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>08/16/2021 12:01:57</publishTime>
@@ -365,6 +365,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Exportexcel/jquery.table2excel.min.js">
       <publishTime>08/25/2025 08:08:27</publishTime>
     </File>
+    <File Include="frmConvertToll.aspx">
+      <publishTime>11/24/2025 08:28:24</publishTime>
+    </File>
     <File Include="frmExportImage.aspx">
       <publishTime>09/03/2025 08:07:52</publishTime>
     </File>
@@ -378,7 +381,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/12/2025 08:10:32</publishTime>
     </File>
     <File Include="frmUploadScraplist.aspx">
-      <publishTime>10/14/2025 08:14:29</publishTime>
+      <publishTime>11/25/2025 10:13:25</publishTime>
     </File>
     <File Include="frmVanningDateSCM.aspx">
       <publishTime>10/29/2025 08:25:44</publishTime>
@@ -5595,7 +5598,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2025 08:08:53</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/29/2025 08:27:20</publishTime>
+      <publishTime>11/25/2025 16:57:52</publishTime>
     </File>
     <File Include="QCC/DailyMaterial.aspx">
       <publishTime>08/25/2021 09:57:00</publishTime>

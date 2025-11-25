@@ -60,48 +60,21 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.DropDownList dr_filter_Cate;
 
         /// <summary>
-        /// filterSanction control.
+        /// dr_filter_Sanction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText filterSanction;
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_Sanction;
 
         /// <summary>
-        /// filterIssueout control.
+        /// dr_filter_IssueOut control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText filterIssueout;
-
-        /// <summary>
-        /// FileUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload;
-
-        /// <summary>
-        /// rblNG control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rblNG;
-
-        /// <summary>
-        /// rblDesktock control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rblDesktock;
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_IssueOut;
     }
 }

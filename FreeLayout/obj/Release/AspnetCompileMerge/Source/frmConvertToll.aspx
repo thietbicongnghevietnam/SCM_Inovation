@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="frmUploadScraplist.aspx.cs" Inherits="FreeLayout.frmUploadScraplist" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="frmConvertToll.aspx.cs" Inherits="FreeLayout.frmConvertToll" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Scrap List</title>
+    <title>Tool Convert</title>
     <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css" />
 
     <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
@@ -21,18 +21,16 @@
     <script src="/dist/Infra/jquery-3.7.0.js"></script>
     <script src="/dist/Infra/jquery.dataTables.min.js"></script>
     <script src="/dist/Infra/dataTables.bootstrap4.min.js"></script>
-
-
-
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
 </head>
 
 <body>
+
     <form id="form1" runat="server">
         <div class="card">
             <div class="card-header">
                 <div class="col-sm-12">
-                    <h3><b style="font-size: 30px;">Scrap List Management</b></h3>
+                    <h3><b style="font-size: 30px;">Tool Convert Scrap</b></h3>
                     <br />
                     <p style="color: blue;">
                         <asp:Label ID="lblConfirm" Text="" runat="server"></asp:Label>
@@ -57,53 +55,143 @@
                             <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
                         </div>
                     </div>
-                                        <div class="col-md-1" style="float: left">
+
+                    <div class="col-md-1" style="float: left">
     <div class="form-group">
         <%-- <label for="Group">Filter Cate</label>--%>
         <asp:DropDownList ID="dr_filter_Sanction" runat="server"
             AppendDataBoundItems="true"
-            DataTextField="Sanction"
-            DataValueField="Sanction"
-            CssClass="custom-select custom-select-sm form-control form-control-sm" OnSelectedIndexChanged="dr_filter_Sanction_SelectedIndexChanged" AutoPostBack="True" />        
-    </div>
-</div>
-                                                            <div class="col-md-1" style="float: left">
-    <div class="form-group">
-        <%-- <label for="Group">Filter Cate</label>--%>
-        <asp:DropDownList ID="dr_filter_IssueOut" runat="server"
-            AppendDataBoundItems="true"
-            DataTextField="TypeName"
-            DataValueField="TypeName"
+            DataTextField="SanctionId"
+            DataValueField="SanctionId"
             CssClass="custom-select custom-select-sm form-control form-control-sm" />
         <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
     </div>
 </div>
 
-                    <%--<div style="float: left; padding-right: 10px;">
-                        <input type="text" id="filterSanction" runat="server" placeholder="Nhập Sacntion" style="height: 34px;" />
+                    <div style="float: left; padding-right: 10px;">
+                        <input type="text" id="filterSanction" runat="server" placeholder="Input Sacntion" style="height: 34px;" />
+                    </div>
+
+                   <%-- <div style="float: left; padding-right: 10px;">
+                        <input type="text" id="filterIssueout" runat="server" placeholder="Input IusseOut" style="height: 34px;" />
                     </div>--%>
 
-                    <%--<div style="float: left; padding-right: 10px;">
-                        <input type="text" id="filterIssueout" runat="server" placeholder="Nhập IusseOut" style="height: 34px;" />                        
-                    </div>--%>
-
-                    <span style="padding-left: 20px;"></span>
+                    <span style="padding-left: 10px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
 
-                        <i class="fa fa-fw fa-lg fa-search"></i>Lọc</button>
+                        <i class="fa fa-fw fa-lg fa-search"></i>Filter</button>
+                    <span style="padding-left: 5px;"></span>
+                     <button class="btn btn-primary" type="button" runat="server" onserverclick="export_craplist_Click">
 
-                   
+     <i class="fa fa-download"></i>Export scraplist</button>
 
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_IssueOut"><i class="fa fa-download"></i>&nbsp; Export Issue Out</button>&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_FA_PE"><i class="fa fa-download"></i>&nbsp; Export Disposition Property List</button>&nbsp;&nbsp;&nbsp;             
-                    <%--<button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp; --%>            
-          
-                </div>
+                    <%--<span style="padding-left: 20px;"></span>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Thêm mới
+                    </button>--%>
 
-                <div class="col-sm-12">
+                    <!-- import file excel -->
+                    <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
+                    <div style="font: 14px Verdana; float: right">
+                        <p style="margin-top: 0px; margin-left: 20px;">
+                            Chose file to upload:
+                            <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
+                        </p>
+                        <p style="margin-top: 0px; margin-left: 20px;">
+                            <input type="button" value="Import ScrapList" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />
+
+                            &nbsp;&nbsp;&nbsp;
+                           
+                                <asp:RadioButton ID="rblNG" runat="server" GroupName="rblOptions" Text="NG list" Checked="true" AutoPostBack="true"
+    OnCheckedChanged="RadioButton_CheckedChanged" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:RadioButton ID="rblDesktock" runat="server" GroupName="rblOptions" Text="Deadstock list" AutoPostBack="true"
+    OnCheckedChanged="RadioButton_CheckedChanged" />
+                        </p>
+                    </div>
                 </div>
 
             </div>
+            <div class="col-sm-12">
+                <b style="float: left; padding-top: 25px; margin-right: 5px;">Colums :</b>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">plan</b><br />
+                    <input type="text" id="txtplan" runat="server" placeholder="Plan" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    Sloc<br />
+                    <input type="text" id="txtsloc" runat="server" placeholder="Sloc" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    CostCenter<br />
+                    <input type="text" id="txtCostcenter" runat="server" placeholder="CostCenter" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    NameCost<br />
+                    <input type="text" id="txtnamecost" runat="server" placeholder="NameCost" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">material</b><br />
+                    <input type="text" id="txtmaterial" runat="server" placeholder="material" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">IssueQty</b><br />
+                    <input type="text" id="txtQty" runat="server" placeholder="IssueQty" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">unitpriceST</b><br />
+                    <input type="text" id="txtunitpriceST" runat="server" placeholder="unitpriceST" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">amountST</b><br />
+                    <input type="text" id="txtamountST" runat="server" placeholder="amountST" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    unitpriceAC<br />
+                    <input type="text" id="txtunitpriceAC" runat="server" placeholder="unitpriceAC" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    amountAC<br />
+                    <input type="text" id="txtamountAC" runat="server" placeholder="amountAC" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    remark<br />
+                    <input type="text" id="txtremark" runat="server" placeholder="remark" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    vendorname<br />
+                    <input type="text" id="txtvendorname" runat="server" placeholder="vendorname" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">issueoutsloc</b><br />
+                    <input type="text" id="txtissueoutsloc" runat="server" placeholder="issueoutsloc" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    Type<br />
+                    <input type="text" id="txttype" runat="server" placeholder="Type" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    MVT<br />
+                    <input type="text" id="txtMVT" runat="server" placeholder="MVT" style="height: 34px; width: 100px;" />
+                </div>
+                <div style="float: left; padding-right: 5px;">
+                    typeMVT<br />
+                    <input type="text" id="txttypeMVT" runat="server" placeholder="typeMVT" style="height: 34px; width: 100px;" />
+                </div>
+
+                 <b style="float: left; padding-top: 25px;">Row: </b>
+                <div style="float: left; padding-right: 5px;">
+                    <b style="color:red">Row</b> <br />
+                    <input type="text" id="txtrow" runat="server" placeholder="" style="height: 34px; width: 50px;" />
+                </div>
+
+                <div style="float: left; padding-right: 5px; padding-top: 22px;">
+                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Save_setting_Click">
+                        <i class="fa fa-save fa-fw fa-lg"></i>Save
+                    </button>
+                </div>
+
+            </div>
+
         </div>
 
 
@@ -120,15 +208,15 @@
                             <th>UnitPrice</th>
                             <th>Amount</th>
                             <th>CostCenter</th>
-                            <th>Reason</th>
+                            
                             <th>Plant</th>
                             <th>Sloc</th>
                             <th>NameCost</th>
-                            <th>Pallet</th>
-                            <th>Barcode</th>
-                            <th>IssueOut</th>
-                            <th>CreatedDate</th>
-
+                           <%-- <th>Pallet</th>--%>
+                            <th>MoveType</th>
+                            <th>TypeName</th>
+                            <th>MVT</th>
+                            <th>Reason</th>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -147,15 +235,16 @@
                         <td><%=rows["UnitPrice"].ToString()%></td>
                         <td><%=rows["Amount"].ToString()%></td>
                         <td><%=rows["CostCenter"].ToString()%></td>
-                        <td><%=rows["Reason"].ToString()%></td>
+                        
                         <td><%=rows["Plant"].ToString()%></td>
                         <td><%=rows["Sloc"].ToString()%></td>
                         <td><%=rows["NameCost"].ToString()%></td>
-                        <td><%=rows["Pallet"].ToString()%></td>
-                        <td><%=rows["Barcode"].ToString()%></td>
-                        <td><%=rows["IssueOut"].ToString()%></td>
-                        <td><%=rows["CreatedDate"].ToString()%></td>
-
+                        <%--<td><%=rows["Pallet"].ToString()%></td>--%>
+                        <td><%=rows["MoveType"].ToString()%></td>
+                       <%-- <td><%=rows["IssueOut"].ToString()%></td>--%>
+                        <td><%=rows["TypeName"].ToString()%></td>
+                        <td><%=rows["MVT"].ToString()%></td>
+                        <td><%=rows["Reason"].ToString()%></td>
                         <td></td>
                     </tr>
                     <%} %>
@@ -170,15 +259,15 @@
                         <th>UnitPrice</th>
                         <th>Amount</th>
                         <th>CostCenter</th>
-                        <th>Reason</th>
+                        
                         <th>Plant</th>
                         <th>Sloc</th>
                         <th>NameCost</th>
-                        <th>Pallet</th>
-                        <th>Barcode</th>
-                        <th>IssueOut</th>
-                        <th>CreatedDate</th>
-
+                        <%--<th>Pallet</th>--%>
+                        <th>MoveType</th>
+                        <th>TypeName</th>
+                        <th>MVT</th>
+                        <th>Reason</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -305,7 +394,6 @@
 
 
     </script>
-
 
 </body>
 </html>
