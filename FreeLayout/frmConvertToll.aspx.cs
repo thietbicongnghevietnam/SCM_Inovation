@@ -1,5 +1,6 @@
 ﻿using FreeLayout.App_Code;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -164,6 +165,72 @@ namespace FreeLayout
             }
         }
 
+        protected void delete_item(object sender, EventArgs e)
+        {
+            string _fromdate = Date1.Value;
+            string _todate = ngaychiid.Value;
+
+            DataTable dt_update = new DataTable();
+            string IDdel = txtid.Text.ToString();
+            string sanctionname = txtsanction.Text.ToString();
+            string userid = txtuser.Text.ToString();
+
+            if (userid != "")
+            {
+                dt_update = DataConn.StoreFillDS2("Delete_idconverttool", System.Data.CommandType.StoredProcedure, IDdel, userid, sanctionname);
+                if (dt_update.Rows[0][0].ToString() == "1")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Delete data sucessful!');", true);
+                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sanctionname, _fromdate, _todate); 
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check information again!'); ", true);
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG,Bạn chưa nhập User admin để xóa!'); ", true);
+            }
+
+        }
+
+        protected void Updatethongtin(object sender, EventArgs e)
+        {
+            string _fromdate = Date1.Value;
+            string _todate = ngaychiid.Value;
+
+            DataTable dt_update = new DataTable();
+            string idconvert = IDedit.Text.ToString();
+            string sanctionname = idSanctionname.Text.ToString();
+            string qty_act = idqty.Text.ToString();
+
+            try
+            {
+                if (qty_act == "")
+                {
+                    //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon Qty!'); ", true);
+                }
+                else
+                {
+                    dt_update = DataConn.StoreFillDS2("update_Qty_convert_tool", System.Data.CommandType.StoredProcedure, idconvert, sanctionname, qty_act);
+                    if (dt_update.Rows[0][0].ToString() == "1")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
+                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sanctionname, _fromdate, _todate);
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Kiem tra lai thong tin!'); ", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         protected void Search_Date_Click(object sender, EventArgs e)
         {
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -177,8 +244,20 @@ namespace FreeLayout
                 //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
             }
             else
-            {
+            {              
                 dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
+
+                // XÓA TRƯỚC KHI BIND
+                //dr_filter_Sanction.Items.Clear();
+
+                //dtsanction = DataConn.StoreFillDS2("pro_get_section", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
+                //DataRow newRow2 = dtsanction.NewRow();
+                //newRow2["SanctionId"] = "==Sanction==";
+                //dtsanction.Rows.InsertAt(newRow2, 0);
+                //dr_filter_Sanction.DataSource = dtsanction;
+                //dr_filter_Sanction.DataBind();
+
+
                 //if (bophan == "==Section==")
                 //{
                 //    //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
@@ -491,12 +570,15 @@ namespace FreeLayout
                             DataTable sheets = excelConn.GetSchema("Tables");
                             // Lấy tên sheet đầu tiên (vì chỉ có một sheet)
                             string sheetName = sheets.Rows[0]["TABLE_NAME"].ToString();
+                            sheetName = sheetName.Trim('\'');               // Nếu có dấu nháy đơn bao ngoài ---> LOẠI BỎ
                             Console.WriteLine("Tên sheet: " + sheetName);
 
                             // Xử lý tên sheet (nếu có ký tự đặc biệt)
-                            string sanitizedSheetName = SanitizeSheetName(sheetName);
+                            //string sanitizedSheetName = SanitizeSheetName(sheetName);
+
                             // Tạo câu truy vấn SQL với tên sheet đã xử lý
-                            OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sanitizedSheetName}$]", excelConn);
+                            //OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sanitizedSheetName}$]", excelConn);
+                            OleDbCommand objOleDB = new OleDbCommand($"SELECT * FROM [{sheetName}]", excelConn);
 
                             objBulkReader = objOleDB.ExecuteReader();
 

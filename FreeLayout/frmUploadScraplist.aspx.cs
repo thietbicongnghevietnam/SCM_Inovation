@@ -61,6 +61,10 @@ namespace FreeLayout
             string bophan = dr_filter_Cate.SelectedValue;
 
             dtIssueOut = DataConn.StoreFillDS2("pro_get_section3", System.Data.CommandType.StoredProcedure, _fromdate, _todate, tensanction);
+
+            // XÓA TRƯỚC KHI BIND
+            dr_filter_IssueOut.Items.Clear();
+
             if (dtIssueOut.Rows.Count > 0)
             {
                 DataRow newRow3 = dtIssueOut.NewRow();

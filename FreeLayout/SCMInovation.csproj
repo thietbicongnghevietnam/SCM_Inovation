@@ -160,6 +160,7 @@
     <Content Include="Exportexcel\jquery.min.js" />
     <Content Include="Exportexcel\jquery.table2excel.min.js" />
     <Content Include="frmConvertToll.aspx" />
+    <Content Include="frmConvertToolVessel.aspx" />
     <Content Include="frmExportImage.aspx" />
     <Content Include="frmMaterialName.aspx" />
     <Content Include="frmMaterModel.aspx" />
@@ -1865,6 +1866,13 @@
     </Compile>
     <Compile Include="frmConvertToll.aspx.designer.cs">
       <DependentUpon>frmConvertToll.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmConvertToolVessel.aspx.cs">
+      <DependentUpon>frmConvertToolVessel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmConvertToolVessel.aspx.designer.cs">
+      <DependentUpon>frmConvertToolVessel.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmExportImage.aspx.cs">
       <DependentUpon>frmExportImage.aspx</DependentUpon>

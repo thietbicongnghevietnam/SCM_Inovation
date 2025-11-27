@@ -3683,9 +3683,15 @@ namespace FreeLayout
                             //                        "Initial Catalog=OQC;User Id=sa;Password='';" +
                             //                        "Connect Timeout=30;";
 
-                            string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
-                                "Initial Catalog=PC_Inventory_Infra;User Id=sa;Password=Psnvdb2013;" +
-                                "Connect Timeout=30;";
+                            //string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                            //    "Initial Catalog=PC_Inventory_Infra;User Id=sa;Password=Psnvdb2013;" +
+                            //    "Connect Timeout=30;";
+
+                            string sqlConnStr = "Data Source=10.92.184.22\\hienpc;Persist Security Info=False;" +
+    "Initial Catalog=LichTau;User Id=sa;Password=Hien304@;" +
+    "Connect Timeout=30;";
+
+
                             using (SqlConnection con = new SqlConnection(sqlConnStr))
                             {
                                 con.Open();
