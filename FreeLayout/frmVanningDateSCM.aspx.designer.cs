@@ -87,6 +87,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.RadioButton rblCAM;
 
         /// <summary>
+        /// dr_filter_keyconvert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_keyconvert;
+
+        /// <summary>
         /// FileUpload control.
         /// </summary>
         /// <remarks>

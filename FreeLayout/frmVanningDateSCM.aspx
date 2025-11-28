@@ -137,18 +137,25 @@
                                 <div class="horizontal-radio-group">
                                     <asp:RadioButton ID="rblAll" runat="server" GroupName="rblOptions" Text="ALL" Checked="true" />
                                     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" />
-                                    <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" />
+                                    <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP JP" />
                                     <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" />--%>
                                     <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" />
                                     <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" />
                                     <%--<asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" />--%>
                                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="DSC" />
                                 </div>
-                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">
+                               <%-- <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">--%>
                                     <%--onserverclick="btnDownloadClick" --%>
-                                    <i class="fas fa-download"></i>Download Template
-                                </button>
-
+                                   <%-- <i class="fas fa-download"></i>Download Template--%>
+                               <%-- </button>--%>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="dr_filter_keyconvert" class="mr-2">Select template</label>
+                                    <asp:DropDownList ID="dr_filter_keyconvert" runat="server"
+                                        AppendDataBoundItems="true"
+                                        DataTextField="KeyConvert"
+                                        DataValueField="KeyConvert"
+                                        CssClass="custom-select custom-select-sm form-control form-control-sm" />
+                                </div>
 
                             </div>
 
