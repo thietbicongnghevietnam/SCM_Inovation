@@ -74,8 +74,8 @@ namespace FreeLayout
                     dr_filter_keyconvert.DataBind();
                 }
 
-                Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
-                ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                //Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                //ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
             }
 
         }
@@ -110,6 +110,19 @@ namespace FreeLayout
             }
             else
             {
+                dtkeyconvert = DataConn.StoreFillDS("pro_get_categogy_keyconvert", System.Data.CommandType.StoredProcedure, _fromdate, _todate);
+                // XÓA TRƯỚC KHI BIND
+                dr_filter_keyconvert.Items.Clear();
+
+                if (dtkeyconvert.Rows.Count > 0)
+                {
+                    DataRow newRow3 = dtkeyconvert.NewRow();
+                    newRow3["KeyConvert"] = "==TemplateName==";
+                    dtkeyconvert.Rows.InsertAt(newRow3, 0);
+                    dr_filter_keyconvert.DataSource = dtkeyconvert;
+                    dr_filter_keyconvert.DataBind();
+                }
+
                 if (category == "==Category==")
                 {
                     //dt_plan = DataConn.StoreFillDS("Select_Upload_Plan", System.Data.CommandType.StoredProcedure);                                     
