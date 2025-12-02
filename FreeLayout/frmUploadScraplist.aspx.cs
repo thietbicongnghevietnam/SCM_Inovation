@@ -178,6 +178,37 @@ namespace FreeLayout
             }
         }
 
+        public void Confirm_Issue_Out(object sender, EventArgs e)
+        {
+            DataTable dt_dowload = new DataTable();
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
+
+            string _sanction = dr_filter_Sanction.SelectedValue;// filterSanction.Value.ToString();
+            string _issueout = dr_filter_IssueOut.SelectedValue;// filterIssueout.Value.ToString();
+            string bophan = dr_filter_Cate.SelectedValue.ToString();
+
+
+            if (_sanction == "==Sanction==" && bophan == "==Section==")   //_issueout == "==IssueOut==" ||
+            {
+                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Save data thanh cong!');", true);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Du lieu Sanction or section null !'); ", true);
+            }
+            else 
+            {
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+            }
+
+        }
+
         static void ProcessExcelFile1(string filePath, string newFilePath, string tungay, string denngay, string sanction, string issueout) 
         {
             FileInfo fileInfo = new FileInfo(filePath);
