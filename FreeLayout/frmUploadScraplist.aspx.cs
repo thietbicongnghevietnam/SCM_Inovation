@@ -198,6 +198,185 @@ namespace FreeLayout
             {
                 try
                 {
+                    //insert sang Issue In Out
+                    string UserID = "2010919"; //user send request phe duyet
+                    //check user va bo phan co trong danh sach tao user phe duyet khong?
+                    dt_plan = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, UserID, bophan);
+
+                    if (dt_plan.Rows[0][0].ToString() == "1")
+                    {
+                        //ton tai user trong Issue Out //Session["Role_Dept"].ToString().Trim() == "RQ"
+                        //chia lam 2 loai request A va B
+                        //check ton tai request no chua?
+                        string Request_NO = "";
+                        string typename = "";
+
+                        string TypeRQ = null; string Material = null; string Sloc = null; float Qty = 0; string Mvtype = null; string Plant = null; string Account = null; float UnitPriceST = 0;
+                        float UnitActual = 0; string CostCenter = null; string VendorCode = null; string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
+                        string MVContent = null; string RQ_Reset = null; string CountryOfOrgin = null; string ItemDescription = null;
+
+                        
+
+                        DataTable dt = DataConn.StoreFillDS2("Select_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan);
+                        
+                        // tam thoi xu ly 1 ban ghi
+                        if (dt.Rows.Count > 0)
+                        {
+                            int Max_ID = 0;
+                            for (int i = 0; i < dt.Rows.Count; i++) 
+                            {
+                                typename = dt.Rows[i]["TypeName"].ToString();
+                                //lay typeRQ va maxRQ
+                                DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
+                                if (dtMax.Rows.Count <= 0)
+                                {
+                                    Max_ID = 1;
+                                    TypeRQ = dtMax.Rows[0][1].ToString();
+                                }
+                                else
+                                {
+                                    Max_ID = int.Parse(dtMax.Rows[0][0].ToString());
+                                    Max_ID = Max_ID + 1;
+                                    TypeRQ = dtMax.Rows[0][1].ToString();
+                                }
+                                Request_NO = "RQB-" + bophan + "-" + DateTime.Now.ToString("MMyy") + "-" + Max_ID.ToString();
+
+                                if (dt.Rows[i]["Material"].ToString() != "")
+                                {
+                                    Material = dt.Rows[i]["Material"].ToString();
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Material at row :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+
+                                if (dt.Rows[i]["Sloc"].ToString() != "")
+                                {
+                                    Sloc = dt.Rows[i]["Sloc"].ToString();
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Sloc at row :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+
+                                if (dt.Rows[i]["Qty"].ToString() != "")
+                                {
+                                    Qty = float.Parse(dt.Rows[i]["Qty"].ToString());
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Qty at row :(" + (i + 1).ToString() + ") is null');", true);
+
+                                    return;
+                                }
+
+                                if (dt.Rows[i]["UnitPrice"].ToString() != "")
+                                {
+
+                                    float UnitActual_ = float.Parse(dt.Rows[i]["UnitPrice"].ToString().Trim());
+                                    UnitActual = (float)Math.Round((UnitActual_), 5);
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Amount_Actual at row :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+
+                                if (dt.Rows[i]["MVT"].ToString() != "")
+                                {
+                                    Mvtype = dt.Rows[i]["MVT"].ToString();
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data MVType at row :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+                                //**** tam thoi chua check ***** ben issue out
+                                // dtCheckMV = DataConn.StoreFillDS("SP_Issue_Material_Check_MVType", CommandType.StoredProcedure, Mvtype.Trim(), MVContent.Trim());
+                                // Kiểm tra MV-TypeName không đúng Mv TypeID`
+
+                                if (dt.Rows[i]["Plant"].ToString() != "")
+                                {
+                                    Plant = dt.Rows[i]["Plant"].ToString();
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Plant at row :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+
+                                if (dt.Rows[i]["CostCenter"].ToString() != "")
+                                {
+                                    CostCenter = dt.Rows[i]["CostCenter"].ToString();
+                                }
+                                else
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Cost Center at row :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+
+                                string TypeCheck = TypeRQ;
+                                string[] stringTypeID = { "2", "3", "4", "5", "8", "21" }; // Những Type sẽ phải điền Vendorcode
+
+
+                                //*****check lai phan vendor code nay ==> insert la vendor code => khong phai vendor name
+                                foreach (string x in stringTypeID)
+                                {
+                                    int CheckTrung = string.Compare(TypeCheck.ToString().ToUpper().Trim(), x.ToUpper().Trim());
+
+                                    if (CheckTrung == 0)
+                                    {
+                                        if (dt.Rows[i]["Vendor"].ToString() != "")
+                                        {
+                                            VendorCode = dt.Rows[i]["Vendor"].ToString();
+                                        }
+                                        else
+                                        {
+                                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Vendor code at row :(" + (i + 1).ToString() + ") is null');", true);
+                                            return;
+                                        }
+                                        break;
+                                    }
+
+                                }
+
+                                CountryOfOrgin = "";// chua co thong tin *** bo phan cung cap (ke toan) **** // dt.Rows[i][11].ToString();
+                                ItemDescription = "";//chua co thong tin *** bo phan cung cap (ke toan) **** // dt.Rows[i][12].ToString();
+
+                                //truong hop nay lam *******
+                                RQ_Reset = "";// request name can lay lai // dt.Rows[i][13].ToString(); // bien reset lai request ne da ton tai roi
+                                if (dt.Rows[i]["UnitPrice"].ToString() != "")
+                                {
+                                    UnitPriceST = float.Parse(dt.Rows[i]["UnitPrice"].ToString());
+                                    Amount = (float)Math.Round((UnitPriceST * Qty), 2);
+                                }
+                                else 
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Upload NG... Reason is material (" + Material + ") of (" + Plant + ") not exits at table link SAP at row :(" + (i + 1).ToString() + ") ');", true);
+                                    return;
+                                }
+
+                                //******
+                                Amount_Actual = (float)Math.Round((UnitActual * Qty), 2); 
+
+
+
+                            }
+
+                        }
+                        else 
+                        {
+                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Du lieu null, kiem tra lai !'); ", true);
+                        }
+
+                    }
+                    else
+                    {
+                        //khong ton tai user 
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, User khong co quyen trong database In Out!'); ", true);
+                    }
 
                 }
                 catch (Exception ex)
