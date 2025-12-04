@@ -136,11 +136,12 @@
                 </thead>
                 <tbody>
                     <%int i = 0; %>
-                    <%foreach (System.Data.DataRow rows in dt_plan.Rows)
+                    <%if (dt_plan != null) { 
+                        foreach (System.Data.DataRow rows in dt_plan.Rows)
                         {%>
                     <%i++;%>
                     <tr role="row">
-                        <td><%=i %></td>
+                        <%--<td><%=i %></td>
                         <td><%=rows["SanctionId"].ToString()%></td>
                         <td><%=rows["Material"].ToString()%></td>
                         <td><%=rows["Qty"].ToString()%></td>
@@ -157,9 +158,26 @@
                         <td><%=rows["IssueOut"].ToString()%></td>
                         <td><%=rows["CreatedDate"].ToString()%></td>
 
-                        <td></td>
+                        <td></td>--%>
+                        <td><%=i %></td>
+        <td><%=Convert.ToString(rows["SanctionId"])%></td>
+        <td><%=Convert.ToString(rows["Material"])%></td>
+        <td><%=Convert.ToString(rows["Qty"])%></td>
+        <td><%=Convert.ToString(rows["QtyActual"])%></td>
+        <td><%=Convert.ToString(rows["UnitPrice"])%></td>
+        <td><%=Convert.ToString(rows["Amount"])%></td>
+        <td><%=Convert.ToString(rows["CostCenter"])%></td>
+        <td><%=Convert.ToString(rows["Reason"])%></td>
+        <td><%=Convert.ToString(rows["Plant"])%></td>
+        <td><%=Convert.ToString(rows["Sloc"])%></td>
+        <td><%=Convert.ToString(rows["NameCost"])%></td>
+        <td><%=Convert.ToString(rows["Pallet"])%></td>
+        <td><%=Convert.ToString(rows["Barcode"])%></td>
+        <td><%=Convert.ToString(rows["IssueOut"])%></td>
+        <td><%=Convert.ToString(rows["CreatedDate"])%></td>
+        <td></td>
                     </tr>
-                    <%} %>
+                    <%} }%>
                 </tbody>
                 <tfoot>
                     <tr>

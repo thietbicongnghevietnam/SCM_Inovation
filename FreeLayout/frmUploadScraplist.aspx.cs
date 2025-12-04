@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Media.Media3D;
 
 namespace FreeLayout
 {
@@ -180,7 +181,9 @@ namespace FreeLayout
 
         public void Confirm_Issue_Out(object sender, EventArgs e)
         {
-            DataTable dt_dowload = new DataTable();
+            DataTable dt_insert = new DataTable();
+            DataTable dtCheckMV = new DataTable();
+            DataTable dtUpdate = new DataTable();
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
 
@@ -198,50 +201,72 @@ namespace FreeLayout
             {
                 try
                 {
+                    int dongloi = 0;
+                    bool ketqua = true;
                     //insert sang Issue In Out
-                    string UserID = "2010919"; //user send request phe duyet
+                    string UserID = "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
                     //check user va bo phan co trong danh sach tao user phe duyet khong?
-                    dt_plan = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, UserID, bophan);
+                    DataTable dt_checkuser = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, UserID, bophan);
 
-                    if (dt_plan.Rows[0][0].ToString() == "1")
+                    if (dt_checkuser.Rows[0][0].ToString() == "1")
                     {
                         //ton tai user trong Issue Out //Session["Role_Dept"].ToString().Trim() == "RQ"
                         //chia lam 2 loai request A va B
                         //check ton tai request no chua?
                         string Request_NO = "";
                         string typename = "";
+                        string tenform = "";
+                        
 
                         string TypeRQ = null; string Material = null; string Sloc = null; float Qty = 0; string Mvtype = null; string Plant = null; string Account = null; float UnitPriceST = 0;
                         float UnitActual = 0; string CostCenter = null; string VendorCode = null; string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
                         string MVContent = null; string RQ_Reset = null; string CountryOfOrgin = null; string ItemDescription = null;
-
                         
-
                         DataTable dt = DataConn.StoreFillDS2("Select_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan);
-                        
+
+                        //truong hop nhieu typename => for nhieu lan
+
                         // tam thoi xu ly 1 ban ghi
                         if (dt.Rows.Count > 0)
                         {
                             int Max_ID = 0;
+                            typename = dt.Rows[0]["TypeName"].ToString();
+                            //lay typeRQ va maxRQ va tenform
+                            DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
+                            if (dtMax.Rows.Count <= 0)
+                            {
+                                Max_ID = 1;
+                                TypeRQ = dtMax.Rows[0][1].ToString();
+                                tenform = dtMax.Rows[0][2].ToString();
+                            }
+                            else
+                            {
+                                Max_ID = int.Parse(dtMax.Rows[0][0].ToString());
+                                Max_ID = Max_ID + 1;
+                                TypeRQ = dtMax.Rows[0][1].ToString();
+                                tenform = dtMax.Rows[0][2].ToString();
+
+                            }
+
                             for (int i = 0; i < dt.Rows.Count; i++) 
                             {
-                                typename = dt.Rows[i]["TypeName"].ToString();
-                                //lay typeRQ va maxRQ
-                                //DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
-                                //if (dtMax.Rows.Count <= 0)
-                                //{
-                                //    Max_ID = 1;
-                                //    TypeRQ = dtMax.Rows[0][1].ToString();
-                                //}
-                                //else
-                                //{
-                                //    Max_ID = int.Parse(dtMax.Rows[0][0].ToString());
-                                //    Max_ID = Max_ID + 1;
-                                //    TypeRQ = dtMax.Rows[0][1].ToString();
-                                //}
+                                
+                                //check type request co trong mater cua ke toan : tbl_MV_Master_ACC
+                                if (TypeRQ == "") 
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('TypeRQ is nul, check mater :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
 
-                                Max_ID = 1;
-                                TypeRQ = "7";
+                                //check form ten form xuat sang isssue inout
+                                if (tenform == "")
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('tenform khong co trong mater :(" + (i + 1).ToString() + ") is null');", true);
+                                    return;
+                                }
+
+                                //Max_ID = 1;
+                                //TypeRQ = "7";
 
                                 Request_NO = "RQB-" + bophan + "-" + DateTime.Now.ToString("MMyy") + "-" + Max_ID.ToString();
 
@@ -297,9 +322,18 @@ namespace FreeLayout
                                     Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data MVType at row :(" + (i + 1).ToString() + ") is null');", true);
                                     return;
                                 }
-                                //**** tam thoi chua check ***** ben issue out
-                                // dtCheckMV = DataConn.StoreFillDS("SP_Issue_Material_Check_MVType", CommandType.StoredProcedure, Mvtype.Trim(), MVContent.Trim());
+                                //**** tam thoi chua check ***** ben issue out  ==> Lay ra trong mater: [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode='201' and TypeID=7  => MVContent
+                                dtCheckMV = DataConn.StoreFillDS2("get_IssueOut_MVType", CommandType.StoredProcedure, Mvtype.Trim(), TypeRQ);
                                 // Kiểm tra MV-TypeName không đúng Mv TypeID`
+                                if (dtCheckMV.Rows.Count > 0)
+                                {
+                                    MVContent = dtCheckMV.Rows[0][0].ToString();
+                                }
+                                else 
+                                {
+                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('MVContent khong co trong mater!');", true);
+                                    return;
+                                }
 
                                 if (dt.Rows[i]["Plant"].ToString() != "")
                                 {
@@ -363,18 +397,50 @@ namespace FreeLayout
                                 }
 
                                 //******
-                                Amount_Actual = (float)Math.Round((UnitActual * Qty), 2); 
+                                Amount_Actual = (float)Math.Round((UnitActual * Qty), 2);    //UnitPrice_AC,Amount_AC
+                                Note = "";
+                                DateVoucher = "";
+                                string stringToCheck = Sloc; // Stock in excel file upload
+                                string StockUser = "";// Session["Stock"].ToString().Trim();    //**** confirm lai bo phan 
+                                string DateInsert = DateTime.Now.ToString("dd/MM/yyyy");
+                                string Public_Dept = bophan;  //****check lai   //ten bo phan
 
+                                //if (bophan != "PUR") // Nếu Phòng PUR có thể upload tất cả các kho bộ phận khác vẫn phải theo danh sách kho.
+                                //{
+                                //    if (!StockUser.Contains(stringToCheck))
+                                //    {
+                                //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Upload NG... You can not upload Stock (" + Sloc + ") in  list stock (" + StockUser + ") you control.');", true);
+                                //        return;
+                                //    }
+                                //}
 
+                                if (TypeRQ != "" || Material != "" || Sloc != "" || Mvtype != "" || Plant != "" || CostCenter != "")
+                                {
+                                    //sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription) ";
+                                    //sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + Session["UserName"].ToString() + "'," + UnitPriceST + " ,'" + MVContent + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Amount + "," + UnitActual + "," + Amount_Actual + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "') ";
+                                    //Session["RQ_UploadB"] = Request_NO;
+                                    dt_insert = DataConn.StoreFillDS2("Insert_Issue_InOut_FromB", System.Data.CommandType.StoredProcedure, Request_NO, Material, TypeRQ, Qty, UserID, Math.Truncate(UnitPriceST * 100000) / 100000, MVContent, Plant, Note, DateVoucher, Math.Truncate(Amount * 100000) / 100000, Math.Truncate(UnitActual * 100000) / 100000, Math.Truncate(Amount_Actual * 100000) / 100000, VendorCode, CostCenter, Sloc, Public_Dept, CountryOfOrgin, ItemDescription,tenform);
 
+                                    if (dt_insert.Rows[0][0].ToString() == "1")
+                                    {
+                                        ketqua = true;
+                                        dongloi = dongloi + 1;
+                                        //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
+                                    }
+                                    else
+                                    {
+                                        ketqua = false;
+                                        dongloi = i;
+                                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiem tra lai !'); ", true);
+                                        return;
+                                    }
+                                }
                             }
-
                         }
                         else 
                         {
                             Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Du lieu null, kiem tra lai !'); ", true);
                         }
-
                     }
                     else
                     {
@@ -382,6 +448,23 @@ namespace FreeLayout
                         Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, User khong co quyen trong database In Out!'); ", true);
                     }
 
+                    if (ketqua == true)
+                    {
+                        //update lai trang thai da tao Issue in out
+                        dtUpdate = DataConn.StoreFillDS2("Update_ScrapList_Isssue_In_Out", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+
+                        //
+                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                    }
+                    else 
+                    {
+                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                        //truong hop fail
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Dong loi: "+dongloi+" ');", true);
+                    }
+
+
+                    
                 }
                 catch (Exception ex)
                 {
