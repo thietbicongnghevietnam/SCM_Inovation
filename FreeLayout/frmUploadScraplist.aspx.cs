@@ -227,18 +227,22 @@ namespace FreeLayout
                             {
                                 typename = dt.Rows[i]["TypeName"].ToString();
                                 //lay typeRQ va maxRQ
-                                DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
-                                if (dtMax.Rows.Count <= 0)
-                                {
-                                    Max_ID = 1;
-                                    TypeRQ = dtMax.Rows[0][1].ToString();
-                                }
-                                else
-                                {
-                                    Max_ID = int.Parse(dtMax.Rows[0][0].ToString());
-                                    Max_ID = Max_ID + 1;
-                                    TypeRQ = dtMax.Rows[0][1].ToString();
-                                }
+                                //DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
+                                //if (dtMax.Rows.Count <= 0)
+                                //{
+                                //    Max_ID = 1;
+                                //    TypeRQ = dtMax.Rows[0][1].ToString();
+                                //}
+                                //else
+                                //{
+                                //    Max_ID = int.Parse(dtMax.Rows[0][0].ToString());
+                                //    Max_ID = Max_ID + 1;
+                                //    TypeRQ = dtMax.Rows[0][1].ToString();
+                                //}
+
+                                Max_ID = 1;
+                                TypeRQ = "7";
+
                                 Request_NO = "RQB-" + bophan + "-" + DateTime.Now.ToString("MMyy") + "-" + Max_ID.ToString();
 
                                 if (dt.Rows[i]["Material"].ToString() != "")
@@ -345,7 +349,7 @@ namespace FreeLayout
                                 CountryOfOrgin = "";// chua co thong tin *** bo phan cung cap (ke toan) **** // dt.Rows[i][11].ToString();
                                 ItemDescription = "";//chua co thong tin *** bo phan cung cap (ke toan) **** // dt.Rows[i][12].ToString();
 
-                                //truong hop nay lam *******
+                                //truong hop nay lam sau *******
                                 RQ_Reset = "";// request name can lay lai // dt.Rows[i][13].ToString(); // bien reset lai request ne da ton tai roi
                                 if (dt.Rows[i]["UnitPrice"].ToString() != "")
                                 {
