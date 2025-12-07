@@ -1,5 +1,6 @@
 ﻿using FreeLayout.App_Code;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +29,27 @@ namespace FreeLayout
         {
             if (!IsPostBack)
             {
+                //==========/ bat session tu WMC
+                string token = Request.QueryString["token"];
+                //string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                // Nếu token null hoặc rỗng → bỏ qua
+                if (string.IsNullOrEmpty(token))
+                {
+                    return;
+                }
+                try
+                {
+                    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                    //string cleanUserId = decoded.Trim().Replace('"','');
+                    Session["UserId"] = decoded;
+                }
+                catch
+                {
+                    // Nếu token sai format → bỏ qua, không crash
+                    return;
+                }
+                //===================//
+
                 Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
                 ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
 
@@ -191,22 +214,38 @@ namespace FreeLayout
             string _issueout = dr_filter_IssueOut.SelectedValue;// filterIssueout.Value.ToString();
             string bophan = dr_filter_Cate.SelectedValue.ToString();
 
+            string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
+
+            //string userId = Session["UserId"]?.ToString();
+            //string section = Session["Section"]?.ToString();
+            if (UserID == null)
+            {
+                //Response.Write("User not logged in");
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, UserID not logged in !'); ", true);
+                return;
+            }
+            else 
+            {
+                UserID = UserID.Trim('"');  //// "2015597_1";
+            }
+
 
             if (_sanction == "==Sanction==" && bophan == "==Section==")   //_issueout == "==IssueOut==" ||
             {
                 //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Save data thanh cong!');", true);
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Du lieu Sanction or section null !'); ", true);
             }
-            else 
+            else
             {
                 try
                 {
                     int dongloi = 0;
+                    string VMT_err = "";
                     bool ketqua = true;
                     //insert sang Issue In Out
-                    string UserID = "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
+                    
                     //check user va bo phan co trong danh sach tao user phe duyet khong?
-                    DataTable dt_checkuser = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, UserID, bophan);
+                    DataTable dt_checkuser = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, UserID, bophan, _sanction);
 
                     if (dt_checkuser.Rows[0][0].ToString() == "1")
                     {
@@ -215,7 +254,7 @@ namespace FreeLayout
                         //check ton tai request no chua?
                         string Request_NO = "";
                         string typename = "";
-                        string tenform = "";                        
+                        string tenform = "";
 
                         string TypeRQ = null; string Material = null; string Sloc = null; float Qty = 0; string Mvtype = null; string Plant = null; string Account = null; float UnitPriceST = 0;
                         float UnitActual = 0; string CostCenter = null; string VendorCode = null; string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
@@ -226,10 +265,10 @@ namespace FreeLayout
                         if (dt_typeMVT.Rows.Count > 0)
                         {
                             //ton tai MVT trong bang scrap detail  => xuat ra nhieu Issue out 1 luc => de phe duyet dien tu
-                            for (int j = 0; j < dt_typeMVT.Rows.Count; j++) 
+                            for (int j = 0; j < dt_typeMVT.Rows.Count; j++)
                             {
                                 string _MVT = dt_typeMVT.Rows[j]["TypeName"].ToString();
-                                DataTable dt = DataConn.StoreFillDS2("Select_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan, _MVT);                                
+                                DataTable dt = DataConn.StoreFillDS2("Select_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan, _MVT);
 
                                 // tam thoi xu ly 1 ban ghi
                                 if (dt.Rows.Count > 0)
@@ -389,6 +428,7 @@ namespace FreeLayout
 
                                         //truong hop nay lam sau *******
                                         RQ_Reset = "";// request name can lay lai // dt.Rows[i][13].ToString(); // bien reset lai request ne da ton tai roi
+
                                         if (dt.Rows[i]["UnitPrice"].ToString() != "")
                                         {
                                             UnitPriceST = float.Parse(dt.Rows[i]["UnitPrice"].ToString());
@@ -435,6 +475,7 @@ namespace FreeLayout
                                             {
                                                 ketqua = false;
                                                 dongloi = i;
+                                                VMT_err = _MVT;
                                                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiem tra lai !'); ", true);
                                                 return;
                                             }
@@ -450,35 +491,40 @@ namespace FreeLayout
 
                             }
                         }
-                        else 
+                        else
                         {
                             Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('MVT is null, check again');", true);
                             return;
-                        }                        
+                        }
+                    }
+                    else if (dt_checkuser.Rows[0][0].ToString() == "2")
+                    {
+                        //sanction nay da duoc tao E-Pro
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, sanction nay da duoc tao E-Pro, Kiem tra lai!'); ", true);
+                        return;
                     }
                     else
                     {
                         //khong ton tai user 
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, User khong co quyen trong database In Out!'); ", true);
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, User khong co quyen tao In Out, Kiem tra lai!'); ", true);
+                        return;
                     }
 
                     if (ketqua == true)
                     {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
                         //update lai trang thai da tao Issue in out
                         dtUpdate = DataConn.StoreFillDS2("Update_ScrapList_Isssue_In_Out", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
-
                         //
                         dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
                     }
-                    else 
+                    else
                     {
                         dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
                         //truong hop fail
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Dong loi: "+dongloi+" ');", true);
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Dong loi: " + dongloi + " => MTV: " + VMT_err + "  ');", true);
                     }
 
-
-                    
                 }
                 catch (Exception ex)
                 {
@@ -727,8 +773,6 @@ namespace FreeLayout
             }
         }
         
-
-
         protected void ImportFromExcel_old(object sender, EventArgs e) 
         {
             //DataTable dtcheck = new DataTable();
@@ -1149,7 +1193,129 @@ namespace FreeLayout
             return contentType;
         }
 
+        protected void export_craplist_Click(object sender, EventArgs e)
+        {
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];
+            string bophan = dr_filter_Cate.SelectedValue;
+            string sacnctionid = dr_filter_Sanction.SelectedValue;
+            //loc theo ngay
+            if (_fromdate == "" || _todate == "" || bophan == "==Section==" || sacnctionid == "==Sanction==")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon du thong tin!!!'); ", true);
+                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Ban nen chon ngay!');", true);
+            }
+            else
+            {
+                //DataTable dt_dowload = new DataTable();
+                //dt_plan = DataConn.StoreFillDS2("Export_ScrapList_tool", System.Data.CommandType.StoredProcedure, bophan, sacnctionid, _fromdate, _todate);
 
+                string relativePath = "mau sraplist.xlsx";
+                string localPath = Server.MapPath(relativePath);
+
+                // Đường dẫn để lưu file Excel mới
+                string newFileName = "Export_Scraplist.xlsx"; // Tên file mới
+                string newFilePath = Server.MapPath("Textfile/" + newFileName); // Đường dẫn đầy đủ
+
+                // Gọi phương thức để xử lý file Excel và lưu file mới
+                ProcessExcelFile3(localPath, newFilePath, _fromdate, _todate, bophan, sacnctionid);
+
+                // Tải xuống file mới
+                DownloadFile(newFilePath, newFileName);
+
+            }
+        }
+
+        static void ProcessExcelFile3(string filePath, string newFilePath, string tungay, string denngay, string bophan, string sacnctionid)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            // Đảm bảo file tồn tại
+            if (!fileInfo.Exists)
+            {
+                throw new FileNotFoundException("File không tồn tại", filePath);
+            }
+
+            // Tạo file mới để lưu kết quả
+            FileInfo newFileInfo = new FileInfo(newFilePath);
+
+            //tao bang tam de zen vao excel file
+            //DataTable dt_dowload = new DataTable();
+            DataTable dtexcel = new DataTable();
+            dtexcel = DataConn.StoreFillDS2("Export_ScrapList_tool2", System.Data.CommandType.StoredProcedure, bophan, sacnctionid, tungay, denngay);
+
+            using (var package = new ExcelPackage(fileInfo))
+            {
+                var worksheet = package.Workbook.Worksheets["Form B"];
+                //ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                //worksheet.Cells["D5"].Value = tungay;// "Thông tin mới";
+
+                //if (worksheet == null)
+                //{
+                //    throw new Exception("Không tìm thấy sheet 'Sheet1' trong file Excel.");
+                //}
+
+                int row = 12;
+                int i = 0;
+                DateTime currentDate = DateTime.Today;
+                string monthString = DateTime.Today.ToString("MM");
+
+                worksheet.Cells[8, 3].Value = monthString;
+                worksheet.Cells[9, 3].Value = bophan;
+
+                foreach (DataRow dataRow in dtexcel.Rows)
+                {
+                    i++;
+                    worksheet.Cells[row, 1].Value = i;
+                    worksheet.Cells[row, 2].Value = dataRow["Plant"];
+                    worksheet.Cells[row, 3].Value = dataRow["Sloc"];
+                    worksheet.Cells[row, 4].Value = dataRow["CostCenter"];
+                    worksheet.Cells[row, 5].Value = dataRow["NameCost"];
+
+                    worksheet.Cells[row, 6].Value = dataRow["Material"]; //
+
+                    worksheet.Cells[row, 7].Value = dataRow["Qty"];
+                    worksheet.Cells[row, 8].Value = dataRow["UnitPrice"];
+                    worksheet.Cells[row, 9].Value = dataRow["Amount"];
+
+                    worksheet.Cells[row, 10].Value = dataRow["UnitPriceAC"];
+                    worksheet.Cells[row, 11].Value = dataRow["AmountAC"];
+
+                    worksheet.Cells[row, 12].Value = dataRow["Reason"];
+
+                    worksheet.Cells[row, 13].Value = dataRow["Vendor"];
+                    worksheet.Cells[row, 14].Value = dataRow["ScrapSloc"];
+
+                    worksheet.Cells[row, 15].Value = ""; //so palet
+                    worksheet.Cells[row, 16].Value = dataRow["SanctionId"]; //so sanction
+
+                    worksheet.Cells[row, 17].Value = ""; //reason 17
+                    worksheet.Cells[row, 18].Value = bophan;   //bo phan 18
+                    worksheet.Cells[row, 19].Value = dataRow["TypeName"];  //Type
+                    worksheet.Cells[row, 20].Value = dataRow["MVT"];
+                    worksheet.Cells[row, 21].Value = dataRow["MoveType"];
+                    //worksheet.Cells[row, 21].Value = dataRow[""];
+                    row++;
+                }
+                //Xóa validation của toàn workbook
+                //foreach (var ws in package.Workbook.Worksheets)
+                //{
+                //    for (int v = ws.DataValidations.Count - 1; v >= 0; v--)
+                //    {
+                //        ws.DataValidations.Remove(ws.DataValidations[v]);
+                //    }
+                //}
+                // xoa worksheet
+                var validations = worksheet.DataValidations;
+                for (int v = validations.Count - 1; v >= 0; v--)
+                {
+                    validations.Remove(validations[v]);
+                }
+
+                // Lưu vào file mới
+                package.SaveAs(newFileInfo);
+            }
+        }
 
     }
 }

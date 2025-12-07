@@ -1,0 +1,32 @@
+==============// 7.12.2025 //=============
+//*****truong hop chan phan import dau vao nhung type nay bat buoc phai co vendor ******
+string TypeCheck = TypeRQ;
+string[] stringTypeID = { "2", "3", "4", "5", "8", "21" }; // Những Type sẽ phải điền Vendorcode
+
+
+
+Insert_Issue_InOut_FromB		(them try catch)
+Select_Mater_ScrapList			(them cot confirm issue in-out)
+Select_Mater_ScrapList_sacntion
+Select_Mater_ScrapList_sacntion2
+
+CheckUser_Issue_InOut	(bat the dieu kien sanction ta duoc tao e-pro)  --remove nhay kep
+Export_ScrapList_tool2	(export scraplist bang chinh)
+
+
+====truyen user sang web form
+ //1.****them doan session web
+ //doan truyen session trong web
+ _httpContextAccessor.HttpContext.Session.SetString("UserID", result.Item.User.UserId);
+
+//2. 
+@{
+            var userId = Context.Session.GetString("UserInfo");
+        //var section = Context.Session.GetString("Section");
+
+        //var raw = $"{userId}|{section}";
+        var raw = $"{userId}";
+        var token = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(raw));
+}
+
+  <a class="nav-link" href="http://localhost:61772/frmUploadScraplist.aspx?token=@token" target="_blank">
