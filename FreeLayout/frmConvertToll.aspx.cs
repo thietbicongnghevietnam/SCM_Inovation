@@ -857,15 +857,15 @@ namespace FreeLayout
                                     }
 
                                     //upload buckcopy tai day
-                                    string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
-                                                    "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
-                                                    "Connect Timeout=30;";
+                                    //string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                                    //                "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
+                                    //                "Connect Timeout=30;";
 
-                      //              string sqlConnStr = @"Data Source=LT-DE2302026;
-                      //Initial Catalog=ScrapSystem;
-                      //Integrated Security=True;
-                      //Connect Timeout=30;
-                      //TrustServerCertificate=True;";
+                                    string sqlConnStr = @"Data Source=LT-DE2302026;
+                      Initial Catalog=ScrapSystem;
+                      Integrated Security=True;
+                      Connect Timeout=30;
+                      TrustServerCertificate=True;";
 
                                     using (SqlConnection con = new SqlConnection(sqlConnStr))
                                     {
