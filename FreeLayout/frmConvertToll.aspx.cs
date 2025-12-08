@@ -644,7 +644,7 @@ namespace FreeLayout
 
                                 int col_remark = Int32.Parse(txtremark.Value.ToString());
                                 //int col_vendorname = Int32.Parse(txtvendorname.Value.ToString());
-                                int col_vendorname = int.TryParse(txtvendorname?.Value?.ToString(), out int value)? value: 0;
+                                int col_vendorname = int.TryParse(txtvendorname?.Value?.ToString(), out int value)? value: 0;  //**** co cot vendor nam
 
                                 int col_scraploc = Int32.Parse(txtissueoutsloc.Value.ToString());
 
@@ -717,7 +717,7 @@ namespace FreeLayout
 
                                                 MVT = "";
                                                 TypeName = "";
-                                                MoveType = dtExcelData.Rows[i][2].ToString();  //ROH  or halb  
+                                                MoveType = dtExcelData.Rows[i][2].ToString();  //ROH  or HALB  
                                                 dt_getmater_MVT = DataConn.StoreFillDS2("Get_infor_MVT_pus", System.Data.CommandType.StoredProcedure, Sloc, MoveType, type_cost);
                                                 //quy tac lay ra 3 truong MVT - TypeName
                                                 if (dt_getmater_MVT.Rows.Count > 0)
@@ -788,40 +788,45 @@ namespace FreeLayout
                                                  
 
                                                 //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
-                                                Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name
-                                                                                                          //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
+                                                Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name   ??? lay du lieu cot vendor name
+                                                //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
                                                 Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
                                                 Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
                                                 CostCenter = "";  //lay mater MVT
                                                 NameCost = "";  //lay mater sloc
 
-                                                dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
+                                                //dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
+                                                dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus_desktock", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
                                                 if (dt_getmater_sloc.Rows.Count > 0)
                                                 {
-                                                    Sloc = dt_getmater_sloc.Rows[0]["ScrapSloc"].ToString();        //????   => lay ra sloc ?
-                                                    NameCost = dt_getmater_sloc.Rows[0]["Plant2"].ToString();       //????   => lay ra Name cost ?
+                                                    //1. lay theo plant, Cate, MTyp,  ==> Issue sloc lay ra Dau sloc (vi du VB01 => dau 5D)
+                                                    //2. du vao cot PSNV cost hay la JP cost de xac dinh MVT name
+                                                    //3. khi co dau ra la 5D => xac dinh sloc nao? theo cate, type rohs/halb va MVT.
+                                                    Sloc = dt_getmater_sloc.Rows[0]["SlocPus"].ToString();        //????   => lay ra sloc ???                                                   
+                                                    NameCost = dt_getmater_sloc.Rows[0]["Plant2"].ToString();       //????   => lay ra Name cost ???
                                                 }
 
-                                                //if (dtExcelData.Rows[i][12].ToString() != "")
-                                                //{
-                                                //    type_cost = "vendorcost";
-                                                //}
-                                                //else
-                                                //{
-                                                //    type_cost = "psnvcost";   //(dtExcelData.Rows[i][14].ToString() != ""
-                                                //}
+                                                //hang desktock cot JP cost co du lieu => type_cost = "vendorcost";
+                                                if (dtExcelData.Rows[i][40].ToString() != "" && dtExcelData.Rows[i][41].ToString() != "" && dtExcelData.Rows[i][40].ToString() != "-")
+                                                {
+                                                    type_cost = "vendorcost";
+                                                }
+                                                else
+                                                {
+                                                    type_cost = "psnvcost";   //(dtExcelData.Rows[i][14].ToString() != ""
+                                                }
 
                                                 MVT = "";
                                                 TypeName = "";
-                                                MoveType = ""; //dtExcelData.Rows[i][2].ToString();  //ROH  or halb     ???? hang desktock khong co MVT & TypeName & Movetype
-                                                //dt_getmater_MVT = DataConn.StoreFillDS2("Get_infor_MVT_pus", System.Data.CommandType.StoredProcedure, Sloc, MoveType, type_cost);
-                                                ////quy tac lay ra 3 truong MVT - TypeName
-                                                //if (dt_getmater_MVT.Rows.Count > 0)
-                                                //{
-                                                //    TypeName = dt_getmater_MVT.Rows[0][0].ToString();
-                                                //    MVT = dt_getmater_MVT.Rows[0][1].ToString();
-                                                //    CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
-                                                //}
+                                                MoveType = dtExcelData.Rows[i][6].ToString();  //ROH  or halb     ???? hang desktock khong co MVT & TypeName & Movetype
+                                                dt_getmater_MVT = DataConn.StoreFillDS2("Get_infor_MVT_pus", System.Data.CommandType.StoredProcedure, Sloc, MoveType, type_cost);
+                                                //quy tac lay ra 3 truong MVT - TypeName
+                                                if (dt_getmater_MVT.Rows.Count > 0)
+                                                {
+                                                    TypeName = dt_getmater_MVT.Rows[0][0].ToString();
+                                                    MVT = dt_getmater_MVT.Rows[0][1].ToString();
+                                                    CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
+                                                }
 
                                                 Pallet = "";
                                                 Barcode = "";
@@ -857,15 +862,15 @@ namespace FreeLayout
                                     }
 
                                     //upload buckcopy tai day
-                                    //string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
-                                    //                "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
-                                    //                "Connect Timeout=30;";
+                                    string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                                                    "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
+                                                    "Connect Timeout=30;";
 
-                                    string sqlConnStr = @"Data Source=LT-DE2302026;
-                      Initial Catalog=ScrapSystem;
-                      Integrated Security=True;
-                      Connect Timeout=30;
-                      TrustServerCertificate=True;";
+                                    //              string sqlConnStr = @"Data Source=LT-DE2302026;
+                                    //Initial Catalog=ScrapSystem;
+                                    //Integrated Security=True;
+                                    //Connect Timeout=30;
+                                    //TrustServerCertificate=True;";
 
                                     using (SqlConnection con = new SqlConnection(sqlConnStr))
                                     {

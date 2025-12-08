@@ -592,7 +592,7 @@ namespace FreeLayout
                 }
                 else
                 {
-                    if (dr_filter_keyconvert.SelectedValue.ToString() != "==TemplateName==")   //DPOversea28112025
+                    if (dr_filter_keyconvert.SelectedValue.ToString() != "==TemplateName==" && dr_filter_keyconvert.SelectedValue.ToString() != "")   //DPOversea28112025
                     {
                         string temp = dr_filter_keyconvert.SelectedValue.ToString();  //DPOversea28112025
                         Category_ = temp.Substring(0, temp.Length - 8); //DPOversea
@@ -5024,7 +5024,7 @@ namespace FreeLayout
         protected void ImportFromExcel(object sender, EventArgs e)
         {
             DataTable dtcheck = new DataTable();
-            if (dr_filter_keyconvert.SelectedValue.ToString() != "==TemplateName==")
+            if (dr_filter_keyconvert.SelectedValue.ToString() != "==TemplateName==" && dr_filter_keyconvert.SelectedValue.ToString() != "")
             {
                 //truong hop upload bang mau template //DPOversea
                 int dongloi = 0;
@@ -5059,7 +5059,13 @@ namespace FreeLayout
                     dt_new.Columns.Add("Risky", typeof(String));
 
                     string temp = dr_filter_keyconvert.SelectedValue.ToString();  //DPOversea28112025
-                    string Category_ = temp.Substring(0, temp.Length - 8); //DPOversea
+                    string Category_ = "DPOversea28112025";
+                    if (temp != "==TemplateName==")
+                    {
+                        Category_ = temp.Substring(0, temp.Length - 8); //DPOversea
+                    }
+
+                    
 
                     DataTable dtExcelData = DataConn.StoreFillDS("Get_infor_mater_template", System.Data.CommandType.StoredProcedure, temp);
 

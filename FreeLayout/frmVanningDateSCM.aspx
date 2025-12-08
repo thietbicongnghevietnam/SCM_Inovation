@@ -114,6 +114,10 @@
                         <a href="/frmConvertToolVessel.aspx" target="_blank" class="nav-link">Tool convert mater
                         </a>
                     </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" target="_blank" class="nav-link">Master holiday
+                        </a>
+                    </li>
 
                 </ul>
             </nav>
@@ -144,10 +148,10 @@
                                     <%--<asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" />--%>
                                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="DSC" />
                                 </div>
-                               <%-- <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">--%>
-                                    <%--onserverclick="btnDownloadClick" --%>
-                                   <%-- <i class="fas fa-download"></i>Download Template--%>
-                               <%-- </button>--%>
+                                <%-- <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">--%>
+                                <%--onserverclick="btnDownloadClick" --%>
+                                <%-- <i class="fas fa-download"></i>Download Template--%>
+                                <%-- </button>--%>
                                 <div class="form-group d-flex align-items-center">
                                     <label for="dr_filter_keyconvert" class="mr-2">Select template</label>
                                     <asp:DropDownList ID="dr_filter_keyconvert" runat="server"

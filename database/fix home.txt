@@ -4,7 +4,6 @@ string TypeCheck = TypeRQ;
 string[] stringTypeID = { "2", "3", "4", "5", "8", "21" }; // Những Type sẽ phải điền Vendorcode
 
 
-
 Insert_Issue_InOut_FromB		(them try catch)
 Select_Mater_ScrapList			(them cot confirm issue in-out)
 Select_Mater_ScrapList_sacntion
@@ -30,3 +29,19 @@ Export_ScrapList_tool2	(export scraplist bang chinh)
 }
 
   <a class="nav-link" href="http://localhost:61772/frmUploadScraplist.aspx?token=@token" target="_blank">
+
+
+==============// 8.12.2025 //=============
+==== lich tau ====
+Select_Upload_VanningDate2_cate_HS
+
+==== Scrap ====
+mater :
+[ScrapSystem].[dbo].[MaterMVT_PUS] 	(them slock cho PUS)
+[ScrapSystem].[dbo].[MasterSlocPUS]
+
+strored: 
+Get_infor_MVT_pus 			(sua lai dieu kien) thank like %% vi mater co them dang
+
+==== hang desktock
+Get_infor_sloc_pus_desktock

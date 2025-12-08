@@ -30,24 +30,24 @@ namespace FreeLayout
             if (!IsPostBack)
             {
                 //==========/ bat session tu WMC
-                string token = Request.QueryString["token"];
-                //string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                // Nếu token null hoặc rỗng → bỏ qua
-                if (string.IsNullOrEmpty(token))
-                {
-                    return;
-                }
-                try
-                {
-                    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                    //string cleanUserId = decoded.Trim().Replace('"','');
-                    Session["UserId"] = decoded;
-                }
-                catch
-                {
-                    // Nếu token sai format → bỏ qua, không crash
-                    return;
-                }
+                //string token = Request.QueryString["token"];
+                ////string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                //// Nếu token null hoặc rỗng → bỏ qua
+                //if (string.IsNullOrEmpty(token))
+                //{
+                //    return;
+                //}
+                //try
+                //{
+                //    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                //    //string cleanUserId = decoded.Trim().Replace('"','');
+                //    Session["UserId"] = decoded;
+                //}
+                //catch
+                //{
+                //    // Nếu token sai format → bỏ qua, không crash
+                //    return;
+                //}
                 //===================//
 
                 Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
