@@ -91,6 +91,14 @@
                         <a href="/frmMaterModel.aspx" target="_blank" class="nav-link">Master model
                         </a>
                     </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="/frmConvertToolVessel.aspx" target="_blank" class="nav-link">Tool convert mater
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" target="_blank" class="nav-link">Master holiday
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

@@ -44,7 +44,7 @@ namespace FreeLayout
                 string _todate = ngaychiid.Value;
                 string tensanction = "";
                 //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList", System.Data.CommandType.StoredProcedure);
-                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
+                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate, filterSanction.Value.ToString());
 
                 dt_setting = DataConn.StoreFillDS2("Select_setting_tool", System.Data.CommandType.StoredProcedure, Typeconvert);
                 if (dt_setting.Rows.Count > 0) 
@@ -181,7 +181,7 @@ namespace FreeLayout
                 if (dt_update.Rows[0][0].ToString() == "1")
                 {
                     Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Delete data sucessful!');", true);
-                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sanctionname, _fromdate, _todate); 
+                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sanctionname, _fromdate, _todate, filterSanction.Value.ToString()); 
                 }
                 else
                 {
@@ -204,6 +204,7 @@ namespace FreeLayout
             string idconvert = IDedit.Text.ToString();
             string sanctionname = idSanctionname.Text.ToString();
             string qty_act = idqty.Text.ToString();
+            string vendor = idvendor.Text.ToString();
 
             try
             {
@@ -214,11 +215,11 @@ namespace FreeLayout
                 }
                 else
                 {
-                    dt_update = DataConn.StoreFillDS2("update_Qty_convert_tool", System.Data.CommandType.StoredProcedure, idconvert, sanctionname, qty_act);
+                    dt_update = DataConn.StoreFillDS2("update_Qty_convert_tool", System.Data.CommandType.StoredProcedure, idconvert, sanctionname, qty_act, vendor);
                     if (dt_update.Rows[0][0].ToString() == "1")
                     {
                         Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
-                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sanctionname, _fromdate, _todate);
+                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sanctionname, _fromdate, _todate, filterSanction.Value.ToString());
                     }
                     else
                     {
@@ -237,6 +238,8 @@ namespace FreeLayout
             string _todate = Request.Form[ngaychiid.UniqueID];
             string bophan = dr_filter_Cate.SelectedValue;
             string sacnctionid = dr_filter_Sanction.SelectedValue; //filterSanction.Value;
+
+            string tensanction2 = filterSanction.Value.ToString();
             //loc theo ngay
             if (_fromdate == "" || _todate == "")
             {
@@ -245,7 +248,7 @@ namespace FreeLayout
             }
             else
             {              
-                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate);
+                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate, tensanction2);
 
                 // XÓA TRƯỚC KHI BIND
                 //dr_filter_Sanction.Items.Clear();
@@ -354,12 +357,12 @@ namespace FreeLayout
 
                     worksheet.Cells[row, 7].Value = dataRow["Qty"];
                     worksheet.Cells[row, 8].Value = dataRow["UnitPrice"];
-                    worksheet.Cells[row, 9].Value = dataRow["Amount"];
+                    //worksheet.Cells[row, 9].Value = dataRow["Amount"];    //lay theo cong thuc trong excel
 
                     worksheet.Cells[row, 10].Value = dataRow["UnitPriceAC"];
-                    worksheet.Cells[row, 11].Value = dataRow["AmountAC"];
+                    //worksheet.Cells[row, 11].Value = dataRow["AmountAC"];     //lay theo cong thuc trong excel
 
-                    worksheet.Cells[row, 12].Value = dataRow["Reason"];
+                    worksheet.Cells[row, 12].Value = dataRow["Remark"]; ;// dataRow["Reason"];
 
                     worksheet.Cells[row, 13].Value = dataRow["Vendor"];
                     worksheet.Cells[row, 14].Value = dataRow["ScrapSloc"];
@@ -367,7 +370,7 @@ namespace FreeLayout
                     worksheet.Cells[row, 15].Value = ""; //so palet
                     worksheet.Cells[row, 16].Value = dataRow["SanctionId"]; //so sanction
 
-                    worksheet.Cells[row, 17].Value = ""; //reason 17
+                    worksheet.Cells[row, 17].Value = dataRow["Reason"]; //reason 17
                     worksheet.Cells[row, 18].Value = bophan;   //bo phan 18
                     worksheet.Cells[row, 19].Value = dataRow["TypeName"];  //Type
                     worksheet.Cells[row, 20].Value = dataRow["MVT"];
@@ -448,7 +451,7 @@ namespace FreeLayout
             string CostCenter = txtCostcenter.Value.ToString();
             string Namecost = txtnamecost.Value.ToString();
             string Material = txtmaterial.Value.ToString();
-            string IssueQty = txtQty.Value.ToString();
+            string IssueQty = "";//; txtQty.Value.ToString();
 
             string UnitpriceST = txtunitpriceST.Value.ToString();
             string AmountST = txtamountST.Value.ToString();
@@ -562,6 +565,7 @@ namespace FreeLayout
                             dt_new.Columns.Add("Vendor", typeof(String));
                             //type_convert
                             dt_new.Columns.Add("type_convert", typeof(String));
+                            dt_new.Columns.Add("Remark", typeof(String));
 
                             // Open connection to Excel file.
                             excelConn = new OleDbConnection(excelConnStr);
@@ -623,6 +627,9 @@ namespace FreeLayout
                                 float UnitPriceAC = 0;
                                 float AmountAC = 0;
                                 string Vendor = "";
+                                string VendorName = "";
+                                string Remark = "";
+
 
                                 //fix cot theo tool convert
                                 int col_plan = Int32.Parse(txtplan.Value.ToString());
@@ -633,7 +640,8 @@ namespace FreeLayout
                                 //int col_namecost = Int32.Parse(txtnamecost.Value.ToString());
 
                                 int col_material = Int32.Parse(txtmaterial.Value.ToString());
-                                int col_qty = Int32.Parse(txtQty.Value.ToString());
+                                //int col_qty = Int32.Parse(txtQty.Value.ToString());
+                                int col_qty = int.TryParse(txtQty.Value?.ToString() ?? "0", out int temp0) ? temp0 : 0;
                                 int col_unitpriceST = Int32.Parse(txtunitpriceST.Value.ToString());
                                 int col_amountST = Int32.Parse(txtamountST.Value.ToString());
 
@@ -684,18 +692,33 @@ namespace FreeLayout
 
                                                 Material = dtExcelData.Rows[i][col_material].ToString();
 
-                                                float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out Qty);         //QtyActual = 0;
-                                                float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
+                                                //**** rule lay ra cot so luong theo PSNV cost or Vendor cost ****** 09.12.2025
+                                                //float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out Qty);         //QtyActual = 0;
+                                                //float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
+
+                                                if (dtExcelData.Rows[i][11].ToString() == "" && dtExcelData.Rows[i][12].ToString() == "") // cot Vendor cost bi null or rong
+                                                {
+                                                    float.TryParse(dtExcelData.Rows[i][13].ToString(), out Qty);
+                                                    float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);
+                                                }
+                                                else 
+                                                {
+                                                    float.TryParse(dtExcelData.Rows[i][11].ToString(), out Qty);
+                                                    float.TryParse(dtExcelData.Rows[i][11].ToString(), out QtyActual);
+                                                }                                                
 
                                                 float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
                                                 float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
-                                                UnitPriceAC = 0;
-                                                AmountAC = 0;
+                                                UnitPriceAC = 0;  //rule PUS gui user tu điền 
+                                                AmountAC = 0; // do ra excel lay theo cong thuc
 
                                                 //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
                                                 Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name
                                                                                                           //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
-                                                Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
+                                                Reason = dtExcelData.Rows[i][col_remark].ToString();    //reason
+
+                                                Remark = dtExcelData.Rows[i][18].ToString(); //cot remark
+
                                                 Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
                                                 CostCenter = "";  //lay mater MVT
                                                 NameCost = "";  //lay mater sloc
@@ -744,7 +767,7 @@ namespace FreeLayout
                                                 else
                                                 {
                                                     //insert model moi
-                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert);
+                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark);
                                                 }
                                             }
 
@@ -761,6 +784,7 @@ namespace FreeLayout
                                         //kiem tra sanction co trong danh sach chua de lay ra id sanction
                                         DataTable dt_getmater_sloc = new DataTable();
                                         DataTable dt_getmater_MVT = new DataTable();
+                                        DataTable dt_getmater_vendor = new DataTable();
                                         string type_cost = "psnvcost";
 
                                         //for (int i = 2; i < dtExcelData.Rows.Count; i++)
@@ -785,12 +809,23 @@ namespace FreeLayout
 
                                                 float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
                                                 float.TryParse(dtExcelData.Rows[i][col_amountAC].ToString(), out AmountAC);
-                                                 
+
 
                                                 //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
-                                                Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name   ??? lay du lieu cot vendor name
+                                                VendorName = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name   ??? lay du lieu cot vendor name
+                                                dt_getmater_vendor = DataConn.StoreFillDS2("Get_infor_vendor_desktock", System.Data.CommandType.StoredProcedure, VendorName);
+                                                if (dt_getmater_vendor.Rows.Count > 0)
+                                                {
+                                                    Vendor = dt_getmater_vendor.Rows[0][0].ToString();
+                                                }
+                                                else 
+                                                {
+                                                    Vendor = ""; //khong co trong mater 
+                                                }
+
                                                 //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
                                                 Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
+                                                Remark = "";
                                                 Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
                                                 CostCenter = "";  //lay mater MVT
                                                 NameCost = "";  //lay mater sloc
@@ -845,7 +880,7 @@ namespace FreeLayout
                                                 else
                                                 {
                                                     //insert model moi
-                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert);
+                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark);
                                                 }
                                             }
 
@@ -896,7 +931,7 @@ namespace FreeLayout
                                     }
 
                                     Page.ClientScript.RegisterStartupScript(this.GetType(), "Message", "alert('OK, Upload thành công!');", true);
-                                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);   //bang convert
+                                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate, filterSanction.Value.ToString());   //bang convert
                                 }
 
                                 

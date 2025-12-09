@@ -134,7 +134,7 @@
                     <input type="text" id="txtmaterial" runat="server" placeholder="material" style="height: 34px; width: 100px;" />
                 </div>
                 <div style="float: left; padding-right: 5px;">
-                    <b style="color:red">IssueQty</b><br />
+                    IssueQty<br />
                     <input type="text" id="txtQty" runat="server" placeholder="IssueQty" style="height: 34px; width: 100px;" />
                 </div>
                 <div style="float: left; padding-right: 5px;">
@@ -212,7 +212,7 @@
                             <th>Plant</th>
                             <th>Sloc</th>
                             <th>NameCost</th>
-                           <%-- <th>Pallet</th>--%>
+                            <th>VendorCode</th>
                             <th>MoveType</th>
                             <th>TypeName</th>
                             <th>MVT</th>
@@ -239,14 +239,14 @@
                         <td><%=rows["Plant"].ToString()%></td>
                         <td><%=rows["Sloc"].ToString()%></td>
                         <td><%=rows["NameCost"].ToString()%></td>
-                        <%--<td><%=rows["Pallet"].ToString()%></td>--%>
+                        <td><%=rows["Vendor"].ToString()%></td>
                         <td><%=rows["MoveType"].ToString()%></td>
                        <%-- <td><%=rows["IssueOut"].ToString()%></td>--%>
                         <td><%=rows["TypeName"].ToString()%></td>
                         <td><%=rows["MVT"].ToString()%></td>
                         <td><%=rows["Reason"].ToString()%></td>
                         <td>
-                             <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>','<%= rows["Qty"].ToString() %>')"><i class="fas fa-edit"></i></a>
+                             <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>','<%= rows["Qty"].ToString() %>','<%= rows["Vendor"].ToString() %>')"><i class="fas fa-edit"></i></a>
                             <a href="#" title="delete item" onclick="openEditModal5('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>')"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
@@ -324,10 +324,10 @@
                     </div>--%>
                 </div>
                 <div class="row">
-                    <%--<div class="col-md-6">
-                        <label for="exETD">Qty</label>
-                        <asp:TextBox ID="idqty" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>--%>
+                    <div class="col-md-6">
+                        <label for="exETD">Vendor</label>
+                        <asp:TextBox ID="idvendor" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
                     <div class="col-md-6">
                         <%--<label for="etdDate"><i style="color: green">asdad</i></label>--%>
                        <%-- <input type="date" id="etdDate" class="form-control" name="etdDate" runat="server" />--%>
@@ -456,11 +456,12 @@
 
         });
 
-        function openEditModal3(Id, SanctionId, Qty) {
+        function openEditModal3(Id, SanctionId, Qty,vendor) {
             $("#IDedit").val(Id);
             $("#idSanctionname").val(SanctionId);
            /* $("#idmaterial").val(Material);      */     
             $("#idqty").val(Qty);           
+            $("#idvendor").val(vendor);           
             $('#myModal3').modal('show');
         }
 

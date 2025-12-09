@@ -94,9 +94,10 @@
 
                    
 
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_IssueOut"><i class="fa fa-download"></i>&nbsp; Export Issue Out</button>&nbsp;&nbsp;&nbsp;
+                   <%-- <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_IssueOut"><i class="fa fa-download"></i>&nbsp; Export Issue Out</button>&nbsp;&nbsp;&nbsp;--%>
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_FA_PE"><i class="fa fa-download"></i>&nbsp; Export Disposition Property List</button>&nbsp;&nbsp;&nbsp;             
-                    <%--<button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp; --%>            
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="export_craplist_Click"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp;   
+                    <button class="btn btn-success" type="button" runat="server" style="margin-left: 20px;" onserverclick="Confirm_Issue_Out"><i class="fa fa-check-circle"></i>&nbsp; Confirm E-IsssueOut</button>&nbsp;&nbsp;&nbsp;   
           
                 </div>
 
@@ -126,7 +127,7 @@
                             <th>NameCost</th>
                             <th>Pallet</th>
                             <th>Barcode</th>
-                            <th>IssueOut</th>
+                            <th>E-IssueOut</th>
                             <th>CreatedDate</th>
 
                             <th>Action</th>
@@ -135,7 +136,8 @@
                 </thead>
                 <tbody>
                     <%int i = 0; %>
-                    <%foreach (System.Data.DataRow rows in dt_plan.Rows)
+                    <%if (dt_plan != null) { 
+                        foreach (System.Data.DataRow rows in dt_plan.Rows)
                         {%>
                     <%i++;%>
                     <tr role="row">
@@ -153,12 +155,29 @@
                         <td><%=rows["NameCost"].ToString()%></td>
                         <td><%=rows["Pallet"].ToString()%></td>
                         <td><%=rows["Barcode"].ToString()%></td>
-                        <td><%=rows["IssueOut"].ToString()%></td>
+                        <td><%=rows["FlagEpro"].ToString()%></td>
                         <td><%=rows["CreatedDate"].ToString()%></td>
 
                         <td></td>
+                       <%-- <td><%=i %></td>
+        <td><%=Convert.ToString(rows["SanctionId"])%></td>
+        <td><%=Convert.ToString(rows["Material"])%></td>
+        <td><%=Convert.ToString(rows["Qty"])%></td>
+        <td><%=Convert.ToString(rows["QtyActual"])%></td>
+        <td><%=Convert.ToString(rows["UnitPrice"])%></td>
+        <td><%=Convert.ToString(rows["Amount"])%></td>
+        <td><%=Convert.ToString(rows["CostCenter"])%></td>
+        <td><%=Convert.ToString(rows["Reason"])%></td>
+        <td><%=Convert.ToString(rows["Plant"])%></td>
+        <td><%=Convert.ToString(rows["Sloc"])%></td>
+        <td><%=Convert.ToString(rows["NameCost"])%></td>
+        <td><%=Convert.ToString(rows["Pallet"])%></td>
+        <td><%=Convert.ToString(rows["Barcode"])%></td>
+        <td><%=Convert.ToString(rows["FlagEpro"])%></td>
+        <td><%=Convert.ToString(rows["CreatedDate"])%></td>
+        <td></td>--%>
                     </tr>
-                    <%} %>
+                    <%} }%>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -176,7 +195,7 @@
                         <th>NameCost</th>
                         <th>Pallet</th>
                         <th>Barcode</th>
-                        <th>IssueOut</th>
+                        <th>E-IssueOut</th>
                         <th>CreatedDate</th>
 
                         <th>Action</th>

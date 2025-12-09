@@ -27,10 +27,10 @@
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
 
     <style>
-    table.dataTable th,
-table.dataTable td {
-    text-align: center !important;
-}
+        table.dataTable th,
+        table.dataTable td {
+            text-align: center !important;
+        }
 
         .horizontal-radio-group {
             display: flex;
@@ -110,6 +110,15 @@ table.dataTable td {
                         <a href="/frmMaterModel.aspx" target="_blank" class="nav-link">Master model
                         </a>
                     </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="/frmConvertToolVessel.aspx" target="_blank" class="nav-link">Tool convert mater
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" target="_blank" class="nav-link">Master holiday
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -132,18 +141,25 @@ table.dataTable td {
                                 <div class="horizontal-radio-group">
                                     <asp:RadioButton ID="rblAll" runat="server" GroupName="rblOptions" Text="ALL" Checked="true" />
                                     <asp:RadioButton ID="rblDECT" runat="server" GroupName="rblOptions" Text="DECT" />
-                                    <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP" />
+                                    <asp:RadioButton ID="rblDP" runat="server" GroupName="rblOptions" Text="DP JP" />
                                     <%--<asp:RadioButton ID="rblPJ" runat="server" GroupName="rblOptions" Text="PJ" />--%>
                                     <asp:RadioButton ID="rblMW" runat="server" GroupName="rblOptions" Text="MW" />
                                     <asp:RadioButton ID="rblSound" runat="server" GroupName="rblOptions" Text="SB" />
                                     <%--<asp:RadioButton ID="rblTV" runat="server" GroupName="rblOptions" Text="TV" />--%>
                                     <asp:RadioButton ID="rblCAM" runat="server" GroupName="rblOptions" Text="DSC" />
                                 </div>
-                                <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">
-                                    <%--onserverclick="btnDownloadClick" --%>
-                                    <i class="fas fa-download"></i>Download Template
-                                </button>
-
+                                <%-- <button type="button" class="btn btn-primary" style="margin-bottom: 10px; width: 250px;" runat="server">--%>
+                                <%--onserverclick="btnDownloadClick" --%>
+                                <%-- <i class="fas fa-download"></i>Download Template--%>
+                                <%-- </button>--%>
+                                <div class="form-group d-flex align-items-center">
+                                    <label for="dr_filter_keyconvert" class="mr-2">Select template</label>
+                                    <asp:DropDownList ID="dr_filter_keyconvert" runat="server"
+                                        AppendDataBoundItems="true"
+                                        DataTextField="KeyConvert"
+                                        DataValueField="KeyConvert"
+                                        CssClass="custom-select custom-select-sm form-control form-control-sm" />
+                                </div>
 
                             </div>
 
@@ -196,7 +212,7 @@ table.dataTable td {
                 <!-- Checkbox -->
                 <div style="display: flex; align-items: center;">
                     <asp:CheckBox ID="check_history_search" runat="server" Text="" />
-                    <label style="margin-left: 5px; margin-top:7px;">Show History</label>
+                    <label style="margin-left: 5px; margin-top: 7px;">Show History</label>
                 </div>
 
                 <!-- From / To Date -->
@@ -237,7 +253,7 @@ table.dataTable td {
                     </div>
                 </div>
 
-            <%-- <div style="display: flex; align-items: center;">
+                <%-- <div style="display: flex; align-items: center;">
                  <asp:CheckBox ID="ck_export_risky" runat="server" Text="" />
                  <label style="margin-left: 5px; margin-top:7px;">Ex_Risky</label>
              </div>
@@ -313,10 +329,10 @@ table.dataTable td {
                             { %>
                         <td>AIR</td>
                         <%} %>
-                         <%else 
-                             { %>
-                         <td><%=rows["Shipmode"].ToString()%></td>
-                         <%} %>
+                        <%else
+                            { %>
+                        <td><%=rows["Shipmode"].ToString()%></td>
+                        <%} %>
 
                         <td><%=rows["Consignee"].ToString()%></td>
                         <td><%=rows["Country"].ToString()%></td>
@@ -596,52 +612,52 @@ table.dataTable td {
         </div>
 
         <div class="modal" id="myModal5">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="row">
-                    <div>
-                        <h4 class="modal-title" id="headerTag" style="float: left">Delete Item?</h4>
-                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div>
+                                <h4 class="modal-title" id="headerTag" style="float: left">Delete Item?</h4>
+                                <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
 
-                </div>
-            </div>
+                    <%-- Modal footer --%>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">ID</label>
+                                        <asp:TextBox ID="txtid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">UserID</label>
+                                        <asp:TextBox ID="txtuser" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
 
-            <%-- Modal footer --%>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">                                
-                        <div class="col-md-6">
-                            <div class="form-group">
-                               <label for="exampleInputEmail1">ID</label>                                        
-                                <asp:TextBox ID="txtid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                        
-                            </div>
                         </div>
-                         <div class="col-md-6">
-                            <div class="form-group">
-                                    <label for="exampleInputEmail1">UserID</label>                                        
-                                <asp:TextBox ID="txtuser" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                  
-                            </div>
-                        </div>
-                    </div> 
-    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                        <button type="button" runat="server" id="btnOrder" class="btn btn-primary" onserverclick="delete_item">
+                            <i class="fas fa-download"></i>
+                            Ghi lại
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-                <button type="button" runat="server" id="btnOrder" class="btn btn-primary" onserverclick="delete_item"> 
-                    <i class="fas fa-download"></i>
-                    Ghi lại
-                </button>
             </div>
         </div>
-    </div>
-</div>
 
 
     </form>

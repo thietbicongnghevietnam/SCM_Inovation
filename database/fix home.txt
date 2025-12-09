@@ -45,3 +45,27 @@ Get_infor_MVT_pus 			(sua lai dieu kien) thank like %% vi mater co them dang
 
 ==== hang desktock
 Get_infor_sloc_pus_desktock
+
+
+==============// 8.12.2025 //=============
+==== lich tau ====
+Get_infor_mater_model 	(them dieu kien consignee)	//bat them ca dieu kien cosignee => 1 model va 1 cat co the di nhieu thi truong  ****12.09.2025
+
+==== Scrap ====
+bang 
+ScrapDetails_convert 	them cot cretetime
+ScrapDetails_convert 	them cot remark
+
+thay doi 1 ban ghi trong mater:
+ FROM [ScrapSystem].[dbo].[MaterMVT_PUS] where Sloc='1199' --and ID=21
+
+  -- [ScrapSystem].[dbo].[MaterMVT_PUS] set Typevendor='4.Claim Scrap Material' where Sloc='1199' and ID=21
+
+strored:
+Get_infor_vendor_desktock	(lay vendor)
+update_Qty_convert_tool		(set them truong vendor)
+Export_ScrapList_tool		(them cot remark)
+Select_Mater_ScrapList_sacntion3	(them bien loc theo o sanction theo o text box)
+
+
+

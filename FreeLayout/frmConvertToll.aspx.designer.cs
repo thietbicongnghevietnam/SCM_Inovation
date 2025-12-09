@@ -285,6 +285,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.TextBox idqty;
 
         /// <summary>
+        /// idvendor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idvendor;
+
+        /// <summary>
         /// Button1 control.
         /// </summary>
         /// <remarks>

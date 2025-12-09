@@ -204,7 +204,7 @@
                             <th>SanctionId</th>
                             <th>Material</th>
                             <th>Qty</th>
-                            <th>QtyActual</th>
+                            <%--<th>QtyActual</th>--%>
                             <th>UnitPrice</th>
                             <th>Amount</th>
                             <th>CostCenter</th>
@@ -231,7 +231,7 @@
                         <td><%=rows["SanctionId"].ToString()%></td>
                         <td><%=rows["Material"].ToString()%></td>
                         <td><%=rows["Qty"].ToString()%></td>
-                        <td><%=rows["QtyActual"].ToString()%></td>
+                       <%-- <td><%=rows["QtyActual"].ToString()%></td>--%>
                         <td><%=rows["UnitPrice"].ToString()%></td>
                         <td><%=rows["Amount"].ToString()%></td>
                         <td><%=rows["CostCenter"].ToString()%></td>
@@ -245,7 +245,10 @@
                         <td><%=rows["TypeName"].ToString()%></td>
                         <td><%=rows["MVT"].ToString()%></td>
                         <td><%=rows["Reason"].ToString()%></td>
-                        <td></td>
+                        <td>
+                             <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>','<%= rows["Qty"].ToString() %>')"><i class="fas fa-edit"></i></a>
+                            <a href="#" title="delete item" onclick="openEditModal5('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>')"><i class="fas fa-trash"></i></a>
+                        </td>
                     </tr>
                     <%} %>
                 </tbody>
@@ -255,7 +258,7 @@
                         <th>SanctionId</th>
                         <th>Material</th>
                         <th>Qty</th>
-                        <th>QtyActual</th>
+                       <%-- <th>QtyActual</th>--%>
                         <th>UnitPrice</th>
                         <th>Amount</th>
                         <th>CostCenter</th>
@@ -273,6 +276,138 @@
                 </tfoot>
             </table>
         </div>
+
+
+        <div class="modal" id="myModal3">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div>
+                        <h4 class="modal-title" id="headerTag1" style="float: left">Cập nhật thông tin covert tool</h4>
+                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <%--<div class="col-md-3">--%>
+                    <%--<label for="exampleInputEmail1">Can_combine</label>
+                <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
+                    <%--</div>--%>
+                    <div class="col-md-12">
+                        <label for="ID">ID</label>
+                        <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                    <%-- <div class="col-md-3"></div>--%>
+                    <%-- <div class="col-md-3"></div>--%>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="exFactoryDate">Sanction Name</label>
+                        <asp:TextBox ID="idSanctionname" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="exETD">Qty</label>
+                        <asp:TextBox ID="idqty" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>
+                   <%-- <div class="col-md-6">
+                        <label for="exFactoryDate"><i style="color: green">Material</i></label>                                                 
+                        <asp:TextBox ID="idmaterial" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>--%>
+                </div>
+                <div class="row">
+                    <%--<div class="col-md-6">
+                        <label for="exETD">Qty</label>
+                        <asp:TextBox ID="idqty" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                    </div>--%>
+                    <div class="col-md-6">
+                        <%--<label for="etdDate"><i style="color: green">asdad</i></label>--%>
+                       <%-- <input type="date" id="etdDate" class="form-control" name="etdDate" runat="server" />--%>
+                    </div>
+                </div>
+
+                <!-- Lặp lại thêm các dòng -->
+            </div>
+
+            <%-- Modal footer --%>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                <button type="button" runat="server" id="Button1" class="btn btn-primary" onserverclick="Updatethongtin">
+                    <i class="fas fa-download"></i>
+                    Ghi lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <div class="modal" id="myModal5">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div>
+                        <h4 class="modal-title" id="headerTag" style="float: left">Delete Item?</h4>
+                        <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <%-- Modal footer --%>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">                                
+                        <div class="col-md-6">
+                            <div class="form-group">
+                               <label for="exampleInputEmail1">ID</label>                                        
+                                <asp:TextBox ID="txtid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                        
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                    <label for="exampleInputEmail1">UserID</label>                                        
+                                <asp:TextBox ID="txtuser" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                  
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row">                                
+                    <div class="col-md-6">
+                        <div class="form-group">
+                           <label for="exampleInputEmail1">Sanction name</label>                                        
+                            <asp:TextBox ID="txtsanction" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>                                        
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                                                         
+                        </div>
+                    </div>
+                </div>    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
+                <button type="button" runat="server" id="btnOrder" class="btn btn-primary" onserverclick="delete_item"> 
+                    <i class="fas fa-download"></i>
+                    Ghi lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -301,7 +436,8 @@
     <script type="text/javascript">  
         $(document).ready(function () {
             $('#IDedit').prop("readonly", true);
-            $('#txtid_del').prop("readonly", true);
+            $('#idSanctionname').prop("readonly", true);
+            $('#txtid').prop("readonly", true);
         });
 
         $(function () {
@@ -320,27 +456,19 @@
 
         });
 
-        //function openEditModal3(id, CAT, Consignee_Refer_ATP, Country, Dest, Model, Stuffing_type, Model_Vol, Pcs_ctn, CTN_part, CTN_vol, Gross_weight, Series, MaxQty_cont40H, Max_Qty_cont20F, DIM_of_Carton_L, DIM_of_Carton_W, DIM_of_Carton_H) {
-        //    $("#IDedit").val(id);
-        //    $("#idCAT").val(CAT);
-        //    $("#idConsignee_Refer_ATP").val(Consignee_Refer_ATP);
-        //    $("#idCountry").val(Country);
-        //    $("#idDest").val(Dest);
-        //    $("#idModel").val(Model);
-        //    $("#idStuffing_type").val(Stuffing_type);
-        //    $("#idModel_Vol").val(Model_Vol);
-        //    $("#idPcs_ctn").val(Pcs_ctn);
-        //    $("#idCTN_part").val(CTN_part);
-        //    $("#idCTN_vol").val(CTN_vol);
-        //    $("#idGross_weight").val(Gross_weight);
-        //    $("#idSeries").val(Series);
-        //    $("#idMaxQty_cont40H").val(MaxQty_cont40H);
-        //    $("#idMax_Qty_cont20F").val(Max_Qty_cont20F);
-        //    $("#idDIM_of_Carton_L").val(DIM_of_Carton_L);
-        //    $("#idDIM_of_Carton_W").val(DIM_of_Carton_W);
-        //    $("#idDIM_of_Carton_H").val(DIM_of_Carton_H);
-        //    $('#myModal3').modal('show');
-        //}
+        function openEditModal3(Id, SanctionId, Qty) {
+            $("#IDedit").val(Id);
+            $("#idSanctionname").val(SanctionId);
+           /* $("#idmaterial").val(Material);      */     
+            $("#idqty").val(Qty);           
+            $('#myModal3').modal('show');
+        }
+
+        function openEditModal5(id, SanctionId) {
+            $('#txtid').val(id);
+            $('#txtsanction').val(SanctionId);
+            $('#myModal5').modal('show');
+        }
 
         //function openEditModal4(id, model) {
         //    $("#txtid_del").val(id);

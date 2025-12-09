@@ -5527,7 +5527,9 @@ namespace FreeLayout
 
                                         //kiem tra xem tren csdl co chua? chua co thi moi them
 
-                                        dt_getmodel = DataConn.StoreFillDS("Get_infor_mater_model", System.Data.CommandType.StoredProcedure, Model, Cat);
+                                        //dt_getmodel = DataConn.StoreFillDS("Get_infor_mater_model", System.Data.CommandType.StoredProcedure, Model, Cat);
+                                        //bat them ca dieu kien cosignee => 1 model va 1 cat co the di nhieu thi truong  ****12.09.2025
+                                        dt_getmodel = DataConn.StoreFillDS("Get_infor_mater_model", System.Data.CommandType.StoredProcedure, Model, Cat, Consignee);
                                         if (dt_getmodel.Rows[0][0].ToString() == "1")
                                         {
                                             Country = dt_getmodel.Rows[0][1].ToString();            //lay tu mater model
