@@ -70,6 +70,7 @@ update_Qty_convert_tool		(set them truong vendor)
 Export_ScrapList_tool		(them cot remark)
 Select_Mater_ScrapList_sacntion3	(them bien loc theo o sanction theo o text box)
 
+
 ==============// 10.12.2025 //=============
 ==== lich tau ====
 Select_Report_Risky_group '2025-12-01','2025-12-20','==Category==','on'  	=> them dieu kien risky
@@ -78,6 +79,25 @@ Select_Report_TTL_group '2025-12-01','2025-12-28','==Category==','on'		=> doi ng
 Select_Report_Risky2 '2025-12-01','2025-12-20','==Category==','on'		(them moi )
 
 
+==============// 11.12.2025 //=============
+==== lich tau ====
+Select_holiday_vessel
+Update_holiday_vessel
+Insert_holiday_vessel
+Delete_holiday_vessel
+
+==== scrap ====
+Select_mater_Sloc_Pus
+Update_mater_sloc_pus
+Insert_mater_sloc_pus
+Delete_mater_sloc_pus
+
+Select_mater_MVT_Pus
+Update_mater_MVT_pus
+Delete_mater_MVT_pus
+Insert_mater_MVT_pus
+
+bang : [ScrapSystem].[dbo].[MaterMVT_PUS]	(them 1 cot namecode)
 
 
 

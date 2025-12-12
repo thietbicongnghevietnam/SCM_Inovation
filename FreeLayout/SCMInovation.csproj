@@ -162,8 +162,11 @@
     <Content Include="frmConvertToll.aspx" />
     <Content Include="frmConvertToolVessel.aspx" />
     <Content Include="frmExportImage.aspx" />
+    <Content Include="frmHoliday.aspx" />
     <Content Include="frmMaterialName.aspx" />
     <Content Include="frmMaterModel.aspx" />
+    <Content Include="frmMaterMVTPUS.aspx" />
+    <Content Include="frmMaterSlocPUS.aspx" />
     <Content Include="frmMaterVessel.aspx" />
     <Content Include="frmUploadScraplist.aspx" />
     <Content Include="frmVanningDateSCM.aspx" />
@@ -1881,6 +1884,13 @@
     <Compile Include="frmExportImage.aspx.designer.cs">
       <DependentUpon>frmExportImage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="frmHoliday.aspx.cs">
+      <DependentUpon>frmHoliday.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmHoliday.aspx.designer.cs">
+      <DependentUpon>frmHoliday.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmMaterialName.aspx.cs">
       <DependentUpon>frmMaterialName.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1894,6 +1904,20 @@
     </Compile>
     <Compile Include="frmMaterModel.aspx.designer.cs">
       <DependentUpon>frmMaterModel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMaterMVTPUS.aspx.cs">
+      <DependentUpon>frmMaterMVTPUS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMaterMVTPUS.aspx.designer.cs">
+      <DependentUpon>frmMaterMVTPUS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMaterSlocPUS.aspx.cs">
+      <DependentUpon>frmMaterSlocPUS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMaterSlocPUS.aspx.designer.cs">
+      <DependentUpon>frmMaterSlocPUS.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmMaterVessel.aspx.cs">
       <DependentUpon>frmMaterVessel.aspx</DependentUpon>
