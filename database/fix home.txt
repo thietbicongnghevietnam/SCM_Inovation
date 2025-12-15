@@ -121,6 +121,39 @@ Delete_scraplist_record		(them moi)
 if (!checkPalletNotNull()) return;
 
 
+=============// MVC //===========
+===========// 14.12.2025 //===================
+GetDataScraps_Web	(sd.TypeName) 
+
+public class ScrapViewDto (them truong )
+  <td>@item.TypeName</td>  (giao dien )
+
+========
+Chuẩn hóa CRUD này thành generic component dùng cho mọi Mater
++Thêm SweetAlert2			(<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> ==> lay out add them)
+Thêm Server-side validation + Toas
++Thêm Paging / Search AJAX
+
+==========
+bang : MaterSection them cot : Createdate
+=========
+ScrapSystem.Web
+├── Controllers
+├── Data
+│   └── AppDbContext.cs   <-- nơi nên đặt
+├── Models
+└── Views
+
+Views/
+└── Scrap/
+    └── MaterSection/
+        ├── MaterSection.cshtml          // View chính (table)
+        └── _CreateEditMaterSection.cshtml // Partial (modal form)
+
+wwwroot/
+└── js/
+    └── matersection.js
+
 
 
 
