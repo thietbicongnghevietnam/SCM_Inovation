@@ -77,6 +77,74 @@ namespace FreeLayout
             }
         }
 
+        protected void delete_item(object sender, EventArgs e)
+        {
+            string _fromdate = Date1.Value;
+            string _todate = ngaychiid.Value;
+            string tensanction = dr_filter_Sanction.SelectedValue.ToString();
+
+            DataTable dt_update = new DataTable();
+            string IDdel = txtid.Text.ToString(); 
+            string userid = txtuser.Text.ToString();
+
+            if (userid != "")
+            {
+                dt_update = DataConn.StoreFillDS2("Delete_scraplist_record", System.Data.CommandType.StoredProcedure, IDdel, userid);
+                if (dt_update.Rows[0][0].ToString() == "1")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Delete data sucessful!');", true);
+                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check information again!'); ", true);
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG,Bạn chưa nhập User admin để xóa!'); ", true);
+            }
+        }
+
+        protected void Updatethongtin(object sender, EventArgs e)
+        {
+            string _fromdate = Date1.Value;
+            string _todate = ngaychiid.Value;
+            string tensanction = dr_filter_Sanction.SelectedValue.ToString();
+
+            DataTable dt_update = new DataTable();
+            string id = IDedit.Text.ToString();
+            string material = idMaterial.Text.ToString();
+            string qtyplan = idQty.Text.ToString();
+            string qtyact = idQtyActual.Text.ToString();
+            string userid = isUser.Text.ToString();
+
+            try
+            {
+                if (qtyplan == "" && qtyact == "" && userid == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Du lieu input NG!'); ", true);
+                }
+                else
+                {
+                    dt_update = DataConn.StoreFillDS2("update_Qty_scrap_list", System.Data.CommandType.StoredProcedure, id, material, qtyplan, qtyact, userid);
+                    if (dt_update.Rows[0][0].ToString() == "1")
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Du lieu update thanh cong!');", true);
+                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Kiem tra lai thong tin!'); ", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         protected void dr_filter_Sanction_SelectedIndexChanged(object sender, EventArgs e)
         {           
             string tensanction = dr_filter_Sanction.SelectedValue.ToString();

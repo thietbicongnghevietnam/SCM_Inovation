@@ -162,6 +162,7 @@
     <Content Include="frmConvertToll.aspx" />
     <Content Include="frmConvertToolVessel.aspx" />
     <Content Include="frmExportImage.aspx" />
+    <Content Include="frmMaterVendor.aspx" />
     <Content Include="frmHoliday.aspx" />
     <Content Include="frmMaterialName.aspx" />
     <Content Include="frmMaterModel.aspx" />
@@ -1883,6 +1884,13 @@
     </Compile>
     <Compile Include="frmExportImage.aspx.designer.cs">
       <DependentUpon>frmExportImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmMaterVendor.aspx.cs">
+      <DependentUpon>frmMaterVendor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmMaterVendor.aspx.designer.cs">
+      <DependentUpon>frmMaterVendor.aspx</DependentUpon>
     </Compile>
     <Compile Include="frmHoliday.aspx.cs">
       <DependentUpon>frmHoliday.aspx</DependentUpon>

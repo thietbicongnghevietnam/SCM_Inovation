@@ -11,7 +11,7 @@ namespace FreeLayout
 {
 
 
-    public partial class frmUploadScraplist
+    public partial class frmVendor
     {
 
         /// <summary>
@@ -51,76 +51,121 @@ namespace FreeLayout
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl ngaychiid;
 
         /// <summary>
-        /// dr_filter_Cate control.
+        /// filterVendor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dr_filter_Cate;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText filterVendor;
 
         /// <summary>
-        /// dr_filter_Sanction control.
+        /// VendorCodeid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dr_filter_Sanction;
+        protected global::System.Web.UI.WebControls.TextBox VendorCodeid;
 
         /// <summary>
-        /// dr_filter_IssueOut control.
+        /// VendorNameid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dr_filter_IssueOut;
+        protected global::System.Web.UI.WebControls.TextBox VendorNameid;
 
         /// <summary>
-        /// IDedit control.
+        /// Vendor_Addressid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox IDedit;
+        protected global::System.Web.UI.WebControls.TextBox Vendor_Addressid;
 
         /// <summary>
-        /// idMaterial control.
+        /// PIC_Vendorid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox idMaterial;
+        protected global::System.Web.UI.WebControls.TextBox PIC_Vendorid;
 
         /// <summary>
-        /// idQty control.
+        /// Country_Originid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox idQty;
+        protected global::System.Web.UI.WebControls.TextBox Country_Originid;
 
         /// <summary>
-        /// idQtyActual control.
+        /// txtVendorCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox idQtyActual;
+        protected global::System.Web.UI.WebControls.TextBox txtVendorCode;
 
         /// <summary>
-        /// isUser control.
+        /// Button2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox isUser;
+        protected global::System.Web.UI.HtmlControls.HtmlButton Button2;
+
+        /// <summary>
+        /// idVendorCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idVendorCode;
+
+        /// <summary>
+        /// idVendorName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idVendorName;
+
+        /// <summary>
+        /// idVendor_Address control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idVendor_Address;
+
+        /// <summary>
+        /// idPIC_Vendor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idPIC_Vendor;
+
+        /// <summary>
+        /// idCountry_Origin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox idCountry_Origin;
 
         /// <summary>
         /// Button1 control.
@@ -130,41 +175,5 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton Button1;
-
-        /// <summary>
-        /// txtid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtid;
-
-        /// <summary>
-        /// txtMaterial control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMaterial;
-
-        /// <summary>
-        /// txtuser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtuser;
-
-        /// <summary>
-        /// btnOrder control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnOrder;
     }
 }
