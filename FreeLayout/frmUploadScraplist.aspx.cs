@@ -15,6 +15,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Media.Media3D;
 
+using System.Text.RegularExpressions;
+
 namespace FreeLayout
 {
     public partial class frmUploadScraplist : System.Web.UI.Page
@@ -286,7 +288,8 @@ namespace FreeLayout
 
             //string userId = Session["UserId"]?.ToString();
             //string section = Session["Section"]?.ToString();
-            if (UserID == null)
+            if (UserID == "2012757")
+            //if (UserID == null)
             {
                 //Response.Write("User not logged in");
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, UserID not logged in !'); ", true);
@@ -294,7 +297,8 @@ namespace FreeLayout
             }
             else 
             {
-                UserID = UserID.Trim('"');  //// "2015597_1";
+                //UserID = UserID.Trim('"');  //// "2015597_1";
+                UserID = "2012757";
             }
 
 
@@ -314,6 +318,7 @@ namespace FreeLayout
                     
                     //check user va bo phan co trong danh sach tao user phe duyet khong?
                     DataTable dt_checkuser = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, UserID, bophan, _sanction);
+                    //DataTable dt_checkuser = DataConn.StoreFillDS2("CheckUser_Issue_InOut", System.Data.CommandType.StoredProcedure, "2015597_1", bophan, _sanction);
 
                     if (dt_checkuser.Rows[0][0].ToString() == "1")
                     {
@@ -330,21 +335,28 @@ namespace FreeLayout
 
                         //lay list danh sach type name trong bang scrap detail
                         DataTable dt_typeMVT = DataConn.StoreFillDS2("Get_VMT_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan);
+                        //13.3 Issue Out For Rework (Not issue Debit Note)
                         if (dt_typeMVT.Rows.Count > 0)
                         {
                             //ton tai MVT trong bang scrap detail  => xuat ra nhieu Issue out 1 luc => de phe duyet dien tu
                             for (int j = 0; j < dt_typeMVT.Rows.Count; j++)
                             {
                                 string _MVT = dt_typeMVT.Rows[j]["TypeName"].ToString();
+                                //dung Regex xóa dang so dau chuoi
+                                //string _MVT2 = Regex.Replace(dt_typeMVT.Rows[j]["TypeName"].ToString(), @"^\d+(\.\d+)*\s*", "");
+
+                                string _MVT2 = Regex.Replace(dt_typeMVT.Rows[j]["TypeName"].ToString(), @"^\d+(\.\d+)*\.?\s*","");
+
                                 DataTable dt = DataConn.StoreFillDS2("Select_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan, _MVT);
 
-                                // tam thoi xu ly 1 ban ghi
+                                //xu ly theo typename MVT => 1 sanction co the nhieu MVT 
                                 if (dt.Rows.Count > 0)
                                 {
                                     int Max_ID = 0;
-                                    typename = _MVT;// dt.Rows[0]["TypeName"].ToString();
-                                    //lay typeRQ va maxRQ va tenform
-                                    DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
+                                    typename = dt.Rows[0]["TypeName"].ToString();  //13.3 Issue Out For Rework (Not issue Debit Note) ==> xoa các số đầu bằng regex
+                                    //lay typeRQ va maxRQ va tenform  
+                                    //DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, typename);
+                                    DataTable dtMax = DataConn.StoreFillDS2("Get_Max_Issue_InOut", System.Data.CommandType.StoredProcedure, _MVT2);  //Issue Out For Rework (Not issue Debit Note) ==> xoa các số đầu bằng regex
                                     if (dtMax.Rows.Count <= 0)
                                     {
                                         Max_ID = 1;

@@ -115,7 +115,7 @@
                         </a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" target="_blank" class="nav-link">Master holiday
+                        <a href="/frmHoliday.aspx" target="_blank" class="nav-link">Master holiday
                         </a>
                     </li>
 

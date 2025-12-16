@@ -25,6 +25,21 @@
 
 
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
+    <style>
+    .yes-label {
+        background: #28a745;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+    }
+    .no-label {
+        background: #6c757d;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+    }
+</style>
+
 </head>
 
 <body>
@@ -156,7 +171,15 @@
                         <td><%=rows["NameCost"].ToString()%></td>
                         <td><%=rows["Pallet"].ToString()%></td>
                         <td><%=rows["Barcode"].ToString()%></td>
-                        <td><%=rows["FlagEpro"].ToString()%></td>
+                        <td>
+                          <%--  <%=rows["FlagEpro"].ToString()%>--%>
+                            <% if (rows["FlagEpro"].ToString() == "1") { %>
+                                    <span class="yes-label">YES</span>
+                                <% } else { %>
+                                    <span class="no-label">NO</span>
+                                <% } %>
+
+                        </td>
                         <td><%=rows["CreatedDate"].ToString()%></td>
 
                         <td>
