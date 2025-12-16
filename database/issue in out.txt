@@ -1,0 +1,8 @@
+[SP_Issue_Material_BindRQ_NOTApproved_B]
+[SP_Issue_Material_BindRQ_Approved_B] 
+SP_Issue_Material_BindRQ_NOTApproved_OutStock_B
+SP_Issue_Material_BindRQ_Approved_OutStock_B
+
+
+ CAST(a.Insert_Date AS date) AS Insert_Date
+				
