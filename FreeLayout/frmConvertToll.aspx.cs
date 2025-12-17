@@ -359,12 +359,22 @@ namespace FreeLayout
                     worksheet.Cells[row, 8].Value = dataRow["UnitPrice"];
                     //worksheet.Cells[row, 9].Value = dataRow["Amount"];    //lay theo cong thuc trong excel
 
-                    worksheet.Cells[row, 10].Value = dataRow["UnitPriceAC"];
+                    decimal ckunitPriceAC = dataRow["UnitPriceAC"] == DBNull.Value ? 0 : Convert.ToDecimal(dataRow["UnitPriceAC"]);
+                    if (ckunitPriceAC == 0)
+                    {
+                        worksheet.Cells[row, 10].Value = null; 
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 10].Value = dataRow["UnitPriceAC"];
+                    }
+
+                    //worksheet.Cells[row, 10].Value = dataRow["UnitPriceAC"];
                     //worksheet.Cells[row, 11].Value = dataRow["AmountAC"];     //lay theo cong thuc trong excel
 
                     worksheet.Cells[row, 12].Value = dataRow["Remark"]; ;// dataRow["Reason"];
 
-                    worksheet.Cells[row, 13].Value = dataRow["Vendor"];
+                    worksheet.Cells[row, 13].Value = dataRow["VendorName"];  //VendorName
                     worksheet.Cells[row, 14].Value = dataRow["ScrapSloc"];
 
                     worksheet.Cells[row, 15].Value = ""; //so palet
@@ -375,26 +385,9 @@ namespace FreeLayout
                     worksheet.Cells[row, 19].Value = dataRow["TypeName"];  //Type
                     worksheet.Cells[row, 20].Value = dataRow["MVT"];
                     worksheet.Cells[row, 21].Value = dataRow["MoveType"];
-                    //worksheet.Cells[row, 21].Value = dataRow[""];
 
-                    //if (dataRow["ATPdate"] != DBNull.Value)
-                    //{
-                    //    DateTime atpDate;
-                    //    if (DateTime.TryParse(dataRow["ATPdate"].ToString(), out atpDate))
-                    //    {
-                    //        worksheet.Cells[row, 10].Value = atpDate;
-                    //        worksheet.Cells[row, 10].Style.Numberformat.Format = "m/d/yyyy";
-                    //        // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-                    //    }
-                    //    else
-                    //    {
-                    //        worksheet.Cells[row, 10].Value = "";
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    worksheet.Cells[row, 10].Value = "";
-                    //}
+                    worksheet.Cells[row, 22].Value = dataRow["AccountCost"]; //GL code = AccountCost
+                    worksheet.Cells[row, 34].Value = dataRow["Vendor"]; //[Vendor]
 
                     row++;
                 }

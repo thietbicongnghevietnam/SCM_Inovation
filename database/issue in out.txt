@@ -3,8 +3,7 @@
 SP_Issue_Material_BindRQ_NOTApproved_OutStock_B
 SP_Issue_Material_BindRQ_Approved_OutStock_B
 
-
- CAST(a.Insert_Date AS date) AS Insert_Date
+ ==> CAST(a.Insert_Date AS date) AS Insert_Date
 
 
 ==================== // rule form A va form B //==============
@@ -29,15 +28,18 @@ if (ck_vendor == "2" || ck_vendor == "3" || ck_vendor == "4" || ck_vendor == "5"
 --A:1,5,8,11,13,14,15,17,20,22,23,24	==>(23 co ca A&B)  23.Scrap mixing part (Linh kiện SMT)			
 --B:2,3,4,6,7,9,10,12,16,18,19,21,23		==>(23 co ca A&B)  23.Scrap mixing part (for outsourcing)
 
----7 dang form B  ==> file lai de form A
----6 dang form B  ==> file lai de form A
----18 dang form B ==> file lai de form A
----8 dang form A  ==> file lai de form B
-
 ===========// 17.12.2025 // ===========
 bang:  [ScrapSystem].[dbo].[MaterNametemplate]	
 Get_Max_Issue_InOut			(sua)
 [Export_ScrapList_tool2] 		(sua)
+
+===========// 17.12.2025 b // ===========
+Select_Mater_ScrapList_sacntion2	(sua)
+Select_Mater_ScrapList_sacntion		(sua)
+Select_Mater_ScrapList			(sua)
+
+Export_ScrapList_tool2		(them cot du lieu)=> doi lai thanh vendorname => sua phan import du lieu****
+Export_ScrapList_tool		(them cot du lieu)  tool convert
 
 
 
