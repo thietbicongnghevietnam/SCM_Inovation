@@ -5,4 +5,38 @@ SP_Issue_Material_BindRQ_Approved_OutStock_B
 
 
  CAST(a.Insert_Date AS date) AS Insert_Date
-				
+
+
+==================== // rule form A va form B //==============
+
+//string[] stringTypeID = { "2", "3", "4", "5", "8", "21" }; // Những Type sẽ phải điền Vendorcode
+if (ck_vendor == "2" || ck_vendor == "3" || ck_vendor == "4" || ck_vendor == "5" || ck_vendor == "8" || ck_vendor == "9" || ck_vendor == "19")  //bo 21
+{
+    if (scrapDetail1.Vendor == "")
+    {
+        //scrapDetail1.Vendor = worksheetData1.Cells[row, 13].Text;
+        //truong hop vendor null => khong cho nhap
+        break;
+    }
+}
+  -- string[] stringTypeID = { "2", "3", "4", "5", "8", "9","19" }; // Những Type sẽ phải điền Vendorcode  ==> bo "21"
+
+--MVTypeName like '%Mold scrap%'
+--1,5,6,9,12,14,15,16,17,19,22,24  ---form A ==> chua co: 18,12,10,13,18,20,21,23,24,4.1
+--25,2,3,4,7,8,6   10,11,13,18,20,21,23  ---from B theo rule: 2,3,4,8,9,19  ==> chua co 19   ==> co 2 loai gia
+
+--Rule export form:
+--A:1,5,8,11,13,14,15,17,20,22,23,24	==>(23 co ca A&B)  23.Scrap mixing part (Linh kiện SMT)			
+--B:2,3,4,6,7,9,10,12,16,18,19,21,23		==>(23 co ca A&B)  23.Scrap mixing part (for outsourcing)
+
+---7 dang form B  ==> file lai de form A
+---6 dang form B  ==> file lai de form A
+---18 dang form B ==> file lai de form A
+---8 dang form A  ==> file lai de form B
+
+===========// 17.12.2025 // ===========
+bang:  [ScrapSystem].[dbo].[MaterNametemplate]	
+Get_Max_Issue_InOut			(sua)
+
+
+

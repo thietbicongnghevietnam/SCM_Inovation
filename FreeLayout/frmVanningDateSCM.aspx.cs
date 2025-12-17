@@ -4281,11 +4281,14 @@ namespace FreeLayout
                 {
                     if (dt_group2.Rows[k]["Cancombine"].ToString() == "OK")
                     {
-                        //lay all cate , tinh tong all cac ban ghi
+                        //lay all cate , tinh tong all cac ban ghi  ==> bo dieu kien: && dt_all2.Rows[j]["Exfactorydate"].ToString() == dt_group2.Rows[k]["Exfactorydate"].ToString()
                         for (int j = 0; j < dt_all2.Rows.Count; j++)
                         {
-                            if (dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString() && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()
-                                && dt_all2.Rows[j]["Exfactorydate"].ToString() == dt_group2.Rows[k]["Exfactorydate"].ToString() && dt_all2.Rows[j]["Cancombine"].ToString() == dt_group2.Rows[k]["Cancombine"].ToString())
+                            // Group theo consignee
+                            if (dt_all2.Rows[j]["Consignee"].ToString() == dt_group2.Rows[k]["Consignee"].ToString() && 
+                                dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString() 
+                                && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()
+                                 && dt_all2.Rows[j]["Cancombine"].ToString() == dt_group2.Rows[k]["Cancombine"].ToString())
                             {
                                 Sum_qty = Sum_qty + Int32.Parse(dt_all2.Rows[j]["Quantity"].ToString());
                                 Sum_TTL_Volum = Sum_TTL_Volum + float.Parse(dt_all2.Rows[j]["TTLcont"].ToString());
@@ -4296,12 +4299,12 @@ namespace FreeLayout
                     }
                     else
                     {
-                        //truong hop NG chi lay theo cate
+                        //truong hop NG chi lay theo cate  ==> bo dieu kien:  && dt_all2.Rows[j]["Exfactorydate"].ToString() == dt_group2.Rows[k]["Exfactorydate"].ToString()
                         for (int j = 0; j < dt_all2.Rows.Count; j++)
                         {
-                            if (dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString()
-                                && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()
-                                && dt_all2.Rows[j]["Exfactorydate"].ToString() == dt_group2.Rows[k]["Exfactorydate"].ToString()
+                            if (dt_all2.Rows[j]["Consignee"].ToString() == dt_group2.Rows[k]["Consignee"].ToString() && 
+                                dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString()
+                                && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()                               
                                 && dt_all2.Rows[j]["Cancombine"].ToString() == dt_group2.Rows[k]["Cancombine"].ToString()
                                 && dt_all2.Rows[j]["Cat"].ToString() == dt_group2.Rows[k]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
                             {
@@ -4512,10 +4515,13 @@ namespace FreeLayout
                     if (dt_group3.Rows[k]["Cancombine"].ToString() == "OK")
                     {
                         //lay all cate, tinh tong all cac ban ghi    --->Consignee va ETD date (khong phai exfactory date)
-                        for (int j = 0; j < dt_all2.Rows.Count; j++)
+                        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
                         {
-                            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString() && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString() && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
-                                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString() && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString())
+                            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString() 
+                                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString() 
+                                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
+                                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString() 
+                                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString())
                             {
                                 Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
                                 Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());

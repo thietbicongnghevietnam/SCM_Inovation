@@ -32,24 +32,24 @@ namespace FreeLayout
             if (!IsPostBack)
             {
                 //==========/ bat session tu WMC
-                //string token = Request.QueryString["token"];
-                ////string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                //// Nếu token null hoặc rỗng → bỏ qua
-                //if (string.IsNullOrEmpty(token))
-                //{
-                //    return;
-                //}
-                //try
-                //{
-                //    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                //    //string cleanUserId = decoded.Trim().Replace('"','');
-                //    Session["UserId"] = decoded;
-                //}
-                //catch
-                //{
-                //    // Nếu token sai format → bỏ qua, không crash
-                //    return;
-                //}
+                string token = Request.QueryString["token"];
+                //string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                // Nếu token null hoặc rỗng → bỏ qua
+                if (string.IsNullOrEmpty(token))
+                {
+                    return;
+                }
+                try
+                {
+                    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                    //string cleanUserId = decoded.Trim().Replace('"','');
+                    Session["UserId"] = decoded;
+                }
+                catch
+                {
+                    // Nếu token sai format → bỏ qua, không crash
+                    return;
+                }
                 //===================//
 
                 Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
@@ -288,8 +288,8 @@ namespace FreeLayout
 
             //string userId = Session["UserId"]?.ToString();
             //string section = Session["Section"]?.ToString();
-            if (UserID == "2012757")
-            //if (UserID == null)
+            //if (UserID == "2012757")
+            if (UserID == null)
             {
                 //Response.Write("User not logged in");
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, UserID not logged in !'); ", true);
@@ -297,8 +297,8 @@ namespace FreeLayout
             }
             else 
             {
-                //UserID = UserID.Trim('"');  //// "2015597_1";
-                UserID = "2012757";
+                UserID = UserID.Trim('"');  //// "2015597_1";
+                //UserID = "2012757";
             }
 
 
@@ -341,7 +341,7 @@ namespace FreeLayout
                             //ton tai MVT trong bang scrap detail  => xuat ra nhieu Issue out 1 luc => de phe duyet dien tu
                             for (int j = 0; j < dt_typeMVT.Rows.Count; j++)
                             {
-                                string _MVT = dt_typeMVT.Rows[j]["TypeName"].ToString();
+                                string _MVT = dt_typeMVT.Rows[j]["TypeName"].ToString();  //7.Claim Scrap Deadstock
                                 //dung Regex xóa dang so dau chuoi
                                 //string _MVT2 = Regex.Replace(dt_typeMVT.Rows[j]["TypeName"].ToString(), @"^\d+(\.\d+)*\s*", "");
 
@@ -446,6 +446,9 @@ namespace FreeLayout
                                             return;
                                         }
                                         //**** tam thoi chua check ***** ben issue out  ==> Lay ra trong mater: [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode='201' and TypeID=7  => MVContent
+                                        // van phai dung bang :
+                                        //select ContentMV FROM [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode=@Mvtype and TypeID=@TypeRQ
+
                                         dtCheckMV = DataConn.StoreFillDS2("get_IssueOut_MVType", CommandType.StoredProcedure, Mvtype.Trim(), TypeRQ);
                                         // Kiểm tra MV-TypeName không đúng Mv TypeID`
                                         if (dtCheckMV.Rows.Count > 0)
@@ -479,7 +482,7 @@ namespace FreeLayout
                                         }
 
                                         string TypeCheck = TypeRQ;
-                                        string[] stringTypeID = { "2", "3", "4", "5", "8", "21" }; // Những Type sẽ phải điền Vendorcode
+                                        string[] stringTypeID = { "2", "3", "4", "5", "8", "9", "19" }; // Những Type sẽ phải điền Vendorcode
 
 
                                         //*****check lai phan vendor code nay ==> insert la vendor code => khong phai vendor name
