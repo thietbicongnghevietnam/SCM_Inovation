@@ -37,6 +37,8 @@ if (ck_vendor == "2" || ck_vendor == "3" || ck_vendor == "4" || ck_vendor == "5"
 ===========// 17.12.2025 // ===========
 bang:  [ScrapSystem].[dbo].[MaterNametemplate]	
 Get_Max_Issue_InOut			(sua)
+[Export_ScrapList_tool2] 		(sua)
+
 
 
 
