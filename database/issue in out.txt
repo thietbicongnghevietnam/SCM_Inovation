@@ -57,6 +57,11 @@ Check_user_update_price_sap
 Update_Issue_Material_Report_B
 
 
+===========// 19.12.2025 // =========== 
+ImportScrapAndDetails	(them cot remark)
+Export_ScrapList_tool2	(them cot remark)
+
+
 ngay mai:
  FROM [FOSS1].[dbo].[TBLPRODUCT_MW] where STR_PROCESS_FACTORY='NE-SCV3RPK-V4' and STR_SERIAL='6CD5110058'
 

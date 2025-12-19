@@ -1374,7 +1374,7 @@ namespace FreeLayout
                         worksheet.Cells[row, 11].Value = dataRow["AmountAC"];
                     }
 
-                    worksheet.Cells[row, 12].Value = dataRow["Reason"];
+                    worksheet.Cells[row, 12].Value = dataRow["Remark"];  //cot remark
 
                     worksheet.Cells[row, 13].Value = dataRow["VendorName"];  //VendorName
                     worksheet.Cells[row, 14].Value = dataRow["ScrapSloc"];
@@ -1382,7 +1382,7 @@ namespace FreeLayout
                     worksheet.Cells[row, 15].Value = ""; //so palet
                     worksheet.Cells[row, 16].Value = dataRow["SanctionId"]; //so sanction
 
-                    worksheet.Cells[row, 17].Value = ""; //reason 17
+                    worksheet.Cells[row, 17].Value = dataRow["Reason"]; //reason 17
                     worksheet.Cells[row, 18].Value = bophan;   //bo phan 18
                     worksheet.Cells[row, 19].Value = dataRow["TypeName"];  //Type
                     worksheet.Cells[row, 20].Value = dataRow["MVT"];
