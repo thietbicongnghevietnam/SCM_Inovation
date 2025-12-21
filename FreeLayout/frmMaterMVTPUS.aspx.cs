@@ -96,7 +96,7 @@ namespace FreeLayout
             string Description = idDescription.Text;
             string Costcenter = idCostcenter.Text;
             string NameCode = idNameCode.Text;
-            string TypeRoshHalb = idTypePSNV.Text;
+            string TypeRoshHalb = idTypeRoshHalb.Text; ///idTypeRoshHalb
             string Typevendor = idTypevendor.Text;
             string MVTvendor = idMVTvendor.Text;
             string TypePSNV = idTypePSNV.Text;

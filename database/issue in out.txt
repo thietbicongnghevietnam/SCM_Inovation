@@ -62,6 +62,29 @@ ImportScrapAndDetails	(them cot remark)
 Export_ScrapList_tool2	(them cot remark)
 
 
+===========// 21.12.2025 // =========== 
+da sua : form mater MVT
+
+bang: [ScrapSystem].[dbo].[MaterNametemplate] 	(them cot ID)
+Select_form_AB
+Update_Form_AB
+Delete_from_AB
+Insert_Form_AB
+Select_form_AB_loc
+
+bang: tbl_History_change_price_SAP
+Select_hisorty_changepriceSAP
+Select_hisorty_changepriceSAP_loc
+
+bang: [ScrapSystem].[dbo].[Users] (sua cot UpdatedId => thanh nvarchar)  ***
+
+
+
+
+
+
+
+
 ngay mai:
  FROM [FOSS1].[dbo].[TBLPRODUCT_MW] where STR_PROCESS_FACTORY='NE-SCV3RPK-V4' and STR_SERIAL='6CD5110058'
 
