@@ -78,6 +78,9 @@ Select_hisorty_changepriceSAP_loc
 
 bang: [ScrapSystem].[dbo].[Users] (sua cot UpdatedId => thanh nvarchar)  ***
 
+===========// 21.12.2025 b// =========== 
+sp_GetUsers_infor		(xuat excel)
+
 
 
 
