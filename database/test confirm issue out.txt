@@ -1,0 +1,24 @@
+1.
+ FROM [Issue_MaterialInOut].[dbo].[tbl_RQ_MaterialIssue] where UserCreate='2015597_1' and Status_Approved_OutSAP='Pending' order by ID desc
+
+  --delete [Issue_MaterialInOut].[dbo].[tbl_RQ_MaterialIssue] where RequestNo in ('RQB-PUR-1225-19','RQB-PUR-1225-20') 
+  --RQB-PUR-1225-18
+
+
+2.
+ FROM [Issue_MaterialInOut].[dbo].[tbl_RQ_MaterialIssueB] where UserCreate='2015597_1' and Status_Approved_OutSAP='Pending' order by ID desc
+
+ --- delete [Issue_MaterialInOut].[dbo].[tbl_RQ_MaterialIssueB] where RequestNo in ('RQB-PUR-1225-36','RQB-PUR-1225-37','RQB-PUR-1225-38')
+
+  --RQB-PUR-1225-35
+
+
+3.
+ FROM [ScrapSystem].[dbo].[ScrapDetails] where  SanctionId=7
+
+  update [ScrapSystem].[dbo].[ScrapDetails] set FlagEpro=0, IssueOut='' where  SanctionId=7
+
+
+
+=============// check  lai issue out : 1 user dang nhap ca 2 lan //=============
+  

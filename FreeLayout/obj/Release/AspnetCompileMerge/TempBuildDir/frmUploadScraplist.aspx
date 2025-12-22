@@ -68,8 +68,7 @@
                                 AppendDataBoundItems="true"
                                 DataTextField="Description"
                                 DataValueField="Description"
-                                CssClass="custom-select custom-select-sm form-control form-control-sm" />
-                            <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+                                CssClass="custom-select custom-select-sm form-control form-control-sm" OnSelectedIndexChanged="dr_filter_section_SelectedIndexChanged" AutoPostBack="True" />                            
                         </div>
                     </div>
                     <div class="col-md-1" style="float: left">

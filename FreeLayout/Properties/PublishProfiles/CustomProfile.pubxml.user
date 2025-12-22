@@ -18,10 +18,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/15/2025 21:57:10</publishTime>
     </File>
     <File Include="bin/FreeLayout.dll">
-      <publishTime>12/18/2025 08:32:14</publishTime>
+      <publishTime>12/22/2025 09:46:28</publishTime>
     </File>
     <File Include="bin/FreeLayout.pdb">
-      <publishTime>12/18/2025 08:32:14</publishTime>
+      <publishTime>12/22/2025 09:46:28</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>08/16/2021 12:01:57</publishTime>
@@ -374,8 +374,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="frmExportImage.aspx">
       <publishTime>09/03/2025 08:07:52</publishTime>
     </File>
+    <File Include="frmHistoryChangePrice.aspx">
+      <publishTime>12/22/2025 07:58:52</publishTime>
+    </File>
     <File Include="frmHoliday.aspx">
       <publishTime>12/11/2025 08:39:29</publishTime>
+    </File>
+    <File Include="frmMaterAB.aspx">
+      <publishTime>12/22/2025 07:58:52</publishTime>
     </File>
     <File Include="frmMaterialName.aspx">
       <publishTime>09/22/2025 14:54:12</publishTime>
@@ -396,7 +402,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2025 10:02:10</publishTime>
     </File>
     <File Include="frmUploadScraplist.aspx">
-      <publishTime>12/16/2025 16:16:47</publishTime>
+      <publishTime>12/22/2025 09:28:26</publishTime>
     </File>
     <File Include="frmVanningDateSCM.aspx">
       <publishTime>12/11/2025 08:38:05</publishTime>
@@ -5613,7 +5619,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2025 08:08:53</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>12/18/2025 08:32:20</publishTime>
+      <publishTime>12/22/2025 09:46:32</publishTime>
     </File>
     <File Include="QCC/DailyMaterial.aspx">
       <publishTime>08/25/2021 09:57:00</publishTime>

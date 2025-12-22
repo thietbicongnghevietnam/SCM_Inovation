@@ -559,6 +559,10 @@ namespace FreeLayout
                         dt_new.Columns.Add("type_convert", typeof(String));
                         dt_new.Columns.Add("Remark", typeof(String));
 
+                        //them cot vendor name
+                        dt_new.Columns.Add("VendorName", typeof(String));
+                        
+
                         // Open connection to Excel file.
                         excelConn = new OleDbConnection(excelConnStr);
                         excelConn.Open();
@@ -701,10 +705,12 @@ namespace FreeLayout
 
                                             //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
                                             Vendor = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name
-                                                                                                      //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
+
                                             Reason = dtExcelData.Rows[i][col_remark].ToString();    //reason
 
                                             Remark = dtExcelData.Rows[i][18].ToString(); //cot remark
+
+                                            VendorName = dtExcelData.Rows[i][25].ToString();  //cot vendor name
 
                                             Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
                                             CostCenter = "";  //lay mater MVT
@@ -755,7 +761,7 @@ namespace FreeLayout
                                             else
                                             {
                                                 //insert model moi
-                                                dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark);
+                                                dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
                                             }
                                         }
 
@@ -869,7 +875,7 @@ namespace FreeLayout
                                             else
                                             {
                                                 //insert model moi
-                                                dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark);
+                                                dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
                                             }
                                         }
 

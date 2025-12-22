@@ -147,6 +147,38 @@ namespace FreeLayout
             }
         }
 
+        protected void dr_filter_section_SelectedIndexChanged(object sender, EventArgs e)
+        {            
+            string _fromdate = Date1.Value;
+            string _todate = ngaychiid.Value;
+            string bophan = dr_filter_Cate.SelectedValue;
+            string tensanction = dr_filter_Sanction.SelectedValue.ToString();
+
+            dtIssueOut = DataConn.StoreFillDS2("pro_get_section4", System.Data.CommandType.StoredProcedure, _fromdate, _todate, bophan);
+
+            // XÓA TRƯỚC KHI BIND
+            dr_filter_Sanction.Items.Clear();
+
+            if (dtIssueOut.Rows.Count > 0)
+            {
+                DataRow newRow3 = dtIssueOut.NewRow();
+                newRow3["Sanction"] = "==Sanction==";
+                dtIssueOut.Rows.InsertAt(newRow3, 0);
+                dr_filter_Sanction.DataSource = dtIssueOut;
+                dr_filter_Sanction.DataBind();
+            }
+
+            //if (bophan == "==Section==")
+            //{
+            //    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate);
+            //}
+            //else
+            //{
+            //    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, tensanction, _fromdate, _todate);
+            //}
+            dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, tensanction, _fromdate, _todate);           
+        }
+
         protected void dr_filter_Sanction_SelectedIndexChanged(object sender, EventArgs e)
         {           
             string tensanction = dr_filter_Sanction.SelectedValue.ToString();
@@ -284,7 +316,9 @@ namespace FreeLayout
             string _issueout = dr_filter_IssueOut.SelectedValue;// filterIssueout.Value.ToString();
             string bophan = dr_filter_Cate.SelectedValue.ToString();
 
-            string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
+            //string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
+
+            string UserID = "2015597_1";
 
             //string userId = Session["UserId"]?.ToString();
             //string section = Session["Section"]?.ToString();
@@ -330,7 +364,9 @@ namespace FreeLayout
                         string tenform = "";
 
                         string TypeRQ = null; string Material = null; string Sloc = null; float Qty = 0; string Mvtype = null; string Plant = null; string Account = null; float UnitPriceST = 0;
-                        float UnitActual = 0; string CostCenter = null; string VendorCode = null; string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
+                        float UnitActual = 0; string CostCenter = null; 
+                        string VendorCode = ""; 
+                        string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
                         string MVContent = null; string RQ_Reset = null; string CountryOfOrgin = null; string ItemDescription = null;
 
                         //lay list danh sach type name trong bang scrap detail
@@ -445,21 +481,25 @@ namespace FreeLayout
                                             Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data MVType at row :(" + (i + 1).ToString() + ") is null');", true);
                                             return;
                                         }
+
                                         //**** tam thoi chua check ***** ben issue out  ==> Lay ra trong mater: [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode='201' and TypeID=7  => MVContent
                                         // van phai dung bang :
                                         //select ContentMV FROM [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode=@Mvtype and TypeID=@TypeRQ
 
-                                        dtCheckMV = DataConn.StoreFillDS2("get_IssueOut_MVType", CommandType.StoredProcedure, Mvtype.Trim(), TypeRQ);
-                                        // Kiểm tra MV-TypeName không đúng Mv TypeID`
-                                        if (dtCheckMV.Rows.Count > 0)
-                                        {
-                                            MVContent = dtCheckMV.Rows[0][0].ToString();
-                                        }
-                                        else
-                                        {
-                                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('MVContent khong co trong mater!');", true);
-                                            return;
-                                        }
+                                        //dtCheckMV = DataConn.StoreFillDS2("get_IssueOut_MVType", CommandType.StoredProcedure, Mvtype.Trim(), TypeRQ);
+                                        //// Kiểm tra MV-TypeName không đúng Mv TypeID`
+                                        //if (dtCheckMV.Rows.Count > 0)
+                                        //{
+                                        //    MVContent = dtCheckMV.Rows[0][0].ToString();
+                                        //}
+                                        //else
+                                        //{
+                                        //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('MVContent khong co trong mater!');", true);
+                                        //    return;
+                                        //}
+
+                                        //mac dinh scrap la Out khong bat trong mater
+                                        MVContent = "Out";
 
                                         if (dt.Rows[i]["Plant"].ToString() != "")
                                         {
