@@ -158,7 +158,7 @@
                     <input type="text" id="txtremark" runat="server" placeholder="remark" style="height: 34px; width: 100px;" />
                 </div>
                 <div style="float: left; padding-right: 5px;">
-                    vendorname<br />
+                    vendorcode<br />
                     <input type="text" id="txtvendorname" runat="server" placeholder="vendorname" style="height: 34px; width: 100px;" />
                 </div>
                 <div style="float: left; padding-right: 5px;">

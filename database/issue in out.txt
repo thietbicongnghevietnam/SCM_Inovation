@@ -98,6 +98,21 @@ stored:
  2000519_3  (level3_GM) pass:123456    
 thanhriem.tran@vn.panasonic.com
 
+===========// 22.12.2025 // =========== 
+bang : tbl_RQ_MaterialIssueB	(from A)	(sua cot Insert_Date ve dang datetime)
+	tbl_RQ_MaterialIssue	(them cot SanctionName)
+	tbl_RQ_MaterialIssueB	(them cot SanctionName)
+
+SP_Issue_Material_BindRQ_NOTApproved		(sua dieu kien)
+SP_Issue_Material_BindRQ_Approved		(sua dieu kien)
+Check_Confirm_Issue_InOut		reset confirm isssue out
+
+Update_Mater_vendor
+Delete_Mater_vendor
+
+
+
+
 
 
 ngay mai:  anh dinh lucc  === SCM

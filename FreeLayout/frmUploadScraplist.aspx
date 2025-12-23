@@ -121,6 +121,11 @@
             </div>
         </div>
 
+        <asp:HiddenField ID="hdSanction" runat="server" />
+<asp:HiddenField ID="hdUser" runat="server" />
+<asp:Button ID="btnConfirmYes" runat="server" OnClick="btnConfirmYes_Click" Style="display:none;" />
+<asp:Button ID="btnConfirmNo" runat="server" OnClick="btnConfirmNo_Click" Style="display:none;" />
+
 
         <div>
             <table id="example" class="table table-striped table-bordered" style="width: 100%">

@@ -22,6 +22,7 @@ namespace FreeLayout.App_Code
     {
         public static string source;
         public static string source2;
+        public static string source3;
         private static SqlConnection con;
         public static int gio;
         public static DbDataAdapter adapter;
@@ -32,10 +33,13 @@ namespace FreeLayout.App_Code
             //source = @"Data Source=10.92.186.30;Initial Catalog=PC_Inventory_Infra;User ID=sa;Password=Psnvdb2013";
             source = @"Data Source=10.92.184.22\hienpc;Initial Catalog=LichTau;User ID=sa;Password=Hien304@";
 
-            //source2 = @"Data Source=10.92.186.30;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
+            source2 = @"Data Source=10.92.186.30;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
             //local
             //source2 = @"Data Source=./;Initial Catalog=ScrapSystem;User ID='LT-DE2302026\pcvhit';Password=''";
-            source2 = @"Data Source=LT-DE2302026;Initial Catalog=ScrapSystem;Integrated Security=True;TrustServerCertificate=True;";
+            //source2 = @"Data Source=LT-DE2302026;Initial Catalog=ScrapSystem;Integrated Security=True;TrustServerCertificate=True;";
+
+
+            source3 = @"Data Source=10.92.186.30;Initial Catalog=Issue_MaterialInOut;User ID=sa;Password=Psnvdb2013";
 
             con = new SqlConnection(source);
             try
@@ -72,6 +76,34 @@ namespace FreeLayout.App_Code
             //try
             //{
             SqlConnection conn = new SqlConnection(source);
+
+            int row = 0;
+            conn.Open();
+            sqltran = conn.BeginTransaction();
+            SqlCommand cmd = new SqlCommand(sql, conn, sqltran);
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = sql;
+            row = cmd.ExecuteNonQuery();
+            sqltran.Commit();
+            conn.Dispose();
+            conn.Close();
+            return row;
+            //}
+            //catch (Exception ex)
+            //{
+            //    // throw new Exception(ex.Message);
+            //    sqltran.Rollback();
+            //    var _ex = new Exception(ex.Message + "Chỗ này sai rồi... : '" + sql + "'");
+            //    throw _ex;
+            //}
+        }
+
+        public static int Execute_NonSQL3(string sql)
+        {
+            SqlTransaction sqltran = null;
+            //try
+            //{
+            SqlConnection conn = new SqlConnection(source3);
 
             int row = 0;
             conn.Open();

@@ -16,6 +16,7 @@ using System.Web.UI.WebControls;
 using System.Windows.Media.Media3D;
 
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace FreeLayout
 {
@@ -346,6 +347,8 @@ namespace FreeLayout
                 try
                 {
                     int dongloi = 0;
+                    int count_IssueInOut = 0;
+                    int tong_IssueInOut = 0;
                     string VMT_err = "";
                     bool ketqua = true;
                     //insert sang Issue In Out
@@ -368,12 +371,17 @@ namespace FreeLayout
                         string VendorCode = ""; 
                         string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
                         string MVContent = null; string RQ_Reset = null; string CountryOfOrgin = null; string ItemDescription = null;
-
+                        
                         //lay list danh sach type name trong bang scrap detail
                         DataTable dt_typeMVT = DataConn.StoreFillDS2("Get_VMT_Issue_InOut", System.Data.CommandType.StoredProcedure, _sanction, bophan);
                         //13.3 Issue Out For Rework (Not issue Debit Note)
                         if (dt_typeMVT.Rows.Count > 0)
                         {
+                            tong_IssueInOut = dt_typeMVT.Rows.Count;
+
+                            string sql_ = "";
+                            string sql_Reset = "";
+
                             //ton tai MVT trong bang scrap detail  => xuat ra nhieu Issue out 1 luc => de phe duyet dien tu
                             for (int j = 0; j < dt_typeMVT.Rows.Count; j++)
                             {
@@ -586,24 +594,53 @@ namespace FreeLayout
                                             //sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription) ";
                                             //sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + Session["UserName"].ToString() + "'," + UnitPriceST + " ,'" + MVContent + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Amount + "," + UnitActual + "," + Amount_Actual + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "') ";
                                             //Session["RQ_UploadB"] = Request_NO;
-                                            dt_insert = DataConn.StoreFillDS2("Insert_Issue_InOut_FromB", System.Data.CommandType.StoredProcedure, Request_NO, Material, TypeRQ, Qty, UserID, Math.Truncate(UnitPriceST * 100000) / 100000, MVContent, Plant, Note, DateVoucher, Math.Truncate(Amount * 100000) / 100000, Math.Truncate(UnitActual * 100000) / 100000, Math.Truncate(Amount_Actual * 100000) / 100000, VendorCode, CostCenter, Sloc, Public_Dept, CountryOfOrgin, ItemDescription, tenform);
+                                            //dt_insert = DataConn.StoreFillDS2("Insert_Issue_InOut_FromB", System.Data.CommandType.StoredProcedure, Request_NO, Material, TypeRQ, Qty, UserID, Math.Truncate(UnitPriceST * 100000) / 100000, MVContent, Plant, Note, DateVoucher, Math.Truncate(Amount * 100000) / 100000, Math.Truncate(UnitActual * 100000) / 100000, Math.Truncate(Amount_Actual * 100000) / 100000, VendorCode, CostCenter, Sloc, Public_Dept, CountryOfOrgin, ItemDescription, tenform);
 
-                                            if (dt_insert.Rows[0][0].ToString() == "1")
+                                            if (tenform =="B")
                                             {
-                                                ketqua = true;
-                                                dongloi = dongloi + 1;
-                                                //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
+                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription,SanctionName) ";
+                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + UserID + "'," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + MVContent + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + "," + Math.Truncate(UnitActual * 100000) / 100000 + "," + Math.Truncate(Amount_Actual * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "') ";
                                             }
-                                            else
+                                            else 
                                             {
-                                                ketqua = false;
-                                                dongloi = i;
-                                                VMT_err = _MVT;
-                                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiem tra lai !'); ", true);
-                                                return;
+                                                //tenform=="A"
+                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssue ([RequestNo],[Material],[TypeID], [IssueQty],[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST , VendorCode,CostCenter,Sloc,UserCreate,RQDeptID,CountryofOrigin,ItemDescription,SanctionName) ";
+                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + "," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + UserID + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "') ";
                                             }
+
+                                            //if (dt_insert.Rows[0][0].ToString() == "1")
+                                            //{
+                                            //    ketqua = true;
+                                            //    dongloi = dongloi + 1;
+                                            //    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
+                                            //}
+                                            //else
+                                            //{
+                                            //    ketqua = false;
+                                            //    dongloi = i;
+                                            //    VMT_err = _MVT;
+                                            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiem tra lai !'); ", true);
+                                            //    return;
+                                            //}
+
+                                            //ketqua = true;
+                                            dongloi = i;
+                                            VMT_err = _MVT;
                                         }
                                     }
+
+                                    if (sql_ != "")
+                                    {
+                                        DataConn.Execute_NonSQL3(sql_);
+                                        count_IssueInOut = count_IssueInOut + 1;
+                                        sql_ = ""; //set lai _sql de tinh MVT tiep theo
+                                        //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful!');", true);
+                                    }
+                                    //else
+                                    //{
+                                    //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Du lieu null, kiem tra lai !'); ", true);
+                                    //}
+
                                 }
                                 else
                                 {
@@ -613,6 +650,18 @@ namespace FreeLayout
                                 }
 
                             }
+
+                            if (tong_IssueInOut == count_IssueInOut)
+                            {
+                                //update toan bo theo MVT                                
+                                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful!');", true);
+                                //update lai trang thai da tao Issue in out
+                                dtUpdate = DataConn.StoreFillDS2("Update_ScrapList_Isssue_In_Out", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                                
+                            }
+
+                            
                         }
                         else
                         {
@@ -623,8 +672,24 @@ namespace FreeLayout
                     else if (dt_checkuser.Rows[0][0].ToString() == "2")
                     {
                         //sanction nay da duoc tao E-Pro
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, sanction nay da duoc tao E-Pro, Kiem tra lai!'); ", true);
-                        return;
+                        //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, sanction nay da duoc tao E-Pro, Kiem tra lai!'); ", true);
+                        //return;
+                        //hien hop thoai xac nhan co can confirm lai khong? => tao moi lai issue out???
+                        hdSanction.Value = _sanction;
+                        hdUser.Value = UserID;
+
+                        ClientScript.RegisterStartupScript(
+                            this.GetType(),
+                            "Confirm",
+                            "if(confirm('Sanction này đã được tạo E-Pro. Bạn có muốn Reset lại Issue Out không?')){" +
+                            "__doPostBack('btnConfirmYes','');" +
+                            "} else {" +
+                            "__doPostBack('btnConfirmNo','');" +
+                            "}",
+                            true
+                        );
+
+                    
                     }
                     else
                     {
@@ -633,20 +698,20 @@ namespace FreeLayout
                         return;
                     }
 
-                    if (ketqua == true)
-                    {
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
-                        //update lai trang thai da tao Issue in out
-                        dtUpdate = DataConn.StoreFillDS2("Update_ScrapList_Isssue_In_Out", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
-                        //
-                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
-                    }
-                    else
-                    {
-                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
-                        //truong hop fail
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Dong loi: " + dongloi + " => MTV: " + VMT_err + "  ');", true);
-                    }
+                    //if (ketqua == true)
+                    //{
+                    //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
+                    //    //update lai trang thai da tao Issue in out
+                    //    dtUpdate = DataConn.StoreFillDS2("Update_ScrapList_Isssue_In_Out", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                    //    //
+                    //    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                    //}
+                    //else
+                    //{
+                    //    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, _sanction, _fromdate, _todate);
+                    //    //truong hop fail
+                    //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Dong loi: " + dongloi + " => MTV: " + VMT_err + "  ');", true);
+                    //}
 
                 }
                 catch (Exception ex)
@@ -656,6 +721,32 @@ namespace FreeLayout
                 }
             }
 
+        }
+
+        protected void btnConfirmYes_Click(object sender, EventArgs e)
+        {
+            string sanction = hdSanction.Value;
+            string username = hdUser.Value;
+            DataTable dt_reset = DataConn.StoreFillDS2("Check_Confirm_Issue_InOut", System.Data.CommandType.StoredProcedure, sanction, username);
+
+            if (dt_reset.Rows[0][0].ToString() == "1")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Reset successful!');", true);
+            }
+
+            // Xử lý YES
+        }
+
+        protected void btnConfirmNo_Click(object sender, EventArgs e)
+        {
+            string sanction = hdSanction.Value;
+            //string username = hdUser.Value;
+            string _fromdate = Request.Form[Date1.UniqueID];
+            string _todate = Request.Form[ngaychiid.UniqueID];           
+            string bophan = dr_filter_Cate.SelectedValue.ToString();
+            // Không làm gì cũng được
+            // hoặc xử lý khi người dùng chọn NO
+            dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion2", System.Data.CommandType.StoredProcedure, bophan, sanction, _fromdate, _todate);
         }
 
         static void ProcessExcelFile1(string filePath, string newFilePath, string tungay, string denngay, string sanction, string issueout) 

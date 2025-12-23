@@ -322,6 +322,7 @@ namespace FreeLayout
 
             //tao bang tam de zen vao excel file
             //DataTable dt_dowload = new DataTable();
+            //where SanctionId=@sacnctionid and Vendor <> '' and Sloc<>''   chan dieu kien sloc va vendor <>''
             DataTable dtexcel = new DataTable();
             dtexcel = DataConn.StoreFillDS2("Export_ScrapList_tool", System.Data.CommandType.StoredProcedure, bophan, sacnctionid, tungay, denngay);
 

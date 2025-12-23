@@ -78,6 +78,42 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.DropDownList dr_filter_IssueOut;
 
         /// <summary>
+        /// hdSanction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdSanction;
+
+        /// <summary>
+        /// hdUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdUser;
+
+        /// <summary>
+        /// btnConfirmYes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnConfirmYes;
+
+        /// <summary>
+        /// btnConfirmNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnConfirmNo;
+
+        /// <summary>
         /// IDedit control.
         /// </summary>
         /// <remarks>
