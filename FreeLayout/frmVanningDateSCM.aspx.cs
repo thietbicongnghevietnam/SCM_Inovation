@@ -2263,7 +2263,7 @@ namespace FreeLayout
                                 }
                             }
                         }
-                        else if (Category_ == "DPOversea") 
+                        else if (Category_ == "DPOversea")
                         {
                             //ap thang tinh lich tau cua DECT  //****
                             for (int i = 0; i < dt_tinhlichtau.Rows.Count; i++)
@@ -3928,7 +3928,7 @@ namespace FreeLayout
                         {
 
                         }
-                        
+
                         if (count > 1)
                         {
                             lblConfirm.Text = "so ban ghi duoc update : " + count;
@@ -3987,7 +3987,7 @@ namespace FreeLayout
             {
                 statushistory = "on";
             }
-          
+
             //truong hop export detail  (normal)
             string relativePath = "Mau_Report_Detail.xlsx";
             string localPath = Server.MapPath(relativePath);
@@ -4019,7 +4019,7 @@ namespace FreeLayout
             ws.Cells[r, c].Value = "";
         }
 
-        static void ProcessExcelFile1(string filePath, string newFilePath, string tungay, string denngay, string category, string status_ex) 
+        static void ProcessExcelFile1(string filePath, string newFilePath, string tungay, string denngay, string category, string status_ex)
         {
             FileInfo fileInfo = new FileInfo(filePath);
             // Đảm bảo file tồn tại
@@ -4029,7 +4029,7 @@ namespace FreeLayout
             }
             // Tạo file mới để lưu kết quả
             FileInfo newFileInfo = new FileInfo(newFilePath);
-            
+
             DataTable dt_all = new DataTable();
             DataTable dt_sum_qty_TLL = new DataTable();
             string uploadno = "==UploadNo==";
@@ -4042,11 +4042,11 @@ namespace FreeLayout
             if (category == "==Category==")
             {
 
-                dt_all = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, tungay, denngay, status_ex, uploadno, _modelname, _countryname);                
+                dt_all = DataConn.StoreFillDS("Select_Upload_VanningDate2_HS", System.Data.CommandType.StoredProcedure, tungay, denngay, status_ex, uploadno, _modelname, _countryname);
             }
             else
             {
-                dt_all = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex, uploadno, _modelname, _countryname);                
+                dt_all = DataConn.StoreFillDS("Select_Upload_VanningDate2_cate_HS", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex, uploadno, _modelname, _countryname);
             }
 
             using (var package = new ExcelPackage(fileInfo))
@@ -4063,12 +4063,12 @@ namespace FreeLayout
                 int row = 3;
                 int i = 0;
                 //DateTime currentDate = DateTime.Today;
-               
+
                 //tinh tong cac cot va zen vo o cell
                 //worksheet.Cells[1, 8].Value = dt_sum_qty_TLL.Rows[0][0].ToString();
                 //worksheet.Cells[1, 10].Value = dt_sum_qty_TLL.Rows[0][2].ToString();
                 //worksheet.Cells[1, 11].Value = dt_sum_qty_TLL.Rows[0][3].ToString();
-               
+
 
                 //foreach (DataRow dataRow in dtexcel.Rows)
                 foreach (DataRow dataRow in dt_all.Rows)
@@ -4238,8 +4238,8 @@ namespace FreeLayout
                 }
 
 
-         //2. //  xuat excel file sheet 2 //========================================
-               
+                //2. //  xuat excel file sheet 2 //========================================
+
                 //tao bang tam de zen vao excel file
                 DataTable dt_new = new DataTable();
                 dt_new.Columns.Add("id", typeof(Int32));
@@ -4285,8 +4285,8 @@ namespace FreeLayout
                         for (int j = 0; j < dt_all2.Rows.Count; j++)
                         {
                             // Group theo consignee
-                            if (dt_all2.Rows[j]["Consignee"].ToString() == dt_group2.Rows[k]["Consignee"].ToString() && 
-                                dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString() 
+                            if (dt_all2.Rows[j]["Consignee"].ToString() == dt_group2.Rows[k]["Consignee"].ToString() &&
+                                dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString()
                                 && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()
                                  && dt_all2.Rows[j]["Cancombine"].ToString() == dt_group2.Rows[k]["Cancombine"].ToString())
                             {
@@ -4302,9 +4302,9 @@ namespace FreeLayout
                         //truong hop NG chi lay theo cate  ==> bo dieu kien:  && dt_all2.Rows[j]["Exfactorydate"].ToString() == dt_group2.Rows[k]["Exfactorydate"].ToString()
                         for (int j = 0; j < dt_all2.Rows.Count; j++)
                         {
-                            if (dt_all2.Rows[j]["Consignee"].ToString() == dt_group2.Rows[k]["Consignee"].ToString() && 
+                            if (dt_all2.Rows[j]["Consignee"].ToString() == dt_group2.Rows[k]["Consignee"].ToString() &&
                                 dt_all2.Rows[j]["Shipmode"].ToString() == dt_group2.Rows[k]["Shipmode"].ToString()
-                                && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()                               
+                                && dt_all2.Rows[j]["Destination"].ToString() == dt_group2.Rows[k]["Destination"].ToString()
                                 && dt_all2.Rows[j]["Cancombine"].ToString() == dt_group2.Rows[k]["Cancombine"].ToString()
                                 && dt_all2.Rows[j]["Cat"].ToString() == dt_group2.Rows[k]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
                             {
@@ -4317,7 +4317,7 @@ namespace FreeLayout
 
                     }
 
-                    
+
                     //tinh tong bao cao risky theo group o day 
                     dt_new.Rows.Add(0, "TTL", "", "", "", "", "", Sum_qty, "", Sum_TTL_Volum, "", "", "", "", "");
 
@@ -4332,7 +4332,7 @@ namespace FreeLayout
                 //var worksheet2 = package.Workbook.Worksheets["Sheet2"];
                 ExcelWorksheet worksheet2 = package.Workbook.Worksheets[2];
                 int row2 = 3;
-                    int i2 = 0;
+                int i2 = 0;
 
                 // Ghi ngày vào các ô trong Excel (chú ý rằng chỉ số cột bắt đầu từ 1)
                 //worksheet2.Cells[1, 9].Value = Convert.ToDouble(dt_sum_qty_TLL.Rows[0][0]);            //@sum_qty
@@ -4345,136 +4345,136 @@ namespace FreeLayout
 
                 //foreach (DataRow dataRow in dtexcel.Rows)
                 foreach (DataRow dataRow2 in dt_new.Rows)
-                    {
-                        i2++;
-                        worksheet2.Cells[row2, 2].Value = dataRow2["id"]; 
-                        worksheet2.Cells[row2, 3].Value = dataRow2["Cat"];
-                        worksheet2.Cells[row2, 4].Value = dataRow2["Shipmode"];
-                        worksheet2.Cells[row2, 5].Value = dataRow2["Consignee"];
-                        worksheet2.Cells[row2, 6].Value = dataRow2["Country"]; //
-                        worksheet2.Cells[row2, 7].Value = dataRow2["Destination"];
-                        worksheet2.Cells[row2, 8].Value = dataRow2["Model"];
-                        worksheet2.Cells[row2, 9].Value = dataRow2["Quantity"];
-                        //worksheet.Cells[row2, 10].Value = dataRow["ATPdate"];
+                {
+                    i2++;
+                    worksheet2.Cells[row2, 2].Value = dataRow2["id"];
+                    worksheet2.Cells[row2, 3].Value = dataRow2["Cat"];
+                    worksheet2.Cells[row2, 4].Value = dataRow2["Shipmode"];
+                    worksheet2.Cells[row2, 5].Value = dataRow2["Consignee"];
+                    worksheet2.Cells[row2, 6].Value = dataRow2["Country"]; //
+                    worksheet2.Cells[row2, 7].Value = dataRow2["Destination"];
+                    worksheet2.Cells[row2, 8].Value = dataRow2["Model"];
+                    worksheet2.Cells[row2, 9].Value = dataRow2["Quantity"];
+                    //worksheet.Cells[row2, 10].Value = dataRow["ATPdate"];
 
-                        if (dataRow2["ATPdate"] != DBNull.Value)
+                    if (dataRow2["ATPdate"] != DBNull.Value)
+                    {
+                        DateTime atpDate;
+                        if (DateTime.TryParse(dataRow2["ATPdate"].ToString(), out atpDate))
                         {
-                            DateTime atpDate;
-                            if (DateTime.TryParse(dataRow2["ATPdate"].ToString(), out atpDate))
-                            {
-                                worksheet2.Cells[row2, 10].Value = atpDate;
-                                SetDate(worksheet2, row2, 10, dataRow2["ATPdate"]);
+                            worksheet2.Cells[row2, 10].Value = atpDate;
+                            SetDate(worksheet2, row2, 10, dataRow2["ATPdate"]);
                             //worksheet2.Cells[row2, 10].Style.Numberformat.Format = "m/d/yyyy";
                             // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-                            }
-                            else
-                            {
-                                worksheet2.Cells[row2, 10].Value = "";
-                            }
                         }
                         else
                         {
                             worksheet2.Cells[row2, 10].Value = "";
                         }
+                    }
+                    else
+                    {
+                        worksheet2.Cells[row2, 10].Value = "";
+                    }
 
-                        //worksheet.Cells[row, 11].Value = dataRow["TTLcont"]; 
-                        if (dataRow2["TTLcont"] != DBNull.Value)
+                    //worksheet.Cells[row, 11].Value = dataRow["TTLcont"]; 
+                    if (dataRow2["TTLcont"] != DBNull.Value)
+                    {
+                        double ttlContValue;
+                        if (double.TryParse(dataRow2["TTLcont"].ToString(), out ttlContValue))
                         {
-                            double ttlContValue;
-                            if (double.TryParse(dataRow2["TTLcont"].ToString(), out ttlContValue))
-                            {
-                                // Làm tròn 3 chữ số thập phân
-                                ttlContValue = Math.Round(ttlContValue, 3);
+                            // Làm tròn 3 chữ số thập phân
+                            ttlContValue = Math.Round(ttlContValue, 3);
 
-                                worksheet2.Cells[row2, 11].Value = ttlContValue;
-                                worksheet2.Cells[row2, 11].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
-                            }
-                            else
-                            {
-                                worksheet2.Cells[row2, 11].Value = "";
-                            }
+                            worksheet2.Cells[row2, 11].Value = ttlContValue;
+                            worksheet2.Cells[row2, 11].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
                         }
                         else
                         {
                             worksheet2.Cells[row2, 11].Value = "";
                         }
+                    }
+                    else
+                    {
+                        worksheet2.Cells[row2, 11].Value = "";
+                    }
 
-                        //worksheet.Cells[row, 12].Value = dataRow["Exfactorydate"];
-                        if (dataRow2["Exfactorydate"] != DBNull.Value)
+                    //worksheet.Cells[row, 12].Value = dataRow["Exfactorydate"];
+                    if (dataRow2["Exfactorydate"] != DBNull.Value)
+                    {
+                        DateTime exFactoryDate;
+                        if (DateTime.TryParse(dataRow2["Exfactorydate"].ToString(), out exFactoryDate))
                         {
-                            DateTime exFactoryDate;
-                            if (DateTime.TryParse(dataRow2["Exfactorydate"].ToString(), out exFactoryDate))
-                            {
-                                worksheet2.Cells[row2, 12].Value = exFactoryDate;
-                                SetDate(worksheet2, row2, 12, dataRow2["Exfactorydate"]);
+                            worksheet2.Cells[row2, 12].Value = exFactoryDate;
+                            SetDate(worksheet2, row2, 12, dataRow2["Exfactorydate"]);
                             //worksheet2.Cells[row2, 12].Style.Numberformat.Format = "m/d/yyyy";
                             // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-                            }
-                            else
-                            {
-                                worksheet2.Cells[row2, 12].Value = "";
-                            }
                         }
                         else
                         {
                             worksheet2.Cells[row2, 12].Value = "";
                         }
+                    }
+                    else
+                    {
+                        worksheet2.Cells[row2, 12].Value = "";
+                    }
 
-                        //worksheet.Cells[row, 13].Value = dataRow["ETD"];
-                        if (dataRow2["ETD"] != DBNull.Value)
+                    //worksheet.Cells[row, 13].Value = dataRow["ETD"];
+                    if (dataRow2["ETD"] != DBNull.Value)
+                    {
+                        DateTime ETD;
+                        if (DateTime.TryParse(dataRow2["ETD"].ToString(), out ETD))
                         {
-                            DateTime ETD;
-                            if (DateTime.TryParse(dataRow2["ETD"].ToString(), out ETD))
-                            {
-                                worksheet2.Cells[row2, 13].Value = ETD;
-                                SetDate(worksheet2, row2, 13, dataRow2["ETD"]);
+                            worksheet2.Cells[row2, 13].Value = ETD;
+                            SetDate(worksheet2, row2, 13, dataRow2["ETD"]);
                             //worksheet2.Cells[row2, 13].Style.Numberformat.Format = "m/d/yyyy";
                             // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-                            }
-                            else
-                            {
-                                worksheet2.Cells[row2, 13].Value = "";
-                            }
                         }
                         else
                         {
                             worksheet2.Cells[row2, 13].Value = "";
                         }
+                    }
+                    else
+                    {
+                        worksheet2.Cells[row2, 13].Value = "";
+                    }
 
-                        //worksheet.Cells[row, 14].Value = dataRow["ETA"];
-                        if (dataRow2["ETA"] != DBNull.Value)
+                    //worksheet.Cells[row, 14].Value = dataRow["ETA"];
+                    if (dataRow2["ETA"] != DBNull.Value)
+                    {
+                        DateTime eta;
+                        if (DateTime.TryParse(dataRow2["ETA"].ToString(), out eta))
                         {
-                            DateTime eta;
-                            if (DateTime.TryParse(dataRow2["ETA"].ToString(), out eta))
-                            {
-                                worksheet2.Cells[row2, 14].Value = eta;
-                                SetDate(worksheet2, row2, 14, dataRow2["ETA"]);
+                            worksheet2.Cells[row2, 14].Value = eta;
+                            SetDate(worksheet2, row2, 14, dataRow2["ETA"]);
                             //worksheet2.Cells[row2, 14].Style.Numberformat.Format = "m/d/yyyy";
-                                // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-                            }
-                            else
-                            {
-                                worksheet2.Cells[row2, 14].Value = "";
-                            }
+                            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
                         }
                         else
                         {
                             worksheet2.Cells[row2, 14].Value = "";
                         }
-
-                        worksheet2.Cells[row2, 15].Value = dataRow2["Cancombine"];
-                        worksheet2.Cells[row2, 16].Value = dataRow2["Risky"];
-
-                        if (Convert.ToInt32(dataRow2["id"]) == 0 && dataRow2["Cat"].ToString() == "TTL")
-                        {
-                            var range = worksheet2.Cells[row2, 2, row2, 16]; // từ cột 2 đến 14 (tùy số cột bạn có)
-                            range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                            range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // hoặc Color.LightBlue, LightGray...
-                            range.Style.Font.Bold = true; // In đậm dòng tổng
-                        }
-
-                        row2++;
                     }
+                    else
+                    {
+                        worksheet2.Cells[row2, 14].Value = "";
+                    }
+
+                    worksheet2.Cells[row2, 15].Value = dataRow2["Cancombine"];
+                    worksheet2.Cells[row2, 16].Value = dataRow2["Risky"];
+
+                    if (Convert.ToInt32(dataRow2["id"]) == 0 && dataRow2["Cat"].ToString() == "TTL")
+                    {
+                        var range = worksheet2.Cells[row2, 2, row2, 16]; // từ cột 2 đến 14 (tùy số cột bạn có)
+                        range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // hoặc Color.LightBlue, LightGray...
+                        range.Style.Font.Bold = true; // In đậm dòng tổng
+                    }
+
+                    row2++;
+                }
 
 
                 //================ 3. //  xuat excel file sheet 3  // TTL Summary tong //=====================
@@ -4510,90 +4510,127 @@ namespace FreeLayout
                 float Sum_TTL_Volume_tong = 0;
 
 
-                for (int k = 0; k < dt_group3.Rows.Count; k++)
+                //for (int k = 0; k < dt_group3.Rows.Count; k++)
+                //{
+                //    if (dt_group3.Rows[k]["Cancombine"].ToString() == "OK")
+                //    {
+                //        //lay all cate, tinh tong all cac ban ghi    --->Consignee va ETD date (khong phai exfactory date)
+                //        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
+                //        {
+                //            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString()
+                //                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString()
+                //                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
+                //                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString()
+                //                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString())
+                //            {
+                //                Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
+                //                Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());
+                //                Sum_TTL_Volume = Sum_TTL_Volume + float.Parse(dt_all_sumary.Rows[j]["TTLVolume"].ToString());
+
+                //                dt_new3.Rows.Add(j, dt_all_sumary.Rows[j]["Consignee"].ToString(), dt_all_sumary.Rows[j]["Country"].ToString(), dt_all_sumary.Rows[j]["Shipmode"].ToString(),
+                //                    dt_all_sumary.Rows[j]["Destination"].ToString(), dt_all_sumary.Rows[j]["Cat"].ToString(), dt_all_sumary.Rows[j]["Quantity"].ToString(),
+                //                    dt_all_sumary.Rows[j]["ATPdate"].ToString(), dt_all_sumary.Rows[j]["Grossweight"].ToString(), dt_all_sumary.Rows[j]["TTLVolume"].ToString(),
+                //                    dt_all_sumary.Rows[j]["Exfactorydate"].ToString(), dt_all_sumary.Rows[j]["ETD"].ToString(), dt_all_sumary.Rows[j]["ETA"].ToString(),
+                //                    dt_all_sumary.Rows[j]["Cancombine"].ToString());
+                //            }
+                //        }
+                //    }
+                //    else
+                //    {
+                //        //truong hop NG chi lay theo cate  ==> truong hop nay group bo Category *** tam thoi cu cho cate vao de test voi user ******
+                //        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
+                //        {
+                //            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString()
+                //                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString()
+                //                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
+                //                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString()
+                //                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString()
+                //                && dt_all_sumary.Rows[j]["Cat"].ToString() == dt_group3.Rows[k]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
+                //            {
+                //                Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
+                //                Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());
+                //                Sum_TTL_Volume = Sum_TTL_Volume + float.Parse(dt_all_sumary.Rows[j]["TTLVolume"].ToString());
+
+                //                dt_new3.Rows.Add(j, dt_all_sumary.Rows[j]["Consignee"].ToString(), dt_all_sumary.Rows[j]["Country"].ToString(), dt_all_sumary.Rows[j]["Shipmode"].ToString(),
+                //                    dt_all_sumary.Rows[j]["Destination"].ToString(), dt_all_sumary.Rows[j]["Cat"].ToString(), dt_all_sumary.Rows[j]["Quantity"].ToString(),
+                //                    dt_all_sumary.Rows[j]["ATPdate"].ToString(), dt_all_sumary.Rows[j]["Grossweight"].ToString(), dt_all_sumary.Rows[j]["TTLVolume"].ToString(),
+                //                    dt_all_sumary.Rows[j]["Exfactorydate"].ToString(), dt_all_sumary.Rows[j]["ETD"].ToString(), dt_all_sumary.Rows[j]["ETA"].ToString(),
+                //                    dt_all_sumary.Rows[j]["Cancombine"].ToString());
+                //            }
+                //        }
+
+                //    }
+                //    //tinh tong bao cao risky theo group o day 
+                //    if (Sum_qty3 > 0)
+                //    {
+                //        dt_new3.Rows.Add(0, "TTL", "", "", "", "", Sum_qty3, "", Sum_TTL_GrossWeight, Sum_TTL_Volume, "", "", "", "");
+                //    }
+                //    //dt_new3.Rows.Add(0, "TTL", "", "", "", "", Sum_qty3, "", Sum_TTL_GrossWeight, Sum_TTL_Volume, "", "", "", "");
+
+                //    Sum_qty3_tong = Sum_qty3_tong + Sum_qty3;
+                //    Sum_TTL_GrossWeight_tong = Sum_TTL_GrossWeight_tong + Sum_TTL_GrossWeight;
+                //    Sum_TTL_Volume_tong = Sum_TTL_Volume_tong + Sum_TTL_Volume;
+
+                //    //reset tong ve 0
+                //    Sum_qty3 = 0;
+                //    Sum_TTL_GrossWeight = 0;
+                //    Sum_TTL_Volume = 0;
+                //}
+
+                var source = dt_all_sumary.AsEnumerable();
+                //var grouped = source.GroupBy(r => r.Field<DateTime>("ETD").Date);
+
+                var grouped = source.GroupBy(r => new
                 {
-                    if (dt_group3.Rows[k]["Cancombine"].ToString() == "OK")
-                    {
-                        //lay all cate, tinh tong all cac ban ghi    --->Consignee va ETD date (khong phai exfactory date)
-                        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
-                        {
-                            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString() 
-                                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString() 
-                                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
-                                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString() 
-                                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString())
-                            {
-                                Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
-                                Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());
-                                Sum_TTL_Volume = Sum_TTL_Volume + float.Parse(dt_all_sumary.Rows[j]["TTLVolume"].ToString());
+                    ETD = r.Field<DateTime>("ETD").Date,   // group cùng ngày
+                    Consignee = r.Field<string>("Consignee"),
+                    Shipmode = r.Field<string>("Shipmode"),
+                    Destination = r.Field<string>("Destination")
+                });
 
-                                dt_new3.Rows.Add(j, dt_all_sumary.Rows[j]["Consignee"].ToString(), dt_all_sumary.Rows[j]["Country"].ToString(), dt_all_sumary.Rows[j]["Shipmode"].ToString(),
-                                    dt_all_sumary.Rows[j]["Destination"].ToString(), dt_all_sumary.Rows[j]["Cat"].ToString(), dt_all_sumary.Rows[j]["Quantity"].ToString(),
-                                    dt_all_sumary.Rows[j]["ATPdate"].ToString(), dt_all_sumary.Rows[j]["Grossweight"].ToString(), dt_all_sumary.Rows[j]["TTLVolume"].ToString(),
-                                    dt_all_sumary.Rows[j]["Exfactorydate"].ToString(), dt_all_sumary.Rows[j]["ETD"].ToString(), dt_all_sumary.Rows[j]["ETA"].ToString(),
-                                    dt_all_sumary.Rows[j]["Cancombine"].ToString());
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //truong hop NG chi lay theo cate  ==> truong hop nay group bo Category *** tam thoi cu cho cate vao de test voi user ******
-                        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
-                        {
-                            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString() 
-                                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString()
-                                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
-                                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString()
-                                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString()
-                                && dt_all_sumary.Rows[j]["Cat"].ToString() == dt_group3.Rows[k]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
-                            {
-                                Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
-                                Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());
-                                Sum_TTL_Volume = Sum_TTL_Volume + float.Parse(dt_all_sumary.Rows[j]["TTLVolume"].ToString());
+                DataTable dt_groupByETD = dt_new3.Clone(); // giữ cấu trúc cột
 
-                                dt_new3.Rows.Add(j, dt_all_sumary.Rows[j]["Consignee"].ToString(), dt_all_sumary.Rows[j]["Country"].ToString(), dt_all_sumary.Rows[j]["Shipmode"].ToString(),
-                                    dt_all_sumary.Rows[j]["Destination"].ToString(), dt_all_sumary.Rows[j]["Cat"].ToString(), dt_all_sumary.Rows[j]["Quantity"].ToString(),
-                                    dt_all_sumary.Rows[j]["ATPdate"].ToString(), dt_all_sumary.Rows[j]["Grossweight"].ToString(), dt_all_sumary.Rows[j]["TTLVolume"].ToString(),
-                                    dt_all_sumary.Rows[j]["Exfactorydate"].ToString(), dt_all_sumary.Rows[j]["ETD"].ToString(), dt_all_sumary.Rows[j]["ETA"].ToString(),
-                                    dt_all_sumary.Rows[j]["Cancombine"].ToString());
-                            }
-                        }
+                foreach (var g in grouped)
+                {
+                    int sumQty = g.Sum(r => r.Field<int>("Quantity"));
+                    float sumGross = g.Sum(r => float.Parse(r["Grossweight"].ToString()));
+                    float sumVolume = g.Sum(r => float.Parse(r["TTLVolume"].ToString()));
 
-                    }
-                    //tinh tong bao cao risky theo group o day 
-                    if (Sum_qty3 > 0)
-                    {
-                        dt_new3.Rows.Add(0, "TTL", "", "", "", "", Sum_qty3, "", Sum_TTL_GrossWeight, Sum_TTL_Volume, "", "", "", "");
-                    }
-                    //dt_new3.Rows.Add(0, "TTL", "", "", "", "", Sum_qty3, "", Sum_TTL_GrossWeight, Sum_TTL_Volume, "", "", "", "");
+                    var first = g.First(); // lấy thông tin đại diện
 
-                    Sum_qty3_tong = Sum_qty3_tong + Sum_qty3;
-                    Sum_TTL_GrossWeight_tong = Sum_TTL_GrossWeight_tong+ Sum_TTL_GrossWeight;
-                    Sum_TTL_Volume_tong = Sum_TTL_Volume_tong + Sum_TTL_Volume;
-
-                    //reset tong ve 0
-                    Sum_qty3 = 0;
-                    Sum_TTL_GrossWeight = 0;
-                    Sum_TTL_Volume = 0;
+                    dt_groupByETD.Rows.Add(
+                        0,
+                        first["Consignee"],
+                        first["Country"],
+                        first["Shipmode"],
+                        first["Destination"],
+                        first["Cat"],
+                        sumQty,
+                        first["ATPdate"],
+                        sumGross,
+                        sumVolume,
+                        first["Exfactorydate"],
+                        g.Key.ETD,      // ETD đã group
+                        first["ETA"],
+                        first["Cancombine"]
+                    );
                 }
 
                 ExcelWorksheet worksheet3 = package.Workbook.Worksheets[3];
                 int row3 = 3;
                 int i3 = 0;
-                // Ghi ngày vào các ô trong Excel (chú ý rằng chỉ số cột bắt đầu từ 1)
-                //worksheet3.Cells[1, 8].Value = Convert.ToDouble(dt_sum_qty_TLL.Rows[0][0]);
-                worksheet3.Cells[1, 8].Value = Convert.ToDouble(Sum_qty3_tong);
+                // Ghi ngày vào các ô trong Excel (chú ý rằng chỉ số cột bắt đầu từ 1)                
+                //worksheet3.Cells[1, 8].Value = Convert.ToDouble(Sum_qty3_tong);                   //==> khong tinh tong vi da group tren theo vermoi
                 worksheet3.Cells[1, 8].Style.Numberformat.Format = "#,##0";
-
-                //worksheet3.Cells[1, 10].Value = Convert.ToDouble(Sum_qty3_tong);  //@sum_grossweight
-                worksheet3.Cells[1, 10].Value = Convert.ToDouble(Sum_TTL_GrossWeight_tong);  //@sum_grossweight
+                
+                //worksheet3.Cells[1, 10].Value = Convert.ToDouble(Sum_TTL_GrossWeight_tong);  //@sum_grossweight       //==> khong tinh tong vi da group tren theo vermoi
                 worksheet3.Cells[1, 10].Style.Numberformat.Format = "#,##0";
-
-                //worksheet3.Cells[1, 11].Value = Convert.ToDouble(dt_sum_qty_TLL.Rows[0][3]);  //@sum_volume
-                worksheet3.Cells[1, 11].Value = Convert.ToDouble(Sum_TTL_Volume_tong);  //@sum_volume
+                
+                //worksheet3.Cells[1, 11].Value = Convert.ToDouble(Sum_TTL_Volume_tong);  //@sum_volume             //==> khong tinh tong vi da group tren theo vermoi
                 worksheet3.Cells[1, 11].Style.Numberformat.Format = "#,##0";
 
-                foreach (DataRow dataRow3 in dt_new3.Rows)
+                //foreach (DataRow dataRow3 in dt_new3.Rows)
+                foreach (DataRow dataRow3 in dt_groupByETD.Rows)
                 {
                     i3++;
                     worksheet3.Cells[row3, 2].Value = dataRow3["id"];
@@ -4601,7 +4638,7 @@ namespace FreeLayout
                     worksheet3.Cells[row3, 4].Value = dataRow3["Country"];
                     worksheet3.Cells[row3, 5].Value = dataRow3["Shipmode"];
                     worksheet3.Cells[row3, 6].Value = dataRow3["Destination"];
-                    worksheet3.Cells[row3, 7].Value = dataRow3["Cat"];                  
+                    worksheet3.Cells[row3, 7].Value = dataRow3["Cat"];
                     worksheet3.Cells[row3, 8].Value = dataRow3["Quantity"];
                     if (dataRow3["ATPdate"] != DBNull.Value)
                     {
@@ -4726,273 +4763,287 @@ namespace FreeLayout
                     }
                     worksheet3.Cells[row3, 15].Value = dataRow3["Cancombine"];
 
-                    if (Convert.ToInt32(dataRow3["id"]) == 0 && dataRow3["Consignee"].ToString() == "TTL")
+
+                    //khong can boi mau vi => group het lam 1****  //&& dataRow3["Consignee"].ToString() == "TTL"
+                    if (Convert.ToInt32(dataRow3["id"]) == 0 )
                     {
                         var range = worksheet3.Cells[row3, 2, row3, 15]; // từ cột 2 đến 14 (tùy số cột bạn có)
                         range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // hoặc Color.LightBlue, LightGray...
-                        range.Style.Font.Bold = true; // In đậm dòng tổng
+                        //range.Style.Font.Bold = true; // In đậm dòng tổng
                     }
 
                     row3++;
                 }
-                
+
                 // Lưu vào file mới
                 package.SaveAs(newFileInfo);
             }
 
         }
 
-        //static void ProcessExcelFile(string filePath, string newFilePath, string tungay, string denngay, string category, string status_ex_risky)
-        //{
-        //    FileInfo fileInfo = new FileInfo(filePath);
+        static void ProcessExcelFile3(string filePath, string newFilePath, string tungay, string denngay, string category, string status_ex) 
+        {
+            ////================ 3. //  xuat excel file sheet 3  // TTL Summary tong //=====================
+            //DataTable dt_group3 = new DataTable();
 
-        //    // Đảm bảo file tồn tại
-        //    if (!fileInfo.Exists)
-        //    {
-        //        throw new FileNotFoundException("File không tồn tại", filePath);
-        //    }
+            //DataTable dt_new3 = new DataTable();
+            //dt_new3.Columns.Add("id", typeof(Int32));
+            //dt_new3.Columns.Add("Consignee", typeof(String));
+            //dt_new3.Columns.Add("Country", typeof(String));
+            //dt_new3.Columns.Add("Shipmode", typeof(String));
+            //dt_new3.Columns.Add("Destination", typeof(String));
+            //dt_new3.Columns.Add("Cat", typeof(String));
+            //dt_new3.Columns.Add("Quantity", typeof(Int32));
+            //dt_new3.Columns.Add("ATPdate", typeof(String));
+            //dt_new3.Columns.Add("Grossweight", typeof(String));
+            //dt_new3.Columns.Add("TTLVolume", typeof(float));
+            //dt_new3.Columns.Add("Exfactorydate", typeof(String));
+            //dt_new3.Columns.Add("ETD", typeof(String));
+            //dt_new3.Columns.Add("ETA", typeof(String));
+            //dt_new3.Columns.Add("Cancombine", typeof(String));
 
-        //    // Tạo file mới để lưu kết quả
-        //    FileInfo newFileInfo = new FileInfo(newFilePath);
+            //// truong hop nay group bo Category
+            //DataTable dt_all_sumary = new DataTable();
+            //dt_group3 = DataConn.StoreFillDS("Select_Report_TTL_group", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex);
+            //dt_all_sumary = DataConn.StoreFillDS("Select_Report_Risky2", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex);
 
-        //    //tao bang tam de zen vao excel file
-        //    DataTable dt_new = new DataTable();
-        //    dt_new.Columns.Add("id", typeof(Int32));
-        //    dt_new.Columns.Add("Cat", typeof(String));  
-        //    dt_new.Columns.Add("Shipmode", typeof(String));  
-        //    dt_new.Columns.Add("Consignee", typeof(String));  
-        //    dt_new.Columns.Add("Country", typeof(String));  
-        //    dt_new.Columns.Add("Destination", typeof(String));  
-        //    dt_new.Columns.Add("Model", typeof(String));  
-        //    dt_new.Columns.Add("Quantity", typeof(Int32));  
-        //    dt_new.Columns.Add("ATPdate", typeof(String));  
-        //    dt_new.Columns.Add("TTLcont", typeof(float));  
-        //    dt_new.Columns.Add("Exfactorydate", typeof(String));  
-        //    dt_new.Columns.Add("ETD", typeof(String));  
-        //    dt_new.Columns.Add("ETA", typeof(String));  
-        //    dt_new.Columns.Add("Cancombine", typeof(String));  
-        //    dt_new.Columns.Add("Risky", typeof(String));  
-            
+            //int Sum_qty3 = 0;
+            //float Sum_TTL_GrossWeight = 0;
+            //float Sum_TTL_Volume = 0;
 
-        //    DataTable dt_all = new DataTable();
-        //    DataTable dt_all_NG = new DataTable();
-        //    DataTable dt_group = new DataTable();
-        //    DataTable dt_sum_qty_TLL = new DataTable();
-
-        //    dt_group = DataConn.StoreFillDS("Select_Report_Risky_group", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
-        //    dt_all = DataConn.StoreFillDS("Select_Report_Risky", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
-
-        //    //dt_all_NG = DataConn.StoreFillDS("Select_Report_Risky_NG", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
-
-        //    dt_sum_qty_TLL = DataConn.StoreFillDS("Select_Report_Sum", System.Data.CommandType.StoredProcedure, tungay, denngay, category, status_ex_risky);
-
-        //    int Sum_qty = 0;
-        //    float Sum_TTL_Volum = 0;
-
-        //    for (int i = 0; i < dt_group.Rows.Count; i++)
-        //    {
-        //        if (dt_group.Rows[i]["Cancombine"].ToString() == "OK")
-        //        {
-        //            //lay all cate , tinh tong all cac ban ghi
-        //            for (int j = 0; j < dt_all.Rows.Count; j++)
-        //            {
-        //                if (dt_all.Rows[j]["Shipmode"].ToString() == dt_group.Rows[i]["Shipmode"].ToString() && dt_all.Rows[j]["Destination"].ToString() == dt_group.Rows[i]["Destination"].ToString() 
-        //                    && dt_all.Rows[j]["Exfactorydate"].ToString() == dt_group.Rows[i]["Exfactorydate"].ToString() && dt_all.Rows[j]["Cancombine"].ToString() == dt_group.Rows[i]["Cancombine"].ToString())
-        //                {
-        //                    Sum_qty = Sum_qty + Int32.Parse(dt_all.Rows[j]["Quantity"].ToString());
-        //                    Sum_TTL_Volum = Sum_TTL_Volum+ float.Parse(dt_all.Rows[j]["TTLcont"].ToString());
-
-        //                    dt_new.Rows.Add(i, dt_all.Rows[j]["Cat"].ToString(), dt_all.Rows[j]["Shipmode"].ToString(), dt_all.Rows[j]["Consignee"].ToString(), dt_all.Rows[j]["Country"].ToString(), dt_all.Rows[j]["Destination"].ToString(), dt_all.Rows[j]["Model"].ToString(), dt_all.Rows[j]["Quantity"].ToString(), dt_all.Rows[j]["ATPdate"].ToString(), dt_all.Rows[j]["TTLcont"].ToString(), dt_all.Rows[j]["Exfactorydate"].ToString(), dt_all.Rows[j]["ETD"].ToString(), dt_all.Rows[j]["ETA"].ToString(), dt_all.Rows[j]["Cancombine"].ToString(), dt_all.Rows[j]["Risky"].ToString());
-        //                }
-        //            }
-        //        }
-        //        else 
-        //        {
-        //            //truong hop NG chi lay theo cate
-        //            for (int j = 0; j < dt_all.Rows.Count; j++)
-        //            {
-        //                if (dt_all.Rows[j]["Shipmode"].ToString() == dt_group.Rows[i]["Shipmode"].ToString() 
-        //                    && dt_all.Rows[j]["Destination"].ToString() == dt_group.Rows[i]["Destination"].ToString()
-        //                    && dt_all.Rows[j]["Exfactorydate"].ToString() == dt_group.Rows[i]["Exfactorydate"].ToString()
-        //                    && dt_all.Rows[j]["Cancombine"].ToString() == dt_group.Rows[i]["Cancombine"].ToString() 
-        //                    && dt_all.Rows[j]["Cat"].ToString() == dt_group.Rows[i]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
-        //                {
-        //                    Sum_qty = Sum_qty + Int32.Parse(dt_all.Rows[j]["Quantity"].ToString());
-        //                    Sum_TTL_Volum = Sum_TTL_Volum + float.Parse(dt_all.Rows[j]["TTLcont"].ToString());
-
-        //                    dt_new.Rows.Add(i, dt_all.Rows[j]["Cat"].ToString(), dt_all.Rows[j]["Shipmode"].ToString(), dt_all.Rows[j]["Consignee"].ToString(), dt_all.Rows[j]["Country"].ToString(), dt_all.Rows[j]["Destination"].ToString(), dt_all.Rows[j]["Model"].ToString(), dt_all.Rows[j]["Quantity"].ToString(), dt_all.Rows[j]["ATPdate"].ToString(), dt_all.Rows[j]["TTLcont"].ToString(), dt_all.Rows[j]["Exfactorydate"].ToString(), dt_all.Rows[j]["ETD"].ToString(), dt_all.Rows[j]["ETA"].ToString(), dt_all.Rows[j]["Cancombine"].ToString(), dt_all.Rows[j]["Risky"].ToString());
-        //                }
-        //            }
-
-        //        }
-        //        //tinh tong bao cao risky theo group o day 
-        //        dt_new.Rows.Add(0, "TTL", "", "", "", "", "", Sum_qty, "", Sum_TTL_Volum, "", "", "", "", "");
-        //        //reset tong ve 0
-        //        Sum_qty = 0;
-        //        Sum_TTL_Volum = 0;
-        //    }
+            //int Sum_qty3_tong = 0;
+            //float Sum_TTL_GrossWeight_tong = 0;
+            //float Sum_TTL_Volume_tong = 0;
 
 
+            //for (int k = 0; k < dt_group3.Rows.Count; k++)
+            //{
+            //    if (dt_group3.Rows[k]["Cancombine"].ToString() == "OK")
+            //    {
+            //        //lay all cate, tinh tong all cac ban ghi    --->Consignee va ETD date (khong phai exfactory date)
+            //        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
+            //        {
+            //            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString()
+            //                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString()
+            //                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
+            //                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString()
+            //                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString())
+            //            {
+            //                Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
+            //                Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());
+            //                Sum_TTL_Volume = Sum_TTL_Volume + float.Parse(dt_all_sumary.Rows[j]["TTLVolume"].ToString());
 
-        //    DataTable dtexcel = new DataTable();
+            //                dt_new3.Rows.Add(j, dt_all_sumary.Rows[j]["Consignee"].ToString(), dt_all_sumary.Rows[j]["Country"].ToString(), dt_all_sumary.Rows[j]["Shipmode"].ToString(),
+            //                    dt_all_sumary.Rows[j]["Destination"].ToString(), dt_all_sumary.Rows[j]["Cat"].ToString(), dt_all_sumary.Rows[j]["Quantity"].ToString(),
+            //                    dt_all_sumary.Rows[j]["ATPdate"].ToString(), dt_all_sumary.Rows[j]["Grossweight"].ToString(), dt_all_sumary.Rows[j]["TTLVolume"].ToString(),
+            //                    dt_all_sumary.Rows[j]["Exfactorydate"].ToString(), dt_all_sumary.Rows[j]["ETD"].ToString(), dt_all_sumary.Rows[j]["ETA"].ToString(),
+            //                    dt_all_sumary.Rows[j]["Cancombine"].ToString());
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        //truong hop NG chi lay theo cate  ==> truong hop nay group bo Category *** tam thoi cu cho cate vao de test voi user ******
+            //        for (int j = 0; j < dt_all_sumary.Rows.Count; j++)
+            //        {
+            //            if (dt_all_sumary.Rows[j]["Consignee"].ToString() == dt_group3.Rows[k]["Consignee"].ToString()
+            //                && dt_all_sumary.Rows[j]["Shipmode"].ToString() == dt_group3.Rows[k]["Shipmode"].ToString()
+            //                && dt_all_sumary.Rows[j]["Destination"].ToString() == dt_group3.Rows[k]["Destination"].ToString()
+            //                && dt_all_sumary.Rows[j]["ETD"].ToString() == dt_group3.Rows[k]["ETD"].ToString()
+            //                && dt_all_sumary.Rows[j]["Cancombine"].ToString() == dt_group3.Rows[k]["Cancombine"].ToString()
+            //                && dt_all_sumary.Rows[j]["Cat"].ToString() == dt_group3.Rows[k]["Cat"].ToString())                  //hang NG them dieu kien theo Cate chi loc theo cate
+            //            {
+            //                Sum_qty3 = Sum_qty3 + Int32.Parse(dt_all_sumary.Rows[j]["Quantity"].ToString());
+            //                Sum_TTL_GrossWeight = Sum_TTL_GrossWeight + float.Parse(dt_all_sumary.Rows[j]["Grossweight"].ToString());
+            //                Sum_TTL_Volume = Sum_TTL_Volume + float.Parse(dt_all_sumary.Rows[j]["TTLVolume"].ToString());
 
-        //    using (var package = new ExcelPackage(fileInfo))
-        //    {
-        //        var worksheet = package.Workbook.Worksheets["Sheet1"];
-        //        //ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-        //        //worksheet.Cells["D5"].Value = tungay;// "Thông tin mới";
+            //                dt_new3.Rows.Add(j, dt_all_sumary.Rows[j]["Consignee"].ToString(), dt_all_sumary.Rows[j]["Country"].ToString(), dt_all_sumary.Rows[j]["Shipmode"].ToString(),
+            //                    dt_all_sumary.Rows[j]["Destination"].ToString(), dt_all_sumary.Rows[j]["Cat"].ToString(), dt_all_sumary.Rows[j]["Quantity"].ToString(),
+            //                    dt_all_sumary.Rows[j]["ATPdate"].ToString(), dt_all_sumary.Rows[j]["Grossweight"].ToString(), dt_all_sumary.Rows[j]["TTLVolume"].ToString(),
+            //                    dt_all_sumary.Rows[j]["Exfactorydate"].ToString(), dt_all_sumary.Rows[j]["ETD"].ToString(), dt_all_sumary.Rows[j]["ETA"].ToString(),
+            //                    dt_all_sumary.Rows[j]["Cancombine"].ToString());
+            //            }
+            //        }
 
-        //        //if (worksheet == null)
-        //        //{
-        //        //    throw new Exception("Không tìm thấy sheet 'Sheet1' trong file Excel.");
-        //        //}
+            //    }
+            //    //tinh tong bao cao risky theo group o day 
+            //    if (Sum_qty3 > 0)
+            //    {
+            //        dt_new3.Rows.Add(0, "TTL", "", "", "", "", Sum_qty3, "", Sum_TTL_GrossWeight, Sum_TTL_Volume, "", "", "", "");
+            //    }
+            //    //dt_new3.Rows.Add(0, "TTL", "", "", "", "", Sum_qty3, "", Sum_TTL_GrossWeight, Sum_TTL_Volume, "", "", "", "");
 
-        //        int row = 3;
-        //        int i = 0;
-        //        DateTime currentDate = DateTime.Today;
-        //        // Lấy ngày hiện tại +1, +2, +3, ...
-        //        //DateTime datePlus1 = currentDate.AddDays(1);
-        //        //DateTime datePlus2 = currentDate.AddDays(2);
-        //        //DateTime datePlus3 = currentDate.AddDays(3);
-        //        //DateTime datePlus4 = currentDate.AddDays(4);
-        //        //DateTime datePlus5 = currentDate.AddDays(5);
+            //    Sum_qty3_tong = Sum_qty3_tong + Sum_qty3;
+            //    Sum_TTL_GrossWeight_tong = Sum_TTL_GrossWeight_tong + Sum_TTL_GrossWeight;
+            //    Sum_TTL_Volume_tong = Sum_TTL_Volume_tong + Sum_TTL_Volume;
 
-        //        // Ghi ngày vào các ô trong Excel (chú ý rằng chỉ số cột bắt đầu từ 1)
-        //        worksheet.Cells[1, 9].Value = dt_sum_qty_TLL.Rows[0][0].ToString();
-        //        worksheet.Cells[1, 11].Value = dt_sum_qty_TLL.Rows[0][1].ToString();
-        //        //worksheet.Cells[1, 16].Value = datePlus1.ToString("dd");
-        //        //worksheet.Cells[1, 17].Value = datePlus3.ToString("dd");
-        //        //worksheet.Cells[1, 18].Value = datePlus4.ToString("dd");
-        //        //worksheet.Cells[1, 19].Value = datePlus5.ToString("dd");
+            //    //reset tong ve 0
+            //    Sum_qty3 = 0;
+            //    Sum_TTL_GrossWeight = 0;
+            //    Sum_TTL_Volume = 0;
+            //}
 
-        //        //foreach (DataRow dataRow in dtexcel.Rows)
-        //        foreach (DataRow dataRow in dt_new.Rows)
-        //        {
-        //            i++;
-        //            worksheet.Cells[row, 2].Value = dataRow["id"]; //i;
-        //            worksheet.Cells[row, 3].Value = dataRow["Cat"];                   
-        //            worksheet.Cells[row, 4].Value = dataRow["Shipmode"];
-        //            worksheet.Cells[row, 5].Value = dataRow["Consignee"];
-        //            worksheet.Cells[row, 6].Value = dataRow["Country"]; //
-        //            worksheet.Cells[row, 7].Value = dataRow["Destination"];
-        //            worksheet.Cells[row, 8].Value = dataRow["Model"];
-        //            worksheet.Cells[row, 9].Value = dataRow["Quantity"];
-        //            //worksheet.Cells[row, 10].Value = dataRow["ATPdate"];
+            //ExcelWorksheet worksheet3 = package.Workbook.Worksheets[3];
+            //int row3 = 3;
+            //int i3 = 0;
+            //// Ghi ngày vào các ô trong Excel (chú ý rằng chỉ số cột bắt đầu từ 1)
+            ////worksheet3.Cells[1, 8].Value = Convert.ToDouble(dt_sum_qty_TLL.Rows[0][0]);
+            //worksheet3.Cells[1, 8].Value = Convert.ToDouble(Sum_qty3_tong);
+            //worksheet3.Cells[1, 8].Style.Numberformat.Format = "#,##0";
 
-        //            if (dataRow["ATPdate"] != DBNull.Value)
-        //            {
-        //                DateTime atpDate;
-        //                if (DateTime.TryParse(dataRow["ATPdate"].ToString(), out atpDate))
-        //                {
-        //                    worksheet.Cells[row, 10].Value = atpDate;
-        //                    worksheet.Cells[row, 10].Style.Numberformat.Format = "m/d/yyyy";
-        //                    // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-        //                }
-        //                else
-        //                {
-        //                    worksheet.Cells[row, 10].Value = "";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                worksheet.Cells[row, 10].Value = "";
-        //            }
+            ////worksheet3.Cells[1, 10].Value = Convert.ToDouble(Sum_qty3_tong);  //@sum_grossweight
+            //worksheet3.Cells[1, 10].Value = Convert.ToDouble(Sum_TTL_GrossWeight_tong);  //@sum_grossweight
+            //worksheet3.Cells[1, 10].Style.Numberformat.Format = "#,##0";
 
-        //            //worksheet.Cells[row, 11].Value = dataRow["TTLcont"]; 
-        //            if (dataRow["TTLcont"] != DBNull.Value)
-        //            {
-        //                double ttlContValue;
-        //                if (double.TryParse(dataRow["TTLcont"].ToString(), out ttlContValue))
-        //                {
-        //                    // Làm tròn 3 chữ số thập phân
-        //                    ttlContValue = Math.Round(ttlContValue, 3);
+            ////worksheet3.Cells[1, 11].Value = Convert.ToDouble(dt_sum_qty_TLL.Rows[0][3]);  //@sum_volume
+            //worksheet3.Cells[1, 11].Value = Convert.ToDouble(Sum_TTL_Volume_tong);  //@sum_volume
+            //worksheet3.Cells[1, 11].Style.Numberformat.Format = "#,##0";
 
-        //                    worksheet.Cells[row, 11].Value = ttlContValue;
-        //                    worksheet.Cells[row, 11].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
-        //                }
-        //                else
-        //                {
-        //                    worksheet.Cells[row, 11].Value = "";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                worksheet.Cells[row, 11].Value = "";
-        //            }
+            //foreach (DataRow dataRow3 in dt_new3.Rows)
+            //{
+            //    i3++;
+            //    worksheet3.Cells[row3, 2].Value = dataRow3["id"];
+            //    worksheet3.Cells[row3, 3].Value = dataRow3["Consignee"];
+            //    worksheet3.Cells[row3, 4].Value = dataRow3["Country"];
+            //    worksheet3.Cells[row3, 5].Value = dataRow3["Shipmode"];
+            //    worksheet3.Cells[row3, 6].Value = dataRow3["Destination"];
+            //    worksheet3.Cells[row3, 7].Value = dataRow3["Cat"];
+            //    worksheet3.Cells[row3, 8].Value = dataRow3["Quantity"];
+            //    if (dataRow3["ATPdate"] != DBNull.Value)
+            //    {
+            //        DateTime atpDate;
+            //        if (DateTime.TryParse(dataRow3["ATPdate"].ToString(), out atpDate))
+            //        {
+            //            worksheet3.Cells[row3, 9].Value = atpDate;
+            //            SetDate(worksheet3, row3, 9, dataRow3["ATPdate"]);
+            //            //worksheet3.Cells[row3, 9].Style.Numberformat.Format = "m/d/yyyy";
+            //            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+            //        }
+            //        else
+            //        {
+            //            worksheet3.Cells[row3, 9].Value = "";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        worksheet3.Cells[row3, 9].Value = "";
+            //    }
+            //    //worksheet3.Cells[row3, 10].Value = dataRow["Grossweight"];
+            //    if (dataRow3["Grossweight"] != DBNull.Value)
+            //    {
+            //        double GrossweightValue;
+            //        if (double.TryParse(dataRow3["Grossweight"].ToString(), out GrossweightValue))
+            //        {
+            //            // Làm tròn 3 chữ số thập phân
+            //            GrossweightValue = Math.Round(GrossweightValue, 3);
 
-        //            //worksheet.Cells[row, 12].Value = dataRow["Exfactorydate"];
-        //            if (dataRow["Exfactorydate"] != DBNull.Value)
-        //            {
-        //                DateTime exFactoryDate;
-        //                if (DateTime.TryParse(dataRow["Exfactorydate"].ToString(), out exFactoryDate))
-        //                {
-        //                    worksheet.Cells[row, 12].Value = exFactoryDate;
-        //                    worksheet.Cells[row, 12].Style.Numberformat.Format = "m/d/yyyy";
-        //                    // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-        //                }
-        //                else
-        //                {
-        //                    worksheet.Cells[row, 12].Value = "";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                worksheet.Cells[row, 12].Value = "";
-        //            }
+            //            worksheet3.Cells[row3, 10].Value = GrossweightValue;
+            //            worksheet3.Cells[row3, 10].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
+            //        }
+            //        else
+            //        {
+            //            worksheet3.Cells[row3, 10].Value = "";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        worksheet3.Cells[row3, 10].Value = "";
+            //    }
 
-        //            //worksheet.Cells[row, 13].Value = dataRow["ETD"];
-        //            if (dataRow["ETD"] != DBNull.Value)
-        //            {
-        //                DateTime ETD;
-        //                if (DateTime.TryParse(dataRow["ETD"].ToString(), out ETD))
-        //                {
-        //                    worksheet.Cells[row, 13].Value = ETD;
-        //                    worksheet.Cells[row, 13].Style.Numberformat.Format = "m/d/yyyy";
-        //                    // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-        //                }
-        //                else
-        //                {
-        //                    worksheet.Cells[row, 13].Value = "";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                worksheet.Cells[row, 13].Value = "";
-        //            }
+            //    //worksheet3.Cells[row3, 11].Value = dataRow["TTLVolume"];
+            //    if (dataRow3["TTLVolume"] != DBNull.Value)
+            //    {
+            //        double TTLVolumeValue;
+            //        if (double.TryParse(dataRow3["TTLVolume"].ToString(), out TTLVolumeValue))
+            //        {
+            //            // Làm tròn 3 chữ số thập phân
+            //            TTLVolumeValue = Math.Round(TTLVolumeValue, 3);
 
-        //            //worksheet.Cells[row, 14].Value = dataRow["ETA"];
-        //            if (dataRow["ETA"] != DBNull.Value)
-        //            {
-        //                DateTime eta;
-        //                if (DateTime.TryParse(dataRow["ETA"].ToString(), out eta))
-        //                {
-        //                    worksheet.Cells[row, 14].Value = eta;
-        //                    worksheet.Cells[row, 14].Style.Numberformat.Format = "m/d/yyyy";
-        //                    // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
-        //                }
-        //                else
-        //                {
-        //                    worksheet.Cells[row, 14].Value = "";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                worksheet.Cells[row, 14].Value = "";
-        //            }
+            //            worksheet3.Cells[row3, 11].Value = TTLVolumeValue;
+            //            worksheet3.Cells[row3, 11].Style.Numberformat.Format = "0.000"; // Giữ hiển thị 3 chữ số thập phân
+            //        }
+            //        else
+            //        {
+            //            worksheet3.Cells[row3, 11].Value = "";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        worksheet3.Cells[row3, 11].Value = "";
+            //    }
 
-        //            worksheet.Cells[row, 15].Value = dataRow["Cancombine"];
-        //            worksheet.Cells[row, 16].Value = dataRow["Risky"];                                      
+            //    if (dataRow3["Exfactorydate"] != DBNull.Value)
+            //    {
+            //        DateTime exFactoryDate;
+            //        if (DateTime.TryParse(dataRow3["Exfactorydate"].ToString(), out exFactoryDate))
+            //        {
+            //            worksheet3.Cells[row3, 12].Value = exFactoryDate;
+            //            SetDate(worksheet3, row3, 12, dataRow3["Exfactorydate"]);
+            //            //worksheet2.Cells[row2, 12].Style.Numberformat.Format = "m/d/yyyy";
+            //            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+            //        }
+            //        else
+            //        {
+            //            worksheet3.Cells[row3, 12].Value = "";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        worksheet3.Cells[row3, 12].Value = "";
+            //    }
 
-        //            row++;
-        //        }
-        //        // Lưu vào file mới
-        //        package.SaveAs(newFileInfo);
-        //    }
-        //}
+            //    if (dataRow3["ETD"] != DBNull.Value)
+            //    {
+            //        DateTime ETD;
+            //        if (DateTime.TryParse(dataRow3["ETD"].ToString(), out ETD))
+            //        {
+            //            worksheet3.Cells[row3, 13].Value = ETD;
+            //            SetDate(worksheet3, row3, 13, dataRow3["ETD"]);
+            //            //worksheet3.Cells[row3, 13].Style.Numberformat.Format = "m/d/yyyy";
+            //            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+            //        }
+            //        else
+            //        {
+            //            worksheet3.Cells[row3, 13].Value = "";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        worksheet3.Cells[row3, 13].Value = "";
+            //    }
+            //    if (dataRow3["ETA"] != DBNull.Value)
+            //    {
+            //        DateTime eta;
+            //        if (DateTime.TryParse(dataRow3["ETA"].ToString(), out eta))
+            //        {
+            //            worksheet3.Cells[row3, 14].Value = eta;
+            //            SetDate(worksheet3, row3, 14, dataRow3["ETA"]);
+            //            //worksheet3.Cells[row3, 14].Style.Numberformat.Format = "m/d/yyyy";
+            //            // hoặc "dd/MM/yyyy" nếu bạn muốn định dạng kiểu Việt Nam
+            //        }
+            //        else
+            //        {
+            //            worksheet3.Cells[row3, 14].Value = "";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        worksheet3.Cells[row3, 14].Value = "";
+            //    }
+            //    worksheet3.Cells[row3, 15].Value = dataRow3["Cancombine"];
 
+            //    if (Convert.ToInt32(dataRow3["id"]) == 0 && dataRow3["Consignee"].ToString() == "TTL")
+            //    {
+            //        var range = worksheet3.Cells[row3, 2, row3, 15]; // từ cột 2 đến 14 (tùy số cột bạn có)
+            //        range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            //        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // hoặc Color.LightBlue, LightGray...
+            //        range.Style.Font.Bold = true; // In đậm dòng tổng
+            //    }
 
-
+            //    row3++;
+            //}
+        }
         private void DownloadFile(string filePath, string fileName)
         {
             FileInfo fileInfo = new FileInfo(filePath);
