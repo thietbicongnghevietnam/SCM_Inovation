@@ -1,0 +1,31 @@
+[HttpPost]
+[Route("Check_Accessories_Cam")]
+public async Task<IActionResult> Check_Accessories_Cam([FromBody] Dictionary<string, string> requestData)
+{
+    try
+    {
+        // Kiểm tra xem requestData có chứa key "userid" hay không
+        if (!requestData.ContainsKey("ocr_text") && !requestData.ContainsKey("model") && !requestData.ContainsKey("serial") && !requestData.ContainsKey("material"))
+        {
+            return BadRequest("Missing DATA in request data.");
+        }
+
+        // xu ly chuoi API ocr_text o day?
+
+        // Gọi phương thức để lấy dữ liệu từ cơ sở dữ liệu
+        DataTable table = await Task.FromResult<DataTable>(
+            DataconnectOQC.StoreFillDS(nameof(Check_Accessories_Cam), CommandType.StoredProcedure, requestData["ocr_text"], requestData["model"], requestData["serial"], requestData["material"])
+        );
+
+        // Chuyển DataTable thành JSON
+        string json = DataTableToJson(table);
+
+        // Trả về kết quả JSON
+        return Ok(json);
+    }
+    catch (Exception ex)
+    {
+        // Xử lý lỗi và trả về mã lỗi 500 cùng thông điệp
+        return StatusCode(500, "Internal server error: " + ex.Message);
+    }
+}
