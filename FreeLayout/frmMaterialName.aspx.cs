@@ -269,9 +269,11 @@ namespace FreeLayout
                                 }
                             }
 
-                            string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
-                                "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
-                                "Connect Timeout=30;";
+                            //string sqlConnStr = "Data Source=10.92.186.30;Persist Security Info=False;" +
+                            //    "Initial Catalog=ScrapSystem;User Id=sa;Password=Psnvdb2013;" +
+                            //    "Connect Timeout=30;";
+
+                            string sqlConnStr = DataConn.source2;
 
                             using (SqlConnection con = new SqlConnection(sqlConnStr))
                             {

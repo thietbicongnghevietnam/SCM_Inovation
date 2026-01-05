@@ -33,24 +33,24 @@ namespace FreeLayout
             if (!IsPostBack)
             {
                 //==========/ bat session tu WMC
-                //string token = Request.QueryString["token"];
-                ////string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                //// Nếu token null hoặc rỗng → bỏ qua
-                //if (string.IsNullOrEmpty(token))
-                //{
-                //    return;
-                //}
-                //try
-                //{
-                //    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-                //    //string cleanUserId = decoded.Trim().Replace('"','');
-                //    Session["UserId"] = decoded;
-                //}
-                //catch
-                //{
-                //    // Nếu token sai format → bỏ qua, không crash
-                //    return;
-                //}
+                string token = Request.QueryString["token"];
+                //string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                // Nếu token null hoặc rỗng → bỏ qua
+                if (string.IsNullOrEmpty(token))
+                {
+                    return;
+                }
+                try
+                {
+                    string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+                    //string cleanUserId = decoded.Trim().Replace('"','');
+                    Session["UserId"] = decoded;
+                }
+                catch
+                {
+                    // Nếu token sai format → bỏ qua, không crash
+                    return;
+                }
                 //===================//
 
                 Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
@@ -317,9 +317,9 @@ namespace FreeLayout
             string _issueout = dr_filter_IssueOut.SelectedValue;// filterIssueout.Value.ToString();
             string bophan = dr_filter_Cate.SelectedValue.ToString();
 
-            //string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
+            string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
 
-            string UserID = "2015597_1";
+            //string UserID = "2015597_1";
 
             //string userId = Session["UserId"]?.ToString();
             //string section = Session["Section"]?.ToString();
