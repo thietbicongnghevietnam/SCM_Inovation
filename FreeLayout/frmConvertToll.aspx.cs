@@ -597,10 +597,14 @@ namespace FreeLayout
 
                             //saction se lay cot D trong file
                             string SanctionId = dtExcelData.Rows[0][3].ToString();// filterSanction.Value.ToString();
+                            string SanctionId_shortage = dtExcelData.Rows[0][5].ToString(); //so cuoi cung cua sloc = 8
                             //string SanctionId2 = dtExcelData.Rows[0][3].ToString();
+                            //xoa sacntion di sau do upload lai
+                            DataTable dt_xoa = DataConn.StoreFillDS2("tool_convert_xoa_sanction", System.Data.CommandType.StoredProcedure, SanctionId, SanctionId_shortage);
 
-                            if (SanctionId == "")
+                            if (SanctionId == "" || SanctionId_shortage == "")
                             {
+                                //bat buoc phai co ca 2 loaij
                                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban phai nhap ten sanction!'); ", true);
                             }
                             else
@@ -669,7 +673,8 @@ namespace FreeLayout
                                     DataTable dt_getmater_sloc = new DataTable();
                                     DataTable dt_getmater_MVT = new DataTable();
                                     string type_cost = "psnvcost";
-
+                                    string check_sloc = "";
+                                    
                                     //for (int i = 2; i < dtExcelData.Rows.Count; i++)
                                     for (int i = row_index; i < dtExcelData.Rows.Count; i++)
                                     {
@@ -678,9 +683,18 @@ namespace FreeLayout
                                         //mahang + Plant + issue sloc + scrap loc + st price
                                         if (dtExcelData.Rows[i][1].ToString() != "" && dtExcelData.Rows[i][2].ToString() != "" && dtExcelData.Rows[i][3].ToString() != "" && dtExcelData.Rows[i][4].ToString() != "" && dtExcelData.Rows[i][5].ToString() != "")
                                         {
-
                                             Plant = dtExcelData.Rows[i][col_plan].ToString();
                                             ScrapSloc = dtExcelData.Rows[i][col_scraploc].ToString();
+
+                                            check_sloc = ScrapSloc.Substring(3,1);
+                                            if (check_sloc == "8")
+                                            {
+                                                tensanction = SanctionId_shortage;
+                                            }
+                                            else
+                                            {
+                                                tensanction = SanctionId;
+                                            }
 
                                             Material = dtExcelData.Rows[i][col_material].ToString();
 
@@ -691,17 +705,22 @@ namespace FreeLayout
                                             if (dtExcelData.Rows[i][11].ToString() == "" && dtExcelData.Rows[i][12].ToString() == "") // cot Vendor cost bi null or rong
                                             {
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out Qty);
-                                                float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);
+                                                float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);                                                
+                                                float.TryParse(dtExcelData.Rows[i][14].ToString(), out Amount); //cot 14
                                             }
                                             else
                                             {
                                                 float.TryParse(dtExcelData.Rows[i][11].ToString(), out Qty);
                                                 float.TryParse(dtExcelData.Rows[i][11].ToString(), out QtyActual);
+                                                //float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount); //cot 12
+                                                float.TryParse(dtExcelData.Rows[i][12].ToString(), out Amount); //cot 12
                                             }
 
                                             float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
-                                            float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
-                                            UnitPriceAC = 0;  //rule PUS gui user tu điền 
+
+
+                                            //UnitPriceAC = 0;  //rule PUS gui user tu điền 
+                                            float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
                                             AmountAC = 0; // do ra excel lay theo cong thuc
 
                                             //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
@@ -725,7 +744,7 @@ namespace FreeLayout
                                             }
 
                                             //truong hop co ca vendor cost & PSNV cost
-                                            if (dtExcelData.Rows[i][12].ToString() != "" && dtExcelData.Rows[i][12].ToString() != "")
+                                            if (dtExcelData.Rows[i][12].ToString() != "" && dtExcelData.Rows[i][14].ToString() != "")
                                             {
                                                 Pallet = "";
                                                 Barcode = "";
@@ -746,21 +765,38 @@ namespace FreeLayout
                                                     CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
                                                     NameCost = dt_getmater_MVT.Rows[0][3].ToString();
                                                 }
-                                                dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
-                                                if (dt_checkupload.Rows[0][0].ToString() == "1")
-                                                {
-                                                    //da ton tai roi
-                                                    //nothing
-                                                    countlap = countlap + 1;
-                                                }
-                                                else
-                                                {
-                                                    //insert model moi
-                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
-                                                }
+                                                //insert model moi lan 1
+                                                dt_new.Rows.Add(i, tensanction, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
 
-                                                //***** pending*****
+                                                dt_getmater_MVT = DataConn.StoreFillDS2("Get_infor_MVT_pus", System.Data.CommandType.StoredProcedure, Sloc, MoveType, "psnvcost");
+                                                //quy tac lay ra 3 truong MVT - TypeName
+                                                if (dt_getmater_MVT.Rows.Count > 0)
+                                                {
+                                                    TypeName = dt_getmater_MVT.Rows[0][0].ToString();
+                                                    MVT = dt_getmater_MVT.Rows[0][1].ToString();
+                                                    CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
+                                                    NameCost = dt_getmater_MVT.Rows[0][3].ToString();
+                                                }
+                                                //insert model moi lan 2   => qty, aty actual va unitprice & amount
+                                                //lay so luong cot PSNV code
+                                                float.TryParse(dtExcelData.Rows[i][13].ToString(), out Qty);
+                                                float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);
+                                                //float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);   
+                                                float.TryParse(dtExcelData.Rows[i][14].ToString(), out Amount);
 
+                                                dt_new.Rows.Add(i, tensanction, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
+                                                //dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
+                                                //if (dt_checkupload.Rows[0][0].ToString() == "1")
+                                                //{
+                                                //    //da ton tai roi
+                                                //    //nothing
+                                                //    countlap = countlap + 1;
+                                                //}
+                                                //else
+                                                //{
+                                                //    //insert model moi
+                                                //    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
+                                                //}                                             
                                             }
                                             else 
                                             {
@@ -794,18 +830,22 @@ namespace FreeLayout
 
                                                 type_convert = "NGList";  //deskstock
 
-                                                dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
-                                                if (dt_checkupload.Rows[0][0].ToString() == "1")
-                                                {
-                                                    //da ton tai roi
-                                                    //nothing
-                                                    countlap = countlap + 1;
-                                                }
-                                                else
-                                                {
-                                                    //insert model moi
-                                                    dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
-                                                }
+                                                //float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+
+                                                //insert model moi ==> khong check trung ma xoa di up moi lai
+                                                dt_new.Rows.Add(i, tensanction, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
+
+                                                //dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
+                                                //if (dt_checkupload.Rows[0][0].ToString() == "1")
+                                                //{
+                                                //    //da ton tai roi
+                                                //    //nothing
+                                                //    countlap = countlap + 1;
+                                                //}
+                                                //else
+                                                //{
+                                                   
+                                                //}
                                             }
                                             
                                         }
@@ -909,19 +949,21 @@ namespace FreeLayout
                                             FaTool = "";
 
                                             type_convert = "deskstock";  //deskstock
+                                            tensanction = SanctionId;  // mac dinh o cot 3 dong 1
+                                            //insert model moi
+                                            dt_new.Rows.Add(i, tensanction, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
 
-                                            dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
-                                            if (dt_checkupload.Rows[0][0].ToString() == "1")
-                                            {
-                                                //da ton tai roi
-                                                //nothing
-                                                countlap = countlap + 1;
-                                            }
-                                            else
-                                            {
-                                                //insert model moi
-                                                dt_new.Rows.Add(i, SanctionId, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
-                                            }
+                                            //dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
+                                            //if (dt_checkupload.Rows[0][0].ToString() == "1")
+                                            //{
+                                            //    //da ton tai roi
+                                            //    //nothing
+                                            //    countlap = countlap + 1;
+                                            //}
+                                            //else
+                                            //{
+                                                
+                                            //}
                                         }
 
                                         //mahang + Plant + issue sloc + scrap loc + st price  ==> Tong scrap (10)
@@ -943,7 +985,7 @@ namespace FreeLayout
 
                                 string sqlConnStr = DataConn.source2;
 
-                                //string sqlConnStr = @"Data Source=LT-DE2302026;
+                                //string sqlConnStr = @"Data Source=DESKTOP-P69S4E5;
                                 //    Initial Catalog = ScrapSystem;
                                 //    Integrated Security = True;
                                 //    Connect Timeout = 30;

@@ -77,3 +77,27 @@ C:\Projects\scminnovation\SCM_Inovation\FreeLayout\obj\Debug\SCMInovation.csproj
 C:\Projects\scminnovation\SCM_Inovation\FreeLayout\obj\Debug\SCMInova.A89C4848.Up2Date
 C:\Projects\scminnovation\SCM_Inovation\FreeLayout\obj\Debug\FreeLayout.dll
 C:\Projects\scminnovation\SCM_Inovation\FreeLayout\obj\Debug\FreeLayout.pdb
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\FreeLayout.dll.config
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\FreeLayout.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\FreeLayout.pdb
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\EPPlus.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\EPPlus.Interfaces.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\Microsoft.IO.RecyclableMemoryStream.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Buffers.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.ComponentModel.Annotations.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Memory.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Numerics.Vectors.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Runtime.CompilerServices.Unsafe.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Security.Cryptography.Xml.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\EPPlus.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\Microsoft.IO.RecyclableMemoryStream.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Buffers.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Memory.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Numerics.Vectors.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Runtime.CompilerServices.Unsafe.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\bin\System.Security.Cryptography.Xml.xml
+D:\SCM innovation\SCM_Inovation\FreeLayout\obj\Debug\SCMInovation.csprojAssemblyReference.cache
+D:\SCM innovation\SCM_Inovation\FreeLayout\obj\Debug\SCMInovation.csproj.CoreCompileInputs.cache
+D:\SCM innovation\SCM_Inovation\FreeLayout\obj\Debug\SCMInovation.csproj.CopyComplete
+D:\SCM innovation\SCM_Inovation\FreeLayout\obj\Debug\FreeLayout.dll
+D:\SCM innovation\SCM_Inovation\FreeLayout\obj\Debug\FreeLayout.pdb

@@ -1,0 +1,21 @@
+USE [ScrapSystem]
+GO
+/****** Object:  StoredProcedure [dbo].[tool_convert_xoa_sanction]    Script Date: 01/06/2026 22:37:47 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[tool_convert_xoa_sanction]
+	@SanctionId as nvarchar(50),
+	@SanctionId_shortage as nvarchar(50)
+AS
+BEGIN
+	
+	delete [ScrapSystem].[dbo].[ScrapDetails_convert] where SanctionId=@SanctionId
+
+	delete [ScrapSystem].[dbo].[ScrapDetails_convert] where SanctionId=@SanctionId_shortage
+
+	select 1
+
+END

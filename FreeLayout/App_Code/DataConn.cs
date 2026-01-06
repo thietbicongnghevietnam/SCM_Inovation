@@ -35,9 +35,9 @@ namespace FreeLayout.App_Code
 
             //source2 = @"Data Source=.30;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
             source2 = @"Data Source=192.168.128.1;Initial Catalog=ScrapSystem;User ID=sa;Password=Psnvdb2013";
-            //local
+            //local  //DESKTOP-P69S4E5
             //source2 = @"Data Source=./;Initial Catalog=ScrapSystem;User ID='LT-DE2302026\pcvhit';Password=''";
-            //source2 = @"Data Source=LT-DE2302026;Initial Catalog=ScrapSystem;Integrated Security=True;TrustServerCertificate=True;";
+            //source2 = @"Data Source=DESKTOP-P69S4E5;Initial Catalog=ScrapSystem;Integrated Security=True;TrustServerCertificate=True;";
 
 
             //source3 = @"Data Source=.30;Initial Catalog=Issue_MaterialInOut;User ID=sa;Password=Psnvdb2013";
