@@ -274,6 +274,32 @@ namespace FreeLayout
             }
         }
 
+        protected void dr_filter_section_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string _fromdate = Date1.Value;
+            string _todate = ngaychiid.Value;
+            string bophan = dr_filter_Cate.SelectedValue;
+            //string tensanction = dr_filter_Sanction.SelectedValue.ToString();
+            string sacnctionid = dr_filter_Sanction.SelectedValue;
+            string tensanction2 = filterSanction.Value.ToString();
+
+            DataTable dtIssueOut = DataConn.StoreFillDS2("pro_get_section5", System.Data.CommandType.StoredProcedure, _fromdate, _todate, bophan);
+
+            // XÓA TRƯỚC KHI BIND
+            dr_filter_Sanction.Items.Clear();
+
+            if (dtIssueOut.Rows.Count > 0)
+            {
+                DataRow newRow3 = dtIssueOut.NewRow();
+                newRow3["SanctionId"] = "==Sanction==";
+                dtIssueOut.Rows.InsertAt(newRow3, 0);
+                dr_filter_Sanction.DataSource = dtIssueOut;
+                dr_filter_Sanction.DataBind();
+            }
+
+            //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate, tensanction2);
+        }
+
         protected void export_craplist_Click(object sender, EventArgs e)
         {
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -602,8 +628,9 @@ namespace FreeLayout
                             //xoa sacntion di sau do upload lai
                             DataTable dt_xoa = DataConn.StoreFillDS2("tool_convert_xoa_sanction", System.Data.CommandType.StoredProcedure, SanctionId, SanctionId_shortage);
 
-                            if (SanctionId == "" || SanctionId_shortage == "")
+                            if (SanctionId == "")
                             {
+                                //SanctionId == "" || SanctionId_shortage == ""
                                 //bat buoc phai co ca 2 loaij
                                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban phai nhap ten sanction!'); ", true);
                             }
