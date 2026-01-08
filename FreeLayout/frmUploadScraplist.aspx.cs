@@ -599,7 +599,7 @@ namespace FreeLayout
                                             if (tenform =="B")
                                             {
                                                 sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription,SanctionName) ";
-                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + UserID + "'," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + MVContent + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + "," + Math.Truncate(UnitActual * 100000) / 100000 + "," + Math.Truncate(Amount_Actual * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "') ";
+                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + UserID + "'," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + "," + Math.Truncate(UnitActual * 100000) / 100000 + "," + Math.Truncate(Amount_Actual * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "') ";
                                             }
                                             else 
                                             {
@@ -732,6 +732,11 @@ namespace FreeLayout
             if (dt_reset.Rows[0][0].ToString() == "1")
             {
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Reset successful!');", true);
+            }
+            else 
+            {
+                // truong hop = 2 la bo phan phe duyet ca 2 roi 
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Sacntion da duoc phe duyet ');", true);
             }
 
             // Xử lý YES

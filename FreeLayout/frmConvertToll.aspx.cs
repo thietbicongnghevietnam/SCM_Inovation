@@ -701,6 +701,8 @@ namespace FreeLayout
                                     DataTable dt_getmater_MVT = new DataTable();
                                     string type_cost = "psnvcost";
                                     string check_sloc = "";
+
+                                    string debitnote_no = "";
                                     
                                     //for (int i = 2; i < dtExcelData.Rows.Count; i++)
                                     for (int i = row_index; i < dtExcelData.Rows.Count; i++)
@@ -755,7 +757,18 @@ namespace FreeLayout
 
                                             Reason = dtExcelData.Rows[i][col_remark].ToString();    //reason
 
-                                            Remark = dtExcelData.Rows[i][18].ToString(); //cot remark
+                                            //rule 4 dua ra cuoc hop 07.01.2026
+                                            debitnote_no = dtExcelData.Rows[i][33].ToString(); //cot Debit Note number cot 33  //Vendor cost gia tri cot 11 va 12
+                                            if (debitnote_no != "" && dtExcelData.Rows[i][11].ToString() != "" && dtExcelData.Rows[i][12].ToString() != "")  
+                                            {
+                                                //debitnote_no && Vendor cost && Actual Price  ==> bat buoc phai co
+                                                Remark = debitnote_no; //cot remark => so debitnot  //rule 4 cuoc hop ngay 07.01.2026
+                                            }
+                                            else 
+                                            {
+                                                //Remark = "Scrap PSNV cost"; //cot remark   => mac dinh
+                                                Remark = dtExcelData.Rows[i][18].ToString(); //cot remark => giu nguyen
+                                            }                                            
 
                                             VendorName = dtExcelData.Rows[i][25].ToString();  //cot vendor name
 
