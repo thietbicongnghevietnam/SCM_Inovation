@@ -105,6 +105,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.RadioButton rblDesktock;
 
         /// <summary>
+        /// chksacntion_trung control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chksacntion_trung;
+
+        /// <summary>
         /// txtplan control.
         /// </summary>
         /// <remarks>

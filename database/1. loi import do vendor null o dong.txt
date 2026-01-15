@@ -1,0 +1,29 @@
+1. loi import do vendor null o dong 127 len bi break ****
+
+// ========== SẮP XẾP: Vendor có giá trị lên trên, rỗng/null xuống dưới ========== sua code
+            scrapDetalDtos = scrapDetalDtos
+                .OrderBy(x => string.IsNullOrWhiteSpace(x.Vendor) ? 1 : 0)  // 0 = có giá trị (lên trên), 1 = rỗng (xuống dưới)
+                .ThenBy(x => x.Vendor)  // Sắp xếp thêm theo tên Vendor (tùy chọn)
+                .ToList();
+2// update lai bo phan neu ten sanction sai ten  ==> sua stored
+[ImportScrapAndDetails] 
+ -- ========== THÊM ĐOẠN NÀY: Update Section từ #ScrapHeader ==========
+    UPDATE [ScrapSystem].[dbo].[Scraps]
+    SET Section = (SELECT TOP 1 Section FROM #ScrapHeader)
+    WHERE Id = @ScrapId;
+    -- ===================================================================
+3. truong hop update muon update lai so luong tu MCS sang tool convert 
+	=> them 1 nut update lai số lượng  (*** lam sau***)
+
+4. luong tu matter sloc => Mater MVT => lay ra MVT và TYPE 
+**** loi khong trong mater khong co sloc hoac khong co rohs va halb
+
+5. sua sotored:  *** truong hop : TypeRoshHalb = ROHS/RAW
+ALTER PROCEDURE [dbo].[Get_infor_MVT_pus]  -- Get_infor_MVT_pus '1HD9','ROHS/RAW','psnvcost'
+select top 1 [Typevendor],[MVTvendor],Costcenter,NameCode from MaterMVT_PUS where Sloc=@Sloc and TypeRoshHalb like '%'+@MoveType+'%' 
+
+6.truong hop vendor null   ==> 10 dong dau vao khong co vendor code 
+
+7. truong hop destock up load co cung so santion voi NG list
+them 1 check box => xac nhan co trung sacntion khong?
+

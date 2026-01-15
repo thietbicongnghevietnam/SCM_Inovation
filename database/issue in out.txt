@@ -110,7 +110,8 @@ Check_Confirm_Issue_InOut		reset confirm isssue out
 Update_Mater_vendor
 Delete_Mater_vendor
 
-
+=============//28.12.2025 //============
+ALTER PROCEDURE [dbo].[GetBarcodes]  (sua them dieu khien de loc theo bo phan)
 
 
 

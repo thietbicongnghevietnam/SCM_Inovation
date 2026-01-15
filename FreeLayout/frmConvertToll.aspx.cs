@@ -300,6 +300,12 @@ namespace FreeLayout
             //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate, tensanction2);
         }
 
+        protected void Dongbo_craplist_Click(object sender, EventArgs e)
+        {
+            string sacnctionid = dr_filter_Sanction.SelectedValue;
+            //lay sanction de update lai so luong voi scrap list
+            //***** // lam sau
+        }
         protected void export_craplist_Click(object sender, EventArgs e)
         {
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -625,8 +631,18 @@ namespace FreeLayout
                             string SanctionId = dtExcelData.Rows[0][3].ToString();// filterSanction.Value.ToString();
                             string SanctionId_shortage = dtExcelData.Rows[0][5].ToString(); //so cuoi cung cua sloc = 8
                             //string SanctionId2 = dtExcelData.Rows[0][3].ToString();
-                            //xoa sacntion di sau do upload lai
-                            DataTable dt_xoa = DataConn.StoreFillDS2("tool_convert_xoa_sanction", System.Data.CommandType.StoredProcedure, SanctionId, SanctionId_shortage);
+
+                            // Kiểm tra checkbox có được check không
+                            bool check_trung = chksacntion_trung.Checked;
+                            if (check_trung)
+                            {
+                                // trung sanction  //khong xoa //nothing
+                            }
+                            else 
+                            {
+                                //xoa sacntion di sau do upload lai
+                                DataTable dt_xoa = DataConn.StoreFillDS2("tool_convert_xoa_sanction", System.Data.CommandType.StoredProcedure, SanctionId, SanctionId_shortage);
+                            }
 
                             if (SanctionId == "")
                             {
