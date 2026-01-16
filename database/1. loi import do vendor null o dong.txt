@@ -1,6 +1,22 @@
 1. loi import do vendor null o dong 127 len bi break ****
+//van cho nhap vendor null vao ==> doan xuat dien tu show thong bao ==> vendor null ban nhap het
 
-// ========== SẮP XẾP: Vendor có giá trị lên trên, rỗng/null xuống dưới ========== sua code
+  //string[] stringTypeID = { "2", "3", "4", "5", "8", "21" }; // Những Type sẽ phải điền Vendorcode
+  if (ck_vendor == "2" || ck_vendor == "3" || ck_vendor == "4" || ck_vendor == "5" || ck_vendor == "8" || ck_vendor == "9" || ck_vendor == "19")  //bo 21
+  {
+      if (scrapDetail1.Vendor == "")
+      {
+          //scrapDetail1.Vendor = worksheetData1.Cells[row, 13].Text;
+          //truong hop vendor null => khong cho nhap
+          break;
+      }
+  }
+
+string[] stringTypeID = { "2", "3", "4", "5", "8", "9", "19" }; // Những Type sẽ phải điền Vendorcode  
+
+
+// khong len su dung cau lenh duoi : buoc day issue out dien tu ==> da chan *** user phai nhau vendor
+========== SẮP XẾP: Vendor có giá trị lên trên, rỗng/null xuống dưới ========== sua code
             scrapDetalDtos = scrapDetalDtos
                 .OrderBy(x => string.IsNullOrWhiteSpace(x.Vendor) ? 1 : 0)  // 0 = có giá trị (lên trên), 1 = rỗng (xuống dưới)
                 .ThenBy(x => x.Vendor)  // Sắp xếp thêm theo tên Vendor (tùy chọn)

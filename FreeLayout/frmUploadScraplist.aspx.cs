@@ -694,7 +694,7 @@ namespace FreeLayout
                     else
                     {
                         //khong ton tai user 
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, User khong co quyen tao In Out, Kiem tra lai!'); ", true);
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, User không có quyền In Out, Kiem tra lai!'); ", true);
                         return;
                     }
 

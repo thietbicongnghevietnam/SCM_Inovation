@@ -82,7 +82,10 @@
                     <span style="padding-left: 5px;"></span>
                      <button class="btn btn-primary" type="button" runat="server" onserverclick="export_craplist_Click">
 
-     <i class="fa fa-download"></i>Export scraplist</button>
+     <i class="fa fa-download"></i>Export Scraplist</button>&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Dongbo_craplist_Click">
+
+<i class="fa fa-sync"></i>Sys Data Scraplist</button>
 
                     <%--<span style="padding-left: 20px;"></span>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -105,6 +108,9 @@
     OnCheckedChanged="RadioButton_CheckedChanged" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:RadioButton ID="rblDesktock" runat="server" GroupName="rblOptions" Text="Deadstock list" AutoPostBack="true"
     OnCheckedChanged="RadioButton_CheckedChanged" />
+                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <!-- ========== CHECKBOX MỚI ========== -->
+        <asp:CheckBox ID="chksacntion_trung" runat="server" Text="exitsanction" />
                         </p>
                     </div>
                 </div>
