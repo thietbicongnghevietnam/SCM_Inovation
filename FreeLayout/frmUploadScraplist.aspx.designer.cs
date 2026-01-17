@@ -123,6 +123,15 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.TextBox IDedit;
 
         /// <summary>
+        /// txtNameCost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNameCost;
+
+        /// <summary>
         /// idMaterial control.
         /// </summary>
         /// <remarks>
@@ -139,6 +148,24 @@ namespace FreeLayout
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox idQty;
+
+        /// <summary>
+        /// txtUnitPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtUnitPrice;
+
+        /// <summary>
+        /// txtSloc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSloc;
 
         /// <summary>
         /// idQtyActual control.

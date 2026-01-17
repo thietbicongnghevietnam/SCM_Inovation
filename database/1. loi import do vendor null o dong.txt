@@ -43,3 +43,16 @@ select top 1 [Typevendor],[MVTvendor],Costcenter,NameCode from MaterMVT_PUS wher
 7. truong hop destock up load co cung so santion voi NG list
 them 1 check box => xac nhan co trung sacntion khong?
 
+============= // 17 - 01 - 2026 //==============
+bang: [ScrapSystem].[dbo].[ScrapDetails_convert]
+,Flag_change
+,Qty_old
+
+stored: 
+Select_Mater_ScrapList_sacntion4
+[Dongbo_ScrapList_toolconvert]
+[update_Qty_scrap_list]
+
+
+
+

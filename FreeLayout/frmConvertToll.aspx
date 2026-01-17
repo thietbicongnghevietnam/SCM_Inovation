@@ -22,6 +22,21 @@
     <script src="/dist/Infra/jquery.dataTables.min.js"></script>
     <script src="/dist/Infra/dataTables.bootstrap4.min.js"></script>
     <script src="/Exportexcel/jquery.table2excel.min.js"></script>
+
+        <style>
+    .yes-label {
+        background: #28a745;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+    }
+    .no-label {
+        background: #6c757d;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+    }
+</style>
 </head>
 
 <body>
@@ -222,6 +237,8 @@
                             <th>TypeName</th>
                             <th>MVT</th>
                             <th>Reason</th>
+                            <th>Qty_old</th>
+                            <th>Change_Qty</th>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -250,6 +267,22 @@
                         <td><%=rows["TypeName"].ToString()%></td>
                         <td><%=rows["MVT"].ToString()%></td>
                         <td><%=rows["Reason"].ToString()%></td>
+                        <td>
+                            
+                             <% if (rows["Flag_change"].ToString() == "1") { %>
+                                 <%=rows["Qty_old"].ToString()%>
+                             <% } else { %>
+                                
+                             <% } %>
+                        </td>
+                         <td>
+                             <% if (rows["Flag_change"].ToString() == "1") { %>
+                                     <span class="yes-label">YES</span>
+                                 <% } else { %>
+                                     <span class="no-label">NO</span>
+                                 <% } %>
+
+                         </td>
                         <td>
                              <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>','<%= rows["Qty"].ToString() %>','<%= rows["Vendor"].ToString() %>')"><i class="fas fa-edit"></i></a>
                             <a href="#" title="delete item" onclick="openEditModal5('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>')"><i class="fas fa-trash"></i></a>
