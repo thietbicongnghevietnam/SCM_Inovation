@@ -314,37 +314,35 @@ namespace FreeLayout
                 string tensanction = dr_filter_Sanction.SelectedValue;
                 //lay sanction de update lai so luong voi scrap list
                 //kiem tra sanction da cos trong scrap list chua?
-                //DataTable dt_check = DataConn.StoreFillDS2("Check_dongbo_sacntion_tool", System.Data.CommandType.StoredProcedure, tensanction);
-                //if (dt_check.Rows[0][0].ToString() == "1")
-                //{
-
-                //}
-                //else 
-                //{
-                //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Sanction chưa được upload sang scrap list!!!'); ", true);
-                //}
-
-                int count_update = 0;
-                DataTable dt_select = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion4", System.Data.CommandType.StoredProcedure, tensanction);
-                for (int i = 0; i < dt_select.Rows.Count; i++)
+                DataTable dt_check = DataConn.StoreFillDS2("Check_dongbo_sacntion_tool", System.Data.CommandType.StoredProcedure, tensanction);
+                if (dt_check.Rows[0][0].ToString() == "1")
                 {
-                    string material = dt_select.Rows[i]["Material"].ToString();
-                    string Qty = dt_select.Rows[i]["Qty"].ToString();
-                    string plant = dt_select.Rows[i]["Plant"].ToString();
-                    string Sloc = dt_select.Rows[i]["Sloc"].ToString();
-                    string TypeName = dt_select.Rows[i]["TypeName"].ToString();
-                    string Vendor = dt_select.Rows[i]["Vendor"].ToString();
-                    DataTable dt_changesoluong = DataConn.StoreFillDS2("Dongbo_ScrapList_toolconvert", System.Data.CommandType.StoredProcedure, tensanction, material, Qty, plant, Sloc, TypeName, Vendor);
-                    if (dt_changesoluong.Rows[0][0].ToString() == "1")
+                    int count_update = 0;
+                    DataTable dt_select = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion4", System.Data.CommandType.StoredProcedure, tensanction);
+                    for (int i = 0; i < dt_select.Rows.Count; i++)
                     {
-                        count_update = count_update + 1;
+                        string material = dt_select.Rows[i]["Material"].ToString();
+                        string Qty = dt_select.Rows[i]["Qty"].ToString();
+                        string plant = dt_select.Rows[i]["Plant"].ToString();
+                        string Sloc = dt_select.Rows[i]["Sloc"].ToString();
+                        string TypeName = dt_select.Rows[i]["TypeName"].ToString();
+                        string Vendor = dt_select.Rows[i]["Vendor"].ToString();
+                        DataTable dt_changesoluong = DataConn.StoreFillDS2("Dongbo_ScrapList_toolconvert", System.Data.CommandType.StoredProcedure, tensanction, material, Qty, plant, Sloc, TypeName, Vendor);
+                        if (dt_changesoluong.Rows[0][0].ToString() == "1")
+                        {
+                            count_update = count_update + 1;
+                        }
+                    }
+                    if (count_update > 0)
+                    {
+                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Data đồng bộ thành công!');", true);
+                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate, tensanction2);
                     }
                 }
-                if (count_update > 0)
+                else
                 {
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Data đồng bộ thành công!');", true);
-                    dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate, tensanction2);
-                }
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Sanction chưa được upload sang scrap list!!!'); ", true);
+                }                
             }
             catch (Exception ex)
             {

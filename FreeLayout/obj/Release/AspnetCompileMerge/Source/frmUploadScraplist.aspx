@@ -112,7 +112,7 @@
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_FA_PE"><i class="fa fa-download"></i>&nbsp; Export Disposition Property List</button>&nbsp;&nbsp;&nbsp;             
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="export_craplist_Click"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp;   
                     <button class="btn btn-success" type="button" runat="server" style="margin-left: 20px;" onserverclick="Confirm_Issue_Out"><i class="fa fa-check-circle"></i>&nbsp; Confirm E-IsssueOut</button>&nbsp;&nbsp;&nbsp;   
-          
+                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Dongbo_craplist_Click"><i class="fa fa-sync"></i>&nbsp; Sys Data Covnert</button>
                 </div>
 
                 <div class="col-sm-12">
@@ -187,7 +187,13 @@
                         <td><%=rows["CreatedDate"].ToString()%></td>
 
                         <td>
-                            <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%= rows["Material"].ToString() %>','<%= rows["Qty"].ToString() %>','<%= rows["QtyActual"].ToString() %>')"><i class="fas fa-edit"></i></a>
+                            <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>',
+                                '<%= rows["Material"].ToString() %>',
+                                '<%= rows["Qty"].ToString() %>',
+                                '<%= rows["QtyActual"].ToString() %>',
+                                '<%= rows["UnitPrice"].ToString() %>',
+                                '<%= rows["Sloc"].ToString() %>',
+                                '<%= rows["NameCost"].ToString() %>')"><i class="fas fa-edit"></i></a>
                             <a href="#" title="delete item" onclick="openEditModal5('<%= rows["Id"].ToString() %>','<%= rows["Material"].ToString() %>')"><i class="fas fa-trash"></i></a>
                         </td>
 
@@ -238,16 +244,15 @@
                     <div class="modal-body">
 
                         <div class="row">
-                            <%--<div class="col-md-3">--%>
-                            <%--<label for="exampleInputEmail1">Can_combine</label>
-                <asp:TextBox ID="idCan_combine" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
-                            <%--</div>--%>
-                            <div class="col-md-12">
+                          
+                            <div class="col-md-6">
                                 <label for="ID">ID</label>
                                 <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
-                            <%-- <div class="col-md-3"></div>--%>
-                            <%-- <div class="col-md-3"></div>--%>
+                            <div class="col-md-6">
+                                <label for="exETD">NameCost</label>
+                                <asp:TextBox ID="txtNameCost" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -263,6 +268,16 @@
                         <asp:TextBox ID="idmaterial" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                     </div>--%>
                         </div>
+                         <div class="row">
+                             <div class="col-md-6">
+                                 <label for="exETD">UnitPrice</label>
+                                 <asp:TextBox ID="txtUnitPrice" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                             </div>
+                             <div class="col-md-6">
+                                 <label for="etdDate"><i style="color: green">Sloc</i></label>
+                                 <asp:TextBox ID="txtSloc" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                             </div>
+                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="exETD">QtyActual</label>
@@ -392,11 +407,16 @@
 
         });
 
-        function openEditModal3(Id, Material, Qty, QtyActual) {
+        function openEditModal3(Id, Material, Qty, QtyActual, UnitPrice, Sloc, NameCost) {
             $("#IDedit").val(Id);
             $("#idMaterial").val(Material);
             $("#idQty").val(Qty);
             $("#idQtyActual").val(QtyActual);
+
+            $('#txtUnitPrice').val(UnitPrice);
+            $('#txtSloc').val(Sloc);
+            $('#txtNameCost').val(NameCost);
+
             $('#myModal3').modal('show');
         }
 

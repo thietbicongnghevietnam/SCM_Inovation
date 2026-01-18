@@ -51,6 +51,8 @@ bang: [ScrapSystem].[dbo].[ScrapDetails_convert]
 stored: 
 Select_Mater_ScrapList_sacntion4
 [Dongbo_ScrapList_toolconvert]
+	--van co truong hop nhieu ban ghi : SanctionId=@tensanction and Material=@material and Plant=@plant and Sloc=@Sloc and TypeName=@TypeName and Vendor=@Vendor 
+   	--- sai moi so luong => chi doi trang thai ==> de user manual  ****
 [update_Qty_scrap_list]
 
 
