@@ -300,56 +300,56 @@ namespace FreeLayout
             //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate, tensanction2);
         }
 
-        protected void Dongbo_craplist_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string _fromdate = Request.Form[Date1.UniqueID];
-                string _todate = Request.Form[ngaychiid.UniqueID];
-                string bophan = dr_filter_Cate.SelectedValue;
-                //string sacnctionid = dr_filter_Sanction.SelectedValue; //filterSanction.Value;
+        //protected void Dongbo_craplist_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        string _fromdate = Request.Form[Date1.UniqueID];
+        //        string _todate = Request.Form[ngaychiid.UniqueID];
+        //        string bophan = dr_filter_Cate.SelectedValue;
+        //        //string sacnctionid = dr_filter_Sanction.SelectedValue; //filterSanction.Value;
 
-                string tensanction2 = filterSanction.Value.ToString();
+        //        string tensanction2 = filterSanction.Value.ToString();
 
-                string tensanction = dr_filter_Sanction.SelectedValue;
-                //lay sanction de update lai so luong voi scrap list
-                //kiem tra sanction da cos trong scrap list chua?
-                DataTable dt_check = DataConn.StoreFillDS2("Check_dongbo_sacntion_tool", System.Data.CommandType.StoredProcedure, tensanction);
-                if (dt_check.Rows[0][0].ToString() == "1")
-                {
-                    int count_update = 0;
-                    DataTable dt_select = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion4", System.Data.CommandType.StoredProcedure, tensanction);
-                    for (int i = 0; i < dt_select.Rows.Count; i++)
-                    {
-                        string material = dt_select.Rows[i]["Material"].ToString();
-                        string Qty = dt_select.Rows[i]["Qty"].ToString();
-                        string plant = dt_select.Rows[i]["Plant"].ToString();
-                        string Sloc = dt_select.Rows[i]["Sloc"].ToString();
-                        string TypeName = dt_select.Rows[i]["TypeName"].ToString();
-                        string Vendor = dt_select.Rows[i]["Vendor"].ToString();
-                        DataTable dt_changesoluong = DataConn.StoreFillDS2("Dongbo_ScrapList_toolconvert", System.Data.CommandType.StoredProcedure, tensanction, material, Qty, plant, Sloc, TypeName, Vendor);
-                        if (dt_changesoluong.Rows[0][0].ToString() == "1")
-                        {
-                            count_update = count_update + 1;
-                        }
-                    }
-                    if (count_update > 0)
-                    {
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Data đồng bộ thành công!');", true);
-                        dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate, tensanction2);
-                    }
-                }
-                else
-                {
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Sanction chưa được upload sang scrap list!!!'); ", true);
-                }                
-            }
-            catch (Exception ex)
-            {
+        //        string tensanction = dr_filter_Sanction.SelectedValue;
+        //        //lay sanction de update lai so luong voi scrap list
+        //        //kiem tra sanction da cos trong scrap list chua?
+        //        DataTable dt_check = DataConn.StoreFillDS2("Check_dongbo_sacntion_tool", System.Data.CommandType.StoredProcedure, tensanction);
+        //        if (dt_check.Rows[0][0].ToString() == "1")
+        //        {
+        //            int count_update = 0;
+        //            DataTable dt_select = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion4", System.Data.CommandType.StoredProcedure, tensanction);
+        //            for (int i = 0; i < dt_select.Rows.Count; i++)
+        //            {
+        //                string material = dt_select.Rows[i]["Material"].ToString();
+        //                string Qty = dt_select.Rows[i]["Qty"].ToString();
+        //                string plant = dt_select.Rows[i]["Plant"].ToString();
+        //                string Sloc = dt_select.Rows[i]["Sloc"].ToString();
+        //                string TypeName = dt_select.Rows[i]["TypeName"].ToString();
+        //                string Vendor = dt_select.Rows[i]["Vendor"].ToString();
+        //                DataTable dt_changesoluong = DataConn.StoreFillDS2("Dongbo_ScrapList_toolconvert", System.Data.CommandType.StoredProcedure, tensanction, material, Qty, plant, Sloc, TypeName, Vendor);
+        //                if (dt_changesoluong.Rows[0][0].ToString() == "1")
+        //                {
+        //                    count_update = count_update + 1;
+        //                }
+        //            }
+        //            if (count_update > 0)
+        //            {
+        //                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Data đồng bộ thành công!');", true);
+        //                dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, tensanction, _fromdate, _todate, tensanction2);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Sanction chưa được upload sang scrap list!!!'); ", true);
+        //        }                
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
         protected void export_craplist_Click(object sender, EventArgs e)
         {
             string _fromdate = Request.Form[Date1.UniqueID];
@@ -983,27 +983,35 @@ namespace FreeLayout
                                             float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out Qty);         //QtyActual = 0;
                                             float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
 
-                                            float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
-                                            float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
+                                            //float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
+                                            float.TryParse(dtExcelData.Rows[i][10].ToString(), out UnitPrice);
+                                            //float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
+                                            float.TryParse(dtExcelData.Rows[i][30].ToString(), out Amount);
 
-                                            float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
-                                            float.TryParse(dtExcelData.Rows[i][col_amountAC].ToString(), out AmountAC);
+                                            //float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
+                                            //float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
+                                            float.TryParse(dtExcelData.Rows[i][11].ToString(), out AmountAC);
+                                            float.TryParse(dtExcelData.Rows[i][29].ToString(), out AmountAC);
 
 
                                             //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
-                                            VendorName = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name   ??? lay du lieu cot vendor name
-                                            dt_getmater_vendor = DataConn.StoreFillDS2("Get_infor_vendor_desktock", System.Data.CommandType.StoredProcedure, VendorName);
-                                            if (dt_getmater_vendor.Rows.Count > 0)
-                                            {
-                                                Vendor = dt_getmater_vendor.Rows[0][0].ToString();
-                                            }
-                                            else
-                                            {
-                                                Vendor = ""; //khong co trong mater 
-                                            }
+                                            //VendorName = dtExcelData.Rows[i][col_vendorname].ToString();  //vendor name   ??? lay du lieu cot vendor name
+                                            VendorName = dtExcelData.Rows[i][9].ToString();  //vendor name   ??? lay du lieu cot vendor name
+                                            //Vendor = dt_getmater_vendor.Rows[i][6].ToString();
+                                            Vendor = dtExcelData.Rows[i][5].ToString();
+                                            //dt_getmater_vendor = DataConn.StoreFillDS2("Get_infor_vendor_desktock", System.Data.CommandType.StoredProcedure, VendorName);
+                                            //if (dt_getmater_vendor.Rows.Count > 0)
+                                            //{
+                                            //    Vendor = dt_getmater_vendor.Rows[0][0].ToString();
+                                            //}
+                                            //else
+                                            //{
+                                            //    Vendor = ""; //khong co trong mater 
+                                            //}
 
                                             //Reason = dtExcelData.Rows[i][19].ToString();    //remark 
-                                            Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
+                                            //Reason = dtExcelData.Rows[i][col_remark].ToString();    //remark 
+                                            Reason = dtExcelData.Rows[i][14].ToString();    //remark 
                                             Remark = "";
                                             Sloc = "";// dtExcelData.Rows[i][7].ToString();=> lay theo scraploc       //issue sloc   //1185
                                             CostCenter = "";  //lay mater MVT

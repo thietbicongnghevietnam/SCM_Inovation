@@ -80,52 +80,52 @@ namespace FreeLayout
             }
         }
 
-        protected void Dongbo_craplist_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string _fromdate = Request.Form[Date1.UniqueID];
-                string _todate = Request.Form[ngaychiid.UniqueID];
-                //string bophan = dr_filter_Cate.SelectedValue;
-                //string sacnctionid = dr_filter_Sanction.SelectedValue; //filterSanction.Value;
+        //protected void Dongbo_craplist_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        string _fromdate = Request.Form[Date1.UniqueID];
+        //        string _todate = Request.Form[ngaychiid.UniqueID];
+        //        //string bophan = dr_filter_Cate.SelectedValue;
+        //        //string sacnctionid = dr_filter_Sanction.SelectedValue; //filterSanction.Value;
 
-                string tensanction = dr_filter_Sanction.SelectedValue;
+        //        string tensanction = dr_filter_Sanction.SelectedValue;
 
-                if (tensanction == "==Sanction==")
-                {
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon Sanction!!!'); ", true);
-                }
-                else 
-                {
-                    int count_update = 0;
-                    DataTable dt_select = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion4", System.Data.CommandType.StoredProcedure, tensanction);
-                    for (int i = 0; i < dt_select.Rows.Count; i++)
-                    {
-                        string material = dt_select.Rows[i]["Material"].ToString();
-                        string Qty = dt_select.Rows[i]["Qty"].ToString();
-                        string plant = dt_select.Rows[i]["Plant"].ToString();
-                        string Sloc = dt_select.Rows[i]["Sloc"].ToString();
-                        string TypeName = dt_select.Rows[i]["TypeName"].ToString();
-                        string Vendor = dt_select.Rows[i]["Vendor"].ToString();
-                        DataTable dt_changesoluong = DataConn.StoreFillDS2("Dongbo_ScrapList_toolconvert", System.Data.CommandType.StoredProcedure, tensanction, material, Qty, plant, Sloc, TypeName, Vendor);
-                        if (dt_changesoluong.Rows[0][0].ToString() == "1")
-                        {
-                            count_update = count_update + 1;
-                        }
-                    }
-                    if (count_update > 0)
-                    {
-                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Data đồng bộ thành công!');", true);
-                    }
-                }
+        //        if (tensanction == "==Sanction==")
+        //        {
+        //            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Ban chua chon Sanction!!!'); ", true);
+        //        }
+        //        else 
+        //        {
+        //            int count_update = 0;
+        //            DataTable dt_select = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion4", System.Data.CommandType.StoredProcedure, tensanction);
+        //            for (int i = 0; i < dt_select.Rows.Count; i++)
+        //            {
+        //                string material = dt_select.Rows[i]["Material"].ToString();
+        //                string Qty = dt_select.Rows[i]["Qty"].ToString();
+        //                string plant = dt_select.Rows[i]["Plant"].ToString();
+        //                string Sloc = dt_select.Rows[i]["Sloc"].ToString();
+        //                string TypeName = dt_select.Rows[i]["TypeName"].ToString();
+        //                string Vendor = dt_select.Rows[i]["Vendor"].ToString();
+        //                DataTable dt_changesoluong = DataConn.StoreFillDS2("Dongbo_ScrapList_toolconvert", System.Data.CommandType.StoredProcedure, tensanction, material, Qty, plant, Sloc, TypeName, Vendor);
+        //                if (dt_changesoluong.Rows[0][0].ToString() == "1")
+        //                {
+        //                    count_update = count_update + 1;
+        //                }
+        //            }
+        //            if (count_update > 0)
+        //            {
+        //                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Data đồng bộ thành công!');", true);
+        //            }
+        //        }
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         protected void delete_item(object sender, EventArgs e)
         {

@@ -98,9 +98,9 @@
                      <button class="btn btn-primary" type="button" runat="server" onserverclick="export_craplist_Click">
 
      <i class="fa fa-download"></i>Export Scraplist</button>&nbsp;&nbsp;&nbsp;
-                                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Dongbo_craplist_Click">
 
-<i class="fa fa-sync"></i>Sys Data Scraplist</button>
+                                    <%--<button class="btn btn-primary" type="button" runat="server" onserverclick="Dongbo_craplist_Click">
+<i class="fa fa-sync"></i>Sys Data Scraplist</button>--%>
 
                     <%--<span style="padding-left: 20px;"></span>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
