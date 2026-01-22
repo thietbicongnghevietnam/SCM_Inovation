@@ -112,7 +112,7 @@
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Export_FA_PE"><i class="fa fa-download"></i>&nbsp; Export Disposition Property List</button>&nbsp;&nbsp;&nbsp;             
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="export_craplist_Click"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp;   
                     <button class="btn btn-success" type="button" runat="server" style="margin-left: 20px;" onserverclick="Confirm_Issue_Out"><i class="fa fa-check-circle"></i>&nbsp; Confirm E-IsssueOut</button>&nbsp;&nbsp;&nbsp;   
-                    <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Dongbo_craplist_Click"><i class="fa fa-sync"></i>&nbsp; Sys Data Covnert</button>
+                    <%--<button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Dongbo_craplist_Click"><i class="fa fa-sync"></i>&nbsp; Sys Data Covnert</button>--%>
                 </div>
 
                 <div class="col-sm-12">

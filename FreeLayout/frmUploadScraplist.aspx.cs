@@ -1567,7 +1567,7 @@ namespace FreeLayout
                     worksheet.Cells[row, 13].Value = dataRow["VendorName"];  //VendorName
                     worksheet.Cells[row, 14].Value = dataRow["ScrapSloc"];
 
-                    worksheet.Cells[row, 15].Value = ""; //so palet
+                    worksheet.Cells[row, 15].Value = dataRow["Pallet"]; //so palet
                     worksheet.Cells[row, 16].Value = dataRow["SanctionId"]; //so sanction
 
                     worksheet.Cells[row, 17].Value = dataRow["Reason"]; //reason 17

@@ -56,5 +56,37 @@ Select_Mater_ScrapList_sacntion4
 [update_Qty_scrap_list]
 
 
+---------------******------------  store lay ra pallet con thieu anh ---> theo sanction
+SELECT DISTINCT sd.[Pallet]
+FROM [ScrapSystem].[dbo].[ScrapDetails] sd
+WHERE sd.SanctionId = 9
+AND NOT EXISTS (
+    SELECT 1
+    FROM [ScrapSystem].[dbo].[ScrapImages] si WITH (NOLOCK)
+    WHERE si.SanctionId = 9
+      AND si.PalletNo = sd.[Pallet]
+);
+
+SELECT DISTINCT sd.[Pallet]
+FROM [ScrapSystem].[dbo].[ScrapDetails] sd
+LEFT JOIN [ScrapSystem].[dbo].[ScrapImages] si WITH (NOLOCK)
+    ON sd.[Pallet] = si.PalletNo
+    AND si.SanctionId = 9
+WHERE sd.SanctionId = 9
+  AND si.PalletNo IS NULL;
+
+  ----------check rõ pallet nào thiếu A hoặc B ------
+  SELECT 
+    PalletNo,
+    SUM(CASE WHEN ImageType = 'A' THEN 1 ELSE 0 END) AS HasA,
+    SUM(CASE WHEN ImageType = 'B' THEN 1 ELSE 0 END) AS HasB
+FROM [ScrapSystem].[dbo].[ScrapImages] WITH (NOLOCK)
+WHERE SanctionId = 9
+GROUP BY PalletNo
+HAVING 
+    SUM(CASE WHEN ImageType = 'A' THEN 1 ELSE 0 END) = 0
+ OR SUM(CASE WHEN ImageType = 'B' THEN 1 ELSE 0 END) = 0;
+
+
 
 

@@ -98,9 +98,9 @@
                      <button class="btn btn-primary" type="button" runat="server" onserverclick="export_craplist_Click">
 
      <i class="fa fa-download"></i>Export Scraplist</button>&nbsp;&nbsp;&nbsp;
-                                    <button class="btn btn-primary" type="button" runat="server" onserverclick="Dongbo_craplist_Click">
 
-<i class="fa fa-sync"></i>Sys Data Scraplist</button>
+                                    <%--<button class="btn btn-primary" type="button" runat="server" onserverclick="Dongbo_craplist_Click">
+<i class="fa fa-sync"></i>Sys Data Scraplist</button>--%>
 
                     <%--<span style="padding-left: 20px;"></span>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -237,8 +237,8 @@
                             <th>TypeName</th>
                             <th>MVT</th>
                             <th>Reason</th>
-                            <th>Qty_old</th>
-                            <th>Change_Qty</th>
+                           <%-- <th>Qty_old</th>
+                            <th>Change_Qty</th>--%>
                             <th>Action</th>
                         </tr>
                     </tr>
@@ -267,7 +267,7 @@
                         <td><%=rows["TypeName"].ToString()%></td>
                         <td><%=rows["MVT"].ToString()%></td>
                         <td><%=rows["Reason"].ToString()%></td>
-                        <td>
+                        <%--<td>
                             
                              <% if (rows["Flag_change"].ToString() == "1") { %>
                                  <%=rows["Qty_old"].ToString()%>
@@ -282,7 +282,7 @@
                                      <span class="no-label">NO</span>
                                  <% } %>
 
-                         </td>
+                         </td>--%>
                         <td>
                              <a href="#" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>','<%= rows["Qty"].ToString() %>','<%= rows["Vendor"].ToString() %>')"><i class="fas fa-edit"></i></a>
                             <a href="#" title="delete item" onclick="openEditModal5('<%= rows["Id"].ToString() %>','<%= rows["SanctionId"].ToString() %>')"><i class="fas fa-trash"></i></a>

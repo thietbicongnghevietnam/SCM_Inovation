@@ -808,7 +808,7 @@ namespace FreeLayout
                                             float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
 
 
-                                            //UnitPriceAC = 0;  //rule PUS gui user tu điền 
+                                            //UnitPriceAC = 0; 
                                             float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
                                             AmountAC = 0; // do ra excel lay theo cong thuc
 
@@ -864,6 +864,16 @@ namespace FreeLayout
                                                     MVT = dt_getmater_MVT.Rows[0][1].ToString();
                                                     CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
                                                     NameCost = dt_getmater_MVT.Rows[0][3].ToString();
+                                                    if (TypeName == "5.Disposition")
+                                                    {
+                                                        //5.Disposition truong hop gia Actual =0  *** PUS bo sung rule 20.01.2025
+                                                        UnitPriceAC = 0;
+                                                        AmountAC = 0;
+                                                    }
+                                                    else
+                                                    {
+                                                        float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                    }
                                                 }
                                                 //insert model moi lan 1
                                                 dt_new.Rows.Add(i, tensanction, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
@@ -876,6 +886,16 @@ namespace FreeLayout
                                                     MVT = dt_getmater_MVT.Rows[0][1].ToString();
                                                     CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
                                                     NameCost = dt_getmater_MVT.Rows[0][3].ToString();
+                                                    if (TypeName == "5.Disposition")
+                                                    {
+                                                        //5.Disposition truong hop gia Actual =0  *** PUS bo sung rule 20.01.2025
+                                                        UnitPriceAC = 0;
+                                                        AmountAC = 0;
+                                                    }
+                                                    else
+                                                    {
+                                                        float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                    }
                                                 }
                                                 //insert model moi lan 2   => qty, aty actual va unitprice & amount
                                                 //lay so luong cot PSNV code
@@ -921,6 +941,16 @@ namespace FreeLayout
                                                     MVT = dt_getmater_MVT.Rows[0][1].ToString();
                                                     CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
                                                     NameCost = dt_getmater_MVT.Rows[0][3].ToString();
+                                                    if (TypeName == "5.Disposition")
+                                                    {
+                                                        //5.Disposition truong hop gia Actual =0  *** PUS bo sung rule 20.01.2025
+                                                        UnitPriceAC = 0;
+                                                        AmountAC = 0;
+                                                    }
+                                                    else
+                                                    {                                                        
+                                                        float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                    }
                                                 }
 
                                                 Pallet = "";
@@ -990,8 +1020,8 @@ namespace FreeLayout
 
                                             //float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
                                             //float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
-                                            float.TryParse(dtExcelData.Rows[i][11].ToString(), out AmountAC);
-                                            float.TryParse(dtExcelData.Rows[i][29].ToString(), out AmountAC);
+
+                                            
 
 
                                             //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
@@ -1049,6 +1079,17 @@ namespace FreeLayout
                                                 MVT = dt_getmater_MVT.Rows[0][1].ToString();
                                                 CostCenter = dt_getmater_MVT.Rows[0][2].ToString();
                                                 NameCost = dt_getmater_MVT.Rows[0][3].ToString();
+                                                if (TypeName == "5.Disposition")
+                                                {
+                                                    //5.Disposition truong hop gia Actual =0  *** PUS bo sung rule 20.01.2025
+                                                    UnitPriceAC = 0;
+                                                    AmountAC = 0;
+                                                }
+                                                else 
+                                                {
+                                                    float.TryParse(dtExcelData.Rows[i][11].ToString(), out UnitPriceAC);
+                                                    float.TryParse(dtExcelData.Rows[i][29].ToString(), out AmountAC);
+                                                }                                                
                                             }
 
                                             Pallet = "";
