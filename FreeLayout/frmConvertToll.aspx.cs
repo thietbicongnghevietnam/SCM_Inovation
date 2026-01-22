@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -283,19 +284,19 @@ namespace FreeLayout
             string sacnctionid = dr_filter_Sanction.SelectedValue;
             string tensanction2 = filterSanction.Value.ToString();
 
-            DataTable dtIssueOut = DataConn.StoreFillDS2("pro_get_section5", System.Data.CommandType.StoredProcedure, _fromdate, _todate, bophan);
+            //DataTable dtIssueOut = DataConn.StoreFillDS2("pro_get_section5", System.Data.CommandType.StoredProcedure, _fromdate, _todate, bophan);
 
-            // XÓA TRƯỚC KHI BIND
-            dr_filter_Sanction.Items.Clear();
+            //// XÓA TRƯỚC KHI BIND
+            //dr_filter_Sanction.Items.Clear();
 
-            if (dtIssueOut.Rows.Count > 0)
-            {
-                DataRow newRow3 = dtIssueOut.NewRow();
-                newRow3["SanctionId"] = "==Sanction==";
-                dtIssueOut.Rows.InsertAt(newRow3, 0);
-                dr_filter_Sanction.DataSource = dtIssueOut;
-                dr_filter_Sanction.DataBind();
-            }
+            //if (dtIssueOut.Rows.Count > 0)
+            //{
+            //    DataRow newRow3 = dtIssueOut.NewRow();
+            //    newRow3["SanctionId"] = "==Sanction==";
+            //    dtIssueOut.Rows.InsertAt(newRow3, 0);
+            //    dr_filter_Sanction.DataSource = dtIssueOut;
+            //    dr_filter_Sanction.DataBind();
+            //}
 
             //dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList_sacntion3", System.Data.CommandType.StoredProcedure, sacnctionid, _fromdate, _todate, tensanction2);
         }
@@ -611,8 +612,11 @@ namespace FreeLayout
                         dt_new.Columns.Add("Material", typeof(String));
                         dt_new.Columns.Add("Qty", typeof(float));
                         dt_new.Columns.Add("QtyActual", typeof(float));
-                        dt_new.Columns.Add("UnitPrice", typeof(float));
-                        dt_new.Columns.Add("Amount", typeof(float));
+
+                        //dt_new.Columns.Add("UnitPrice", typeof(float));
+                        dt_new.Columns.Add("UnitPrice", typeof(decimal));
+
+                        dt_new.Columns.Add("Amount", typeof(decimal));
                         dt_new.Columns.Add("CostCenter", typeof(String));
                         dt_new.Columns.Add("Reason", typeof(String));
                         dt_new.Columns.Add("Plant", typeof(String));
@@ -629,8 +633,10 @@ namespace FreeLayout
                         dt_new.Columns.Add("MVT", typeof(String));
                         dt_new.Columns.Add("MoveType", typeof(String));
 
-                        dt_new.Columns.Add("UnitPriceAC", typeof(float));
-                        dt_new.Columns.Add("AmountAC", typeof(float));
+                        //dt_new.Columns.Add("UnitPriceAC", typeof(float));
+                        dt_new.Columns.Add("UnitPriceAC", typeof(decimal));
+
+                        dt_new.Columns.Add("AmountAC", typeof(decimal));
                         dt_new.Columns.Add("Vendor", typeof(String));
                         //type_convert
                         dt_new.Columns.Add("type_convert", typeof(String));
@@ -700,8 +706,11 @@ namespace FreeLayout
                                 string Material = "";
                                 float Qty = 0;
                                 float QtyActual = 0;
-                                float UnitPrice = 0;
-                                float Amount = 0;
+
+                                //float UnitPrice = 0;
+                                decimal UnitPrice = 0;
+                                decimal Amount = 0;
+
                                 string CostCenter = "";
                                 string Reason = "";
                                 string Plant = "";
@@ -719,8 +728,10 @@ namespace FreeLayout
                                 string MVT = "";
                                 string MoveType = "";
 
-                                float UnitPriceAC = 0;
-                                float AmountAC = 0;
+                                //float UnitPriceAC = 0;
+                                decimal UnitPriceAC = 0;
+                                decimal AmountAC = 0;
+
                                 string Vendor = "";
                                 string VendorName = "";
                                 string Remark = "";
@@ -795,21 +806,25 @@ namespace FreeLayout
                                             {
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out Qty);
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);                                                
-                                                float.TryParse(dtExcelData.Rows[i][14].ToString(), out Amount); //cot 14
+                                                //float.TryParse(dtExcelData.Rows[i][14].ToString(), out Amount); //cot 14
+                                                decimal.TryParse(dtExcelData.Rows[i][14].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out Amount);
                                             }
                                             else
                                             {
                                                 float.TryParse(dtExcelData.Rows[i][11].ToString(), out Qty);
                                                 float.TryParse(dtExcelData.Rows[i][11].ToString(), out QtyActual);
                                                 //float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount); //cot 12
-                                                float.TryParse(dtExcelData.Rows[i][12].ToString(), out Amount); //cot 12
+                                                //float.TryParse(dtExcelData.Rows[i][12].ToString(), out Amount); //cot 12
+                                                decimal.TryParse(dtExcelData.Rows[i][12].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out Amount);
                                             }
 
-                                            float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
+                                            //decimal.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
+                                            decimal.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(),NumberStyles.Any,CultureInfo.InvariantCulture,out UnitPrice);
 
 
                                             //UnitPriceAC = 0; 
-                                            float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                            //float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                            decimal.TryParse(dtExcelData.Rows[i][32].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out UnitPriceAC);
                                             AmountAC = 0; // do ra excel lay theo cong thuc
 
                                             //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
@@ -872,7 +887,8 @@ namespace FreeLayout
                                                     }
                                                     else
                                                     {
-                                                        float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                        //float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                        decimal.TryParse(dtExcelData.Rows[i][32].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out UnitPriceAC);
                                                     }
                                                 }
                                                 //insert model moi lan 1
@@ -894,7 +910,8 @@ namespace FreeLayout
                                                     }
                                                     else
                                                     {
-                                                        float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                        //float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                        decimal.TryParse(dtExcelData.Rows[i][32].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out UnitPriceAC);
                                                     }
                                                 }
                                                 //insert model moi lan 2   => qty, aty actual va unitprice & amount
@@ -902,7 +919,8 @@ namespace FreeLayout
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out Qty);
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);
                                                 //float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);   
-                                                float.TryParse(dtExcelData.Rows[i][14].ToString(), out Amount);
+                                                //float.TryParse(dtExcelData.Rows[i][14].ToString(), out Amount);
+                                                decimal.TryParse(dtExcelData.Rows[i][14].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out Amount);
 
                                                 dt_new.Rows.Add(i, tensanction, Material, Qty, QtyActual, UnitPrice, Amount, CostCenter, Reason, Plant, Sloc, NameCost, Pallet, Barcode, ScrapSloc, ControlNo, FaTool, TypeName, MVT, MoveType, UnitPriceAC, AmountAC, Vendor, type_convert, Remark, VendorName);
                                                 //dt_checkupload = DataConn.StoreFillDS2("Check_upload_scraplist_convert", System.Data.CommandType.StoredProcedure, SanctionId, Material, Qty, Plant, Sloc, Pallet, ScrapSloc, type_convert, ControlNo, FaTool);
@@ -948,8 +966,9 @@ namespace FreeLayout
                                                         AmountAC = 0;
                                                     }
                                                     else
-                                                    {                                                        
-                                                        float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                    {
+                                                        //float.TryParse(dtExcelData.Rows[i][32].ToString(), out UnitPriceAC);
+                                                        decimal.TryParse(dtExcelData.Rows[i][32].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out UnitPriceAC);
                                                     }
                                                 }
 
@@ -1014,14 +1033,16 @@ namespace FreeLayout
                                             float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
 
                                             //float.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), out UnitPrice);
-                                            float.TryParse(dtExcelData.Rows[i][10].ToString(), out UnitPrice);
+                                            //float.TryParse(dtExcelData.Rows[i][10].ToString(), out UnitPrice);
+                                            decimal.TryParse(dtExcelData.Rows[i][col_unitpriceST].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out UnitPrice);
                                             //float.TryParse(dtExcelData.Rows[i][col_amountST].ToString(), out Amount);
-                                            float.TryParse(dtExcelData.Rows[i][30].ToString(), out Amount);
+                                            //float.TryParse(dtExcelData.Rows[i][30].ToString(), out Amount);
+                                            decimal.TryParse(dtExcelData.Rows[i][30].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out Amount);
 
                                             //float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
                                             //float.TryParse(dtExcelData.Rows[i][col_unitpriceAC].ToString(), out UnitPriceAC);
 
-                                            
+
 
 
                                             //Vendor = dtExcelData.Rows[i][17].ToString();  //vendor name
@@ -1087,8 +1108,10 @@ namespace FreeLayout
                                                 }
                                                 else 
                                                 {
-                                                    float.TryParse(dtExcelData.Rows[i][11].ToString(), out UnitPriceAC);
-                                                    float.TryParse(dtExcelData.Rows[i][29].ToString(), out AmountAC);
+                                                    //float.TryParse(dtExcelData.Rows[i][11].ToString(), out UnitPriceAC);
+                                                    decimal.TryParse(dtExcelData.Rows[i][32].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out UnitPriceAC);
+                                                    //float.TryParse(dtExcelData.Rows[i][29].ToString(), out AmountAC);
+                                                    decimal.TryParse(dtExcelData.Rows[i][29].ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out AmountAC);
                                                 }                                                
                                             }
 
