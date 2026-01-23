@@ -17,8 +17,8 @@
 
     <script src="/plugins/jquery/jquery.min.js"></script>
     <script src="/plugins/toastr/toastr.js"></script>
-
-    <script src="/dist/Infra/jquery-3.7.0.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <%--<script src="/dist/Infra/jquery-3.7.0.js"></script>--%>
     <script src="/dist/Infra/jquery.dataTables.min.js"></script>
     <script src="/dist/Infra/dataTables.bootstrap4.min.js"></script>
 
@@ -53,21 +53,28 @@
                         <input type="text" id="filterMaterial" runat="server" placeholder="Nhập Name Sanction" style="height: 34px;" />
                     </div>
 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                   <%-- <button class="btn btn-primary" type="button" runat="server" onserverclick="Check_image_Click">
+                    <i class="fa fa-sync"></i>Check Image Pallet
+                    </button>--%>
+                    
+
                     <div style="float: left;">
                         <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
                             <i class="fa fa-fw fa-lg fa-search"></i>Lọc
                         </button>
                     </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                    <div style="float: left; padding-left: 10px;">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+                       <asp:Button ID="btnCheckImage" runat="server" CssClass="btn btn-primary" Text="Check Image Pallet" OnClick="btnCheckImage_Click" />
 
-                    <%--<div style="float: left; padding-left: 10px;">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                            Thêm mới
-                        </button>
-                    </div>--%>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                    <div style="clear: both;"></div>
+                   <%-- <div style="clear: both;"></div>--%>
 
-                
+
 
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;"><i class="fa fa-download"></i>&nbsp; Export</button>&nbsp;&nbsp;&nbsp;             
              <%--onserverclick="btnExport_Click"--%>
@@ -82,35 +89,35 @@
         <div>
             <table id="example" class="table table-striped table-bordered" style="width: 100%">
                 <thead>
-                 
-                        <tr role="row">
-                            <th>ID</th>
-                            <th>Sanction</th>
-                            <th>ImageType</th>
-                            <th>CreatedDate</th>
-                            <th>PalletNo</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                  
+
+                    <tr role="row">
+                        <th>ID</th>
+                        <th>Sanction</th>
+                        <th>ImageType</th>
+                        <th>CreatedDate</th>
+                        <th>PalletNo</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
                 </thead>
                 <tbody>
                     <%int i = 0; %>
                     <% foreach (System.Data.DataRow rows in dt_image.Rows)
-                    {
-                        // Gọi hàm để xác định màu nền
-                        string backgroundColor = "#EEEEEE";
-                        if (rows["Flag_export"].ToString() == "YES")
                         {
-                            backgroundColor = "#00FF00";    //mau AQ2
-                        }  
-                        else
-                        {
-                            backgroundColor = "#EEEEEE";  //mau màu nền
-                        }
+                            // Gọi hàm để xác định màu nền
+                            string backgroundColor = "#EEEEEE";
+                            if (rows["Flag_export"].ToString() == "YES")
+                            {
+                                backgroundColor = "#00FF00";    //mau AQ2
+                            }
+                            else
+                            {
+                                backgroundColor = "#EEEEEE";  //mau màu nền
+                            }
 
-                %>
-                <%i++;%>
+                    %>
+                    <%i++;%>
                     <tr role="row" style="background-color: <%= backgroundColor %>">
                         <td><%=i %></td>
                         <td><%=rows["tensacntion"].ToString()%></td>
@@ -119,7 +126,7 @@
                         <td><%=rows["PalletNo"].ToString()%></td>
                         <td><%=rows["Flag_export"].ToString()%></td>
                         <td>
-                           <%-- <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["Material"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <%-- <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["Material"].ToString() %>','<%=rows["Material"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                             <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>','<%=rows["Material"].ToString()%>')"><i class="fas fa-trash"></i>Delete</a>--%>
 
                         </td>
@@ -128,130 +135,76 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                         <th>ID</th>
-                         <th>Sanction</th>
-                         <th>ImageType</th>
-                         <th>CreatedDate</th>
-                         <th>PalletNo</th>
-                         <th>Status</th>
-                         <th>Action</th>
+                        <th>ID</th>
+                        <th>Sanction</th>
+                        <th>ImageType</th>
+                        <th>CreatedDate</th>
+                        <th>PalletNo</th>
+                        <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
-        <div class="modal" id="myModal4">
-            <div class="modal-dialog">
+        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="row">
-                            <div>
-                                <h4 class="modal-title" id="headerTag11" style="float: left">Delete Material Name?</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <%-- Modal footer --%>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="ID">ID</label>
-                                        <span style="color: green; font-size: 11px; font-style: italic;">(Read only)</span>
-                                        <asp:TextBox ID="txtid_del" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Model</label>
-                                        <asp:TextBox ID="txMaterialName_del" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-                        <button type="button" runat="server" id="Button2" onserverclick="Xoathongtin" class="btn btn-primary">
-                            <i class="fas fa-download"></i>
-                            Ghi lại
+                        <h5 class="modal-title" id="exampleModalLabel">Thông tin số lượng ảnh theo Pallet của Sacntion!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="modal" id="myModal3">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="row">
-                            <div>
-                                <h4 class="modal-title" id="headerTag1" style="float: left">Cập nhật thông tin material Name</h4>
-                                <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
+                   <div class="modal-body">
+                        <asp:GridView ID="gvPalletImage"
+                            runat="server"
+                            CssClass="table table-bordered table-striped"
+                            AutoGenerateColumns="false"
+                            OnRowDataBound="gvPalletImage_RowDataBound">
 
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                            <Columns>
+                                <asp:BoundField DataField="PalletNo" HeaderText="Pallet No" />
+                                <asp:BoundField DataField="HasA" HeaderText="Số ảnh A" />
+                                <asp:BoundField DataField="HasB" HeaderText="Số ảnh B" />
 
-                        </div>
+                                
+                                <asp:TemplateField HeaderText="NG">
+                                    <ItemTemplate>
+                                        <asp:Literal ID="ltNG" runat="server"></asp:Literal>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                            </Columns>
+                        </asp:GridView>
+
                     </div>
 
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="ID">ID</label>
-                                <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="ID">Mateial Name</label>
-                                <asp:TextBox ID="idMaterial" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="ID">EnglishName</label>
-                                <asp:TextBox ID="idEnglishName" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="ID">VietNameseName</label>
-                                <asp:TextBox ID="idVietNameseName" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                            </div>
-                        </div>
                         <!-- Lặp lại thêm các dòng -->
                     </div>
 
-                    <%-- Modal footer --%>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>Đóng</button>
-                        <button type="button" runat="server" id="Button1" onserverclick="Updatethongtin" class="btn btn-primary">
-                            <i class="fas fa-download"></i>
-                            Ghi lại
-                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <%--<button type="button" class="btn btn-primary" runat="server" onserverclick="themhanghoa">Ghi lại</button>--%>
                     </div>
                 </div>
             </div>
         </div>
 
+     
+
     </form>
 
-
-    <script src="/plugins/jquery/jquery.min.js"></script>
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <%-- <script src="/plugins/jquery/jquery.min.js"></script>--%>
+   <%-- <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script src="/dist/js/adminlte.min.js"></script>
-    <script src="/dist/js/demo.js"></script>
+    <script src="/dist/js/demo.js"></script>--%>
 
     <script>
 
@@ -286,21 +239,21 @@
 
         });
 
-        function openEditModal3(id, Material, EnglishName, VietNameseName) {
-            $("#IDedit").val(id);
-            $("#idMaterial").val(Material);
-            $("#idEnglishName").val(EnglishName);
-            $("#idVietNameseName").val(VietNameseName);
+        //function openEditModal3(id, Material, EnglishName, VietNameseName) {
+        //    $("#IDedit").val(id);
+        //    $("#idMaterial").val(Material);
+        //    $("#idEnglishName").val(EnglishName);
+        //    $("#idVietNameseName").val(VietNameseName);
 
-            $('#myModal3').modal('show');
-        }
+        //    $('#myModal3').modal('show');
+        //}
 
-        function openEditModal4(id, material) {
-            $("#txtid_del").val(id);
-            $("#txMaterialName_del").val(material);
+        //function openEditModal4(id, material) {
+        //    $("#txtid_del").val(id);
+        //    $("#txMaterialName_del").val(material);
 
-            $('#myModal4').modal('show');
-        }
+        //    $('#myModal4').modal('show');
+        //}
 
 
 

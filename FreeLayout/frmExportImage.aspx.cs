@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -27,6 +29,7 @@ namespace FreeLayout
                 //dtcate.Rows.InsertAt(newRow1, 0);
                 //dr_filter_Cate.DataSource = dtcate;
                 //dr_filter_Cate.DataBind();
+                gvPalletImage.EnableViewState = false;
             }
         }
 
@@ -117,11 +120,88 @@ namespace FreeLayout
                 
 
         }
-        
+
+        protected void btnCheckImage_Click(object sender, EventArgs e)
+        {
+            LoadPalletImage();
+
+            // BẮT BUỘC gọi JS mở modal
+            ScriptManager.RegisterStartupScript(
+                this,
+                this.GetType(),
+                "ShowModal",
+                "$('#exampleModal').modal('show');",
+                true
+            );
+
+        }
+
+        protected void gvPalletImage_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int hasA = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "HasA"));
+                int hasB = Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "HasB"));
+
+                Literal ltNG = (Literal)e.Row.FindControl("ltNG");
+
+                if (hasA == 0 || hasB == 0)
+                {
+                    ltNG.Text = "<i class='fas fa-times-circle text-danger' title='NG'></i>";
+                }
+                else
+                {
+                    ltNG.Text = "<i class='fas fa-check-circle text-success' title='OK'></i>";
+                }
+            }
+        }
+
+
+
+        private void LoadPalletImage()
+        {
+            string sanctionID = filterMaterial.Value;
+
+            DataTable dt_check_image = DataConn.StoreFillDS2("sp_CheckImagePallet", System.Data.CommandType.StoredProcedure, sanctionID);
+
+            gvPalletImage.DataSource = dt_check_image;
+            gvPalletImage.DataBind();
+
+            //string connStr = ConfigurationManager.ConnectionStrings["YourConn"].ConnectionString;
+
+            //using (SqlConnection conn = new SqlConnection(connStr))
+            //using (SqlCommand cmd = new SqlCommand("sp_CheckImagePallet", conn))
+            //{
+            //    cmd.CommandType = CommandType.StoredProcedure;
+            //    cmd.Parameters.AddWithValue("@SanctionId", 9);
+
+            //    SqlDataAdapter da = new SqlDataAdapter(cmd);
+            //    DataTable dt = new DataTable();
+            //    da.Fill(dt);
+
+            //    gvPalletImage.DataSource = dt;
+            //    gvPalletImage.DataBind();
+            //}
+        }
+
+
+        //protected void Check_image_Click(object sender, EventArgs e) 
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
+
 
         //protected void ImportFromExcel(object sender, EventArgs e) 
         //{
-        
+
         //}
 
         public static string SanitizeSheetName(string sheetName)
