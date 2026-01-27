@@ -56,6 +56,14 @@ Select_Mater_ScrapList_sacntion4
 [update_Qty_scrap_list]
 
 
+============= // 26 - 01 - 2026 //==============
+ --loi hang deadstock bi null sloc khi upload   ****
+  -- truong hop hang : Deadstock chờ hủy => ScrapSloc is null
+  --update [ScrapSystem].[dbo].[MasterSlocPUS] set ScrapSloc='' where SlocPus like '%6D%' and ID=50
+  ---6G99
+
+
+
 ---------------******------------  store lay ra pallet con thieu anh ---> theo sanction
 SELECT DISTINCT sd.[Pallet]
 FROM [ScrapSystem].[dbo].[ScrapDetails] sd
