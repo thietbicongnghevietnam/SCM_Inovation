@@ -522,7 +522,7 @@ namespace FreeLayout
             string CostCenter = txtCostcenter.Value.ToString();
             string Namecost = txtnamecost.Value.ToString();
             string Material = txtmaterial.Value.ToString();
-            string IssueQty = "";//; txtQty.Value.ToString();
+            string IssueQty = txtQty.Value.ToString();
 
             string UnitpriceST = txtunitpriceST.Value.ToString();
             string AmountST = txtamountST.Value.ToString();
