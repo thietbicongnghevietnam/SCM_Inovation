@@ -371,7 +371,7 @@ namespace FreeLayout
 
             string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
 
-            //string UserID = "2015597_1";
+            //string UserID = "2000519";  //PUS
 
             //string userId = Session["UserId"]?.ToString();
             //string section = Session["Section"]?.ToString();
@@ -418,10 +418,10 @@ namespace FreeLayout
                         string typename = "";
                         string tenform = "";
 
-                        string TypeRQ = null; string Material = null; string Sloc = null; float Qty = 0; string Mvtype = null; string Plant = null; string Account = null; float UnitPriceST = 0;
-                        float UnitActual = 0; string CostCenter = null; 
+                        string TypeRQ = null; string Material = null; string Sloc = null; Decimal Qty = 0; string Mvtype = null; string Plant = null; string Account = null; Decimal UnitPriceST = 0;
+                        Decimal UnitActual = 0; string CostCenter = null; 
                         string VendorCode = ""; 
-                        string Note = null; string DateVoucher = null; float Amount = 0; float Amount_Actual = 0;
+                        string Note = null; string DateVoucher = null; Decimal Amount = 0; Decimal Amount_Actual = 0;
                         string MVContent = null; string RQ_Reset = null; string CountryOfOrgin = null; string ItemDescription = null;
                         
                         //lay list danh sach type name trong bang scrap detail
@@ -511,7 +511,7 @@ namespace FreeLayout
 
                                         if (dt.Rows[i]["Qty"].ToString() != "")
                                         {
-                                            Qty = float.Parse(dt.Rows[i]["Qty"].ToString());
+                                            Qty = Decimal.Parse(dt.Rows[i]["Qty"].ToString());
                                         }
                                         else
                                         {
@@ -524,7 +524,7 @@ namespace FreeLayout
                                         {
 
                                             float UnitActual_ = float.Parse(dt.Rows[i]["UnitPrice"].ToString().Trim());
-                                            UnitActual = (float)Math.Round((UnitActual_), 5);
+                                            UnitActual = (Decimal)Math.Round((UnitActual_), 5);
                                         }
                                         else
                                         {
@@ -614,8 +614,8 @@ namespace FreeLayout
 
                                         if (dt.Rows[i]["UnitPrice"].ToString() != "")
                                         {
-                                            UnitPriceST = float.Parse(dt.Rows[i]["UnitPrice"].ToString());
-                                            Amount = (float)Math.Round((UnitPriceST * Qty), 2);
+                                            UnitPriceST = Decimal.Parse(dt.Rows[i]["UnitPrice"].ToString());
+                                            Amount = (Decimal)Math.Round((UnitPriceST * Qty), 5);
                                         }
                                         else
                                         {
@@ -624,7 +624,7 @@ namespace FreeLayout
                                         }
 
                                         //******
-                                        Amount_Actual = (float)Math.Round((UnitActual * Qty), 2);    //UnitPrice_AC,Amount_AC
+                                        Amount_Actual = (Decimal)Math.Round((UnitActual * Qty), 5);    //UnitPrice_AC,Amount_AC
                                         Note = "";
                                         DateVoucher = "";
                                         string stringToCheck = Sloc; // Stock in excel file upload
@@ -656,8 +656,8 @@ namespace FreeLayout
                                             else 
                                             {
                                                 //tenform=="A"
-                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssue ([RequestNo],[Material],[TypeID], [IssueQty],[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST , VendorCode,CostCenter,Sloc,UserCreate,RQDeptID,CountryofOrigin,ItemDescription,SanctionName) ";
-                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + "," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + UserID + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "') ";
+                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssue ([RequestNo],[Material],[TypeID], [IssueQty],[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST , VendorCode,CostCenter,Sloc,UserCreate,RQDeptID,CountryofOrigin,ItemDescription,SanctionName,MvName) ";
+                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + "," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + UserID + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "','" + MVContent + "') ";
                                             }
 
                                             //if (dt_insert.Rows[0][0].ToString() == "1")
