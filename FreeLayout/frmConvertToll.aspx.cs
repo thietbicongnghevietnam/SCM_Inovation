@@ -428,8 +428,24 @@ namespace FreeLayout
                     worksheet.Cells[row, 1].Value = i;
                     worksheet.Cells[row, 2].Value = dataRow["Plant"];
                     worksheet.Cells[row, 3].Value = dataRow["Sloc"];
-                    worksheet.Cells[row, 4].Value = dataRow["CostCenter"];
-                    worksheet.Cells[row, 5].Value = dataRow["NameCost"];
+
+                    //rule 09.02.2026
+                    //--Plant = 'V501' and Material like '%AW%'
+                    //--Cost Center: MAW100
+                    //--Name cost: PUS_WASHING MC
+                    if (dataRow["Material"].ToString().Substring(0, 2).ToUpper() == "AW" && dataRow["Plant"].ToString() == "V501")
+                    {
+                        worksheet.Cells[row, 4].Value = "MAW100";
+                        worksheet.Cells[row, 5].Value = "PUS_WASHING MC";
+                    }
+                    else 
+                    {
+                        worksheet.Cells[row, 4].Value = dataRow["CostCenter"];
+                        worksheet.Cells[row, 5].Value = dataRow["NameCost"];
+                    }
+                    //old
+                    //worksheet.Cells[row, 4].Value = dataRow["CostCenter"];
+                    //worksheet.Cells[row, 5].Value = dataRow["NameCost"];
 
                     worksheet.Cells[row, 6].Value = dataRow["Material"]; //
 

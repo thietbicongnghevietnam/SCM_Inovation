@@ -81,25 +81,29 @@ namespace FreeLayout
 
         public void Xoathongtin(object sender, EventArgs e)
         {
-            //string id = txtid_del.Text;
+            string id = txtid_del.Text;
             //string material = txMaterialName_del.Text;
+            string userid = txtuser_del.Text.ToString();
 
-            //////string username = Session["username"].ToString();
-            //////string role_ = Session["role"].ToString();
-
-            //DataTable dtupdate = new DataTable();
-            //dtupdate = DataConn.StoreFillDS2("Delete_mater_MaterialName", System.Data.CommandType.StoredProcedure, id);  //username
-            //if (dtupdate.Rows[0][0].ToString() == "1")
-            //{
-            //    dt_plan = DataConn.StoreFillDS2("Select_Mater_MaterialName", System.Data.CommandType.StoredProcedure);
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            //}
-            //else
-            //{
-            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiểm tra lại thông tin!'); ", true);
-            //}
-
-
+            if (userid == "")
+            {
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Bạn chưa nhập user để xóa!'); ", true);
+            }
+            else 
+            {
+                DataTable dtupdate = new DataTable();
+                dtupdate = DataConn.StoreFillDS2("Delete_ScarpImage_Log", System.Data.CommandType.StoredProcedure, id, userid);  //username
+                if (dtupdate.Rows[0][0].ToString() == "1")
+                {
+                    dt_image = DataConn.StoreFillDS2("Select_Export_ScarpImage", System.Data.CommandType.StoredProcedure);
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Check again!'); ", true);
+                }
+            }
+            
         }
 
         protected void Search_Date_Click(object sender, EventArgs e)
@@ -107,6 +111,7 @@ namespace FreeLayout
             string _fromdate = Request.Form[Date1.UniqueID];
             string _todate = Request.Form[ngaychiid.UniqueID];
             string filterMaterialid = filterMaterial.Value;
+            string filterPalletid = filterPalletNo.Value;
 
             //string category = dr_filter_Cate.SelectedValue;
             if (_fromdate == "" || _todate == "")
@@ -115,7 +120,7 @@ namespace FreeLayout
             }
             else
             {
-                dt_image = DataConn.StoreFillDS2("Select_Export_ScarpImage_loc", System.Data.CommandType.StoredProcedure, _fromdate, _todate, filterMaterialid);
+                dt_image = DataConn.StoreFillDS2("Select_Export_ScarpImage_loc", System.Data.CommandType.StoredProcedure, _fromdate, _todate, filterMaterialid, filterPalletid);
             }
                 
 
