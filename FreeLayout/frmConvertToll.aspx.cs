@@ -743,6 +743,7 @@ namespace FreeLayout
                                 string TypeName = "";
                                 string MVT = "";
                                 string MoveType = "";
+                                string TypeSloc = "";
 
                                 //float UnitPriceAC = 0;
                                 decimal UnitPriceAC = 0;
@@ -867,7 +868,11 @@ namespace FreeLayout
                                             CostCenter = "";  //lay mater MVT
                                             NameCost = "";  //lay mater sloc
 
-                                            dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
+                                            TypeSloc = dtExcelData.Rows[i][2].ToString(); //ROH/HALB //ROH //HALB
+
+                                            //dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant);
+
+                                            dt_getmater_sloc = DataConn.StoreFillDS2("Get_infor_sloc_pus2", System.Data.CommandType.StoredProcedure, ScrapSloc, Plant, TypeSloc);
                                             if (dt_getmater_sloc.Rows.Count > 0)
                                             {
                                                 Sloc = dt_getmater_sloc.Rows[0]["ScrapSloc"].ToString();

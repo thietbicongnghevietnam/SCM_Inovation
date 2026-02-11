@@ -49,11 +49,12 @@ namespace FreeLayout
             string Category = Categoryid.Text;
             string Description = Descriptionid.Text;
             string ScrapSloc = ScrapSlocid.Text;
+            string MVT = MVTid.Text;
 
             ////string userid = Session["username"].ToString();
 
             DataTable dtinsert = new DataTable();
-            dtinsert = DataConn.StoreFillDS2("Insert_mater_sloc_pus", System.Data.CommandType.StoredProcedure, Plant, Plant2, SlocPus, Category, Description, ScrapSloc);
+            dtinsert = DataConn.StoreFillDS2("Insert_mater_sloc_pus", System.Data.CommandType.StoredProcedure, Plant, Plant2, SlocPus, Category, Description, ScrapSloc,MVT);
             if (dtinsert.Rows[0][0].ToString() == "1")
             {
                 dt_image = DataConn.StoreFillDS2("Select_mater_Sloc_Pus", System.Data.CommandType.StoredProcedure);
@@ -95,13 +96,14 @@ namespace FreeLayout
             string Category = idCategory.Text;
             string Description = idDescription.Text;
             string ScrapSloc = idScrapSloc.Text;
+            string MVT = idMVT.Text;
 
             ////string userid = Session["username"].ToString();
 
             if (SlocPus != "" && ScrapSloc != "")
             {
                 DataTable dtupdate = new DataTable();
-                dtupdate = DataConn.StoreFillDS2("Update_mater_sloc_pus", System.Data.CommandType.StoredProcedure, id, Plant, Plant2, SlocPus, Category, Description, ScrapSloc);
+                dtupdate = DataConn.StoreFillDS2("Update_mater_sloc_pus", System.Data.CommandType.StoredProcedure, id, Plant, Plant2, SlocPus, Category, Description, ScrapSloc, MVT);
 
                 if (dtupdate.Rows[0][0].ToString() == "1")
                 {

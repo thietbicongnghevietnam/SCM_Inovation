@@ -101,6 +101,17 @@ Delete_ScarpImage_Log
 Select_Export_ScarpImage
 Select_Export_ScarpImage_loc
 
+============= // 11 - 02 - 2026 //==============  
+them cot: 
+[ScrapSystem].[dbo].[MasterSlocPUS]
+store:
+Select_mater_Sloc_Pus
+Update_mater_sloc_pus
+Insert_mater_sloc_pus
+Get_infor_sloc_pus2
+
+giao dien
+https://portal.einvoice.fpt.com.vn/
 
 
 
