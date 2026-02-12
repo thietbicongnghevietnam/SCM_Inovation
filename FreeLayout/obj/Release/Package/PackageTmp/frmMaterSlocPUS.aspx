@@ -87,6 +87,7 @@
                         <th>Category</th>
                         <th>Description</th>
                         <th>ScrapSloc</th>
+                        <th>MVT</th>
                         <th>Action</th>
                     </tr>
 
@@ -117,8 +118,9 @@
                         <td><%=rows["Category"].ToString()%></td>
                         <td><%=rows["Description"].ToString()%></td>
                         <td><%=rows["ScrapSloc"].ToString()%></td>
+                        <td><%=rows["MVT"].ToString()%></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["Plant"].ToString() %>','<%=rows["Plant2"].ToString() %>','<%=rows["SlocPus"].ToString() %>','<%=rows["Category"].ToString() %>','<%=rows["Description"].ToString() %>','<%=rows["ScrapSloc"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                            <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%=rows["Plant"].ToString() %>','<%=rows["Plant2"].ToString() %>','<%=rows["SlocPus"].ToString() %>','<%=rows["Category"].ToString() %>','<%=rows["Description"].ToString() %>','<%=rows["ScrapSloc"].ToString() %>','<%=rows["MVT"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                             <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["Id"].ToString() %>')"><i class="fas fa-trash"></i>Delete</a>
 
                         </td>
@@ -134,6 +136,7 @@
                         <th>Category</th>
                         <th>Description</th>
                         <th>ScrapSloc</th>
+                         <th>MVT</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
@@ -175,7 +178,6 @@
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="col-md-6">
                                 <label for="ID">Description</label>
                                 <asp:TextBox ID="Descriptionid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
@@ -184,6 +186,13 @@
                                 <label for="ID">ScrapSloc</label>
                                 <asp:TextBox ID="ScrapSlocid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="ID">MVT</label>
+                                <asp:TextBox ID="MVTid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                            </div>
+
                         </div>
 
                         <!-- Lặp lại thêm các dòng -->
@@ -299,6 +308,8 @@
                                 <asp:TextBox ID="idScrapSloc" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
                             <div class="col-md-6">
+                                 <label for="ID">MVT</label>
+                                <asp:TextBox ID="idMVT" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
                             </div>
                         </div>
                         <!-- Lặp lại thêm các dòng -->
@@ -359,7 +370,7 @@
 
         });
 
-        function openEditModal3(id, Plant, Plant2, SlocPus, Category, Description, ScrapSloc) {
+        function openEditModal3(id, Plant, Plant2, SlocPus, Category, Description, ScrapSloc,MVT) {
             $("#IDedit").val(id);
             $("#idPlant").val(Plant);
             $("#idPlant2").val(Plant2);
@@ -367,6 +378,7 @@
             $("#idCategory").val(Category);
             $("#idDescription").val(Description);
             $("#idScrapSloc").val(ScrapSloc);
+            $("#idMVT").val(MVT);
 
             $('#myModal3').modal('show');
         }
