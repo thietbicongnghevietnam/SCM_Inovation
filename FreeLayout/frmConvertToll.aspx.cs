@@ -819,7 +819,7 @@ namespace FreeLayout
                                             //float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out Qty);         //QtyActual = 0;
                                             //float.TryParse(dtExcelData.Rows[i][col_qty].ToString(), out QtyActual);  //lay luon so actual tren nay => khong can up pallet list
 
-                                            if (dtExcelData.Rows[i][11].ToString() == "" && dtExcelData.Rows[i][12].ToString() == "") // cot Vendor cost bi null or rong
+                                            if (dtExcelData.Rows[i][11].ToString() == "") // cot Vendor cost bi null or rong //&& dtExcelData.Rows[i][12].ToString() == ""
                                             {
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out Qty);
                                                 float.TryParse(dtExcelData.Rows[i][13].ToString(), out QtyActual);                                                
@@ -880,7 +880,8 @@ namespace FreeLayout
                                             }
 
                                             //truong hop co ca vendor cost & PSNV cost
-                                            if (dtExcelData.Rows[i][12].ToString() != "" && dtExcelData.Rows[i][14].ToString() != "")
+                                            //if (dtExcelData.Rows[i][12].ToString() != "" && dtExcelData.Rows[i][14].ToString() != "")
+                                            if (dtExcelData.Rows[i][11].ToString() != "" && dtExcelData.Rows[i][13].ToString() != "")
                                             {
                                                 Pallet = "";
                                                 Barcode = "";
