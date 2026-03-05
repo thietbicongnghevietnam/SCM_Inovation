@@ -961,7 +961,8 @@ namespace FreeLayout
                                             else 
                                             {
                                                 //truong hop chi co 1
-                                                if (dtExcelData.Rows[i][12].ToString() != "")
+                                                //if (dtExcelData.Rows[i][12].ToString() != "")
+                                                if (dtExcelData.Rows[i][11].ToString() != "")
                                                 {
                                                     type_cost = "vendorcost";
                                                 }
