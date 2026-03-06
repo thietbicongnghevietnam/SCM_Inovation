@@ -4580,12 +4580,21 @@ namespace FreeLayout
                 var source = dt_all_sumary.AsEnumerable();
                 //var grouped = source.GroupBy(r => r.Field<DateTime>("ETD").Date);
 
+                //var grouped = source.GroupBy(r => new
+                //{
+                //    ETD = r.Field<DateTime>("ETD").Date,   // group cùng ngày
+                //    Consignee = r.Field<string>("Consignee"),
+                //    Shipmode = r.Field<string>("Shipmode"),
+                //    Destination = r.Field<string>("Destination")
+                //});
+
+                //tranh loi du lieu null
                 var grouped = source.GroupBy(r => new
                 {
-                    ETD = r.Field<DateTime>("ETD").Date,   // group cùng ngày
-                    Consignee = r.Field<string>("Consignee"),
-                    Shipmode = r.Field<string>("Shipmode"),
-                    Destination = r.Field<string>("Destination")
+                    ETD = (r.Field<DateTime?>("ETD") ?? DateTime.MinValue).Date,
+                    Consignee = r.Field<string>("Consignee") ?? "",
+                    Shipmode = r.Field<string>("Shipmode") ?? "",
+                    Destination = r.Field<string>("Destination") ?? ""
                 });
 
                 DataTable dt_groupByETD = dt_new3.Clone(); // giữ cấu trúc cột
@@ -5650,6 +5659,7 @@ namespace FreeLayout
                                         Shipmode = dtExcelData.Rows[i]["s/a"].ToString().Trim();
                                         Consignee = dtExcelData.Rows[i]["name"].ToString().Trim();
                                         //fix loi co dong trong phi duoi file
+                                        //*** xem xet lai truong null van input
                                         if (Model == "" || Cat == "" || Shipmode == "" || Consignee == "")
                                         {
                                             break;
