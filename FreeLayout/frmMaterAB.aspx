@@ -101,9 +101,9 @@
                  <td><%=rows["TypeID"].ToString()%></td>
                  <td><%=rows["TypeName"].ToString()%></td>
                  <td><%=rows["AccountCost"].ToString()%></td>
-                 <td><%=rows["Description"].ToString()%></td>                 
+                 <td><%=rows["Decription"].ToString()%></td>                 
                  <td>
-                     <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["NameTemplate"].ToString() %>','<%=rows["TypeID"].ToString() %>','<%=rows["TypeName"].ToString() %>','<%=rows["AccountCost"].ToString() %>','<%=rows["Description"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
+                     <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["ID"].ToString() %>','<%= rows["NameTemplate"].ToString() %>','<%=rows["TypeID"].ToString() %>','<%=rows["TypeName"].ToString() %>','<%=rows["AccountCost"].ToString() %>','<%=rows["Decription"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                      <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["ID"].ToString() %>')"><i class="fas fa-trash"></i>Delete</a>
 
                  </td>

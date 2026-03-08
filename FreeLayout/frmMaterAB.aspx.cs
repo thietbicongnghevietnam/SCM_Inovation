@@ -52,18 +52,20 @@ namespace FreeLayout
             string AccountCost = AccountCostid.Text;
 
             ////string userid = Session["username"].ToString();
+            //chuc nang ke toan
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Contact ACC department!'); ", true);
 
-            DataTable dtinsert = new DataTable();
-            dtinsert = DataConn.StoreFillDS2("Insert_Form_AB", System.Data.CommandType.StoredProcedure, NameTemplate, TypeID, TypeName, AccountCost, Description);
-            if (dtinsert.Rows[0][0].ToString() == "1")
-            {
-                dt_image = DataConn.StoreFillDS2("Select_form_AB", System.Data.CommandType.StoredProcedure);
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            }
-            else
-            {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check again!'); ", true);
-            }
+            //DataTable dtinsert = new DataTable();
+            //dtinsert = DataConn.StoreFillDS2("Insert_Form_AB", System.Data.CommandType.StoredProcedure, NameTemplate, TypeID, TypeName, AccountCost, Description);
+            //if (dtinsert.Rows[0][0].ToString() == "1")
+            //{
+            //    dt_image = DataConn.StoreFillDS2("Select_form_AB", System.Data.CommandType.StoredProcedure);
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            //}
+            //else
+            //{
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, check again!'); ", true);
+            //}
         }
 
         public void Updatethongtin(object sender, EventArgs e)
@@ -76,26 +78,28 @@ namespace FreeLayout
             string Description = idDescription.Text;
 
             ////string userid = Session["username"].ToString();
+            
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Contact ACC department!'); ", true);
 
-            if (NameTemplate != "" && TypeID != "" && TypeName != "")
-            {
-                DataTable dtupdate = new DataTable();
-                dtupdate = DataConn.StoreFillDS2("Update_Form_AB", System.Data.CommandType.StoredProcedure, id, NameTemplate, TypeID, TypeName, AccountCost, Description);
+            //if (NameTemplate != "" && TypeID != "" && TypeName != "")
+            //{
+            //    DataTable dtupdate = new DataTable();
+            //    dtupdate = DataConn.StoreFillDS2("Update_Form_AB", System.Data.CommandType.StoredProcedure, id, NameTemplate, TypeID, TypeName, AccountCost, Description);
 
-                if (dtupdate.Rows[0][0].ToString() == "1")
-                {
-                    dt_image = DataConn.StoreFillDS2("Select_form_AB", System.Data.CommandType.StoredProcedure);
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-                }
-                else
-                {
-                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Check again!'); ", true);
-                }
-            }
-            else 
-            {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, data null!'); ", true);
-            }            
+            //    if (dtupdate.Rows[0][0].ToString() == "1")
+            //    {
+            //        dt_image = DataConn.StoreFillDS2("Select_form_AB", System.Data.CommandType.StoredProcedure);
+            //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            //    }
+            //    else
+            //    {
+            //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Check again!'); ", true);
+            //    }
+            //}
+            //else 
+            //{
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, data null!'); ", true);
+            //}            
         }
 
         public void Xoathongtin(object sender, EventArgs e)
@@ -104,18 +108,20 @@ namespace FreeLayout
             //string material = txMaterialName_del.Text;
             //////string username = Session["username"].ToString();
             //////string role_ = Session["role"].ToString();
+            //chuc nang ke toan
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Contact ACC department!'); ", true);
 
-            DataTable dtupdate = new DataTable();
-            dtupdate = DataConn.StoreFillDS2("Delete_from_AB", System.Data.CommandType.StoredProcedure, id);  //username
-            if (dtupdate.Rows[0][0].ToString() == "1")
-            {
-                dt_image = DataConn.StoreFillDS2("Select_form_AB", System.Data.CommandType.StoredProcedure);
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
-            }
-            else
-            {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Check again!'); ", true);
-            }
+            //DataTable dtupdate = new DataTable();
+            //dtupdate = DataConn.StoreFillDS2("Delete_from_AB", System.Data.CommandType.StoredProcedure, id);  //username
+            //if (dtupdate.Rows[0][0].ToString() == "1")
+            //{
+            //    dt_image = DataConn.StoreFillDS2("Select_form_AB", System.Data.CommandType.StoredProcedure);
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Success!!!');", true);
+            //}
+            //else
+            //{
+            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, Check again!'); ", true);
+            //}
         }
 
         public static string SanitizeSheetName(string sheetName)

@@ -51,40 +51,31 @@ namespace FreeLayout
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl ngaychiid;
 
         /// <summary>
-        /// filterMaterial control.
+        /// cateid1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText filterMaterial;
+        protected global::System.Web.UI.WebControls.DropDownList cateid1;
 
         /// <summary>
-        /// cateid control.
+        /// datefromid2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cateid;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl datefromid2;
 
         /// <summary>
-        /// datefromid control.
+        /// datetoid2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox datefromid;
-
-        /// <summary>
-        /// datetoid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox datetoid;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl datetoid2;
 
         /// <summary>
         /// weekid control.
@@ -123,22 +114,22 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.TextBox IDedit;
 
         /// <summary>
-        /// iddatefrom control.
+        /// iddatefrom1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox iddatefrom;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl iddatefrom1;
 
         /// <summary>
-        /// iddateto control.
+        /// iddateto1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox iddateto;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl iddateto1;
 
         /// <summary>
         /// idweek control.
