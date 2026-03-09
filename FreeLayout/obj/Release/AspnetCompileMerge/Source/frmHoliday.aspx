@@ -38,20 +38,20 @@
          </div>
          <div class="col-sm-12">
              <div style="float: left; padding-right: 10px;">
-                 Từ ngày:
+                 From date:
                        <%--<input type="text" id="datepicker" runat="server">--%>
                  <input type="date" id="Date1" name="date" runat="server">
-                 Đến ngày:                                    
+                 To date:                                    
                        <input type="date" id="ngaychiid" name="date" runat="server">
              </div>
 
-             <div style="float: left; padding-right: 10px;">
+             <%--<div style="float: left; padding-right: 10px;">
                  <input type="text" id="filterMaterial" runat="server" placeholder="Nhập Name Sanction" style="height: 34px;" />
-             </div>
+             </div>--%>
 
              <div style="float: left;">
                  <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
-                     <i class="fa fa-fw fa-lg fa-search"></i>Lọc
+                     <i class="fa fa-fw fa-lg fa-search"></i>Filter
                  </button>
              </div>
 
@@ -84,7 +84,7 @@
                     <th>Cat</th>
                     <th>Date from</th>
                     <th>DateTo</th>
-                    <th>Weekday</th>                 
+                    <%--<th>Weekday</th>   --%>              
                     <th>Action</th>
                  </tr>
            
@@ -111,7 +111,7 @@
                  <td><%=rows["Cat"].ToString()%></td>
                  <td><%=rows["Date"].ToString()%></td>
                  <td><%=rows["DateTo"].ToString()%></td>
-                 <td><%=rows["Weekday"].ToString()%></td>                 
+                <%-- <td><%=rows["Weekday"].ToString()%></td>  --%>               
                  <td>
                      <a href="#" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal3('<%= rows["Id"].ToString() %>','<%=rows["Date"].ToString() %>','<%=rows["DateTo"].ToString() %>','<%=rows["Weekday"].ToString() %>')"><i class="fas fa-edit"></i>Edit</a>
                      <a href="#" style="background-color: #dc3545; color: white;" class="btn btn-info btn-sm" title="eidt item" onclick="openEditModal4('<%= rows["Id"].ToString() %>')"><i class="fas fa-trash"></i>Delete</a>
@@ -126,50 +126,46 @@
                   <th>Cat</th>
                   <th>Date from</th>
                   <th>DateTo</th>
-                  <th>Weekday</th>                 
+                  <%--<th>Weekday</th>        --%>         
                   <th>Action</th>
              </tr>
          </tfoot>
      </table>
  </div>
 
-
         <!-- Modal -->
-<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add holiday</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
+        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add holiday</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
 
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="ID">Category</label>
-                        <asp:TextBox ID="cateid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="ID">Date from</label>
-                        <asp:TextBox ID="datefromid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>
+                    <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Category</label>
+                    <asp:DropDownList ID="cateid1" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:DropDownList>
                 </div>
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <label for="ID">Daten to</label>
-                        <asp:TextBox ID="datetoid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="ID">Week</label>
-                        <asp:TextBox ID="weekid" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
-                    </div>
+                <div class="col-md-6">
+                    <label>Date from</label>
+                    <input type="date" id="datefromid2" name="datefromid2" class="form-control" runat="server" />
                 </div>
-
-                <!-- Lặp lại thêm các dòng -->
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Date to</label>
+                    <input type="date" id="datetoid2" name="datetoid2" class="form-control" runat="server" />
+                </div>
+                <div class="col-md-6" style="display:none">
+                    <label>Week</label>
+                    <asp:TextBox ID="weekid" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:TextBox>
+                </div>
+            </div>
+        </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -232,7 +228,7 @@
              <div class="modal-header">
                  <div class="row">
                      <div>
-                         <h4 class="modal-title" id="headerTag1" style="float: left">Update infor Holiday</h4>
+                         <h4 class="modal-title" id="headerTag1" style="float: left">Update Infor Holiday</h4>
                          <%--<h6 class="modal-title" id="headerTag" style="float: left; color:red"><b><i>Chi tiết tồn kho!</i></b></h6>--%>
 
                          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float: right; margin-left: 300px;">
@@ -247,22 +243,26 @@
                  <div class="row">
                      <div class="col-md-6">
                          <label for="ID">ID</label>
-                         <asp:TextBox ID="IDedit" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                         <asp:TextBox ID="IDedit" CssClass="form-control" ClientIDMode="Static" placeholder="" runat="server"></asp:TextBox>
                      </div>
                      <div class="col-md-6">
                          <label for="ID">Date from</label>
-                         <asp:TextBox ID="iddatefrom" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                        <%-- <asp:TextBox ID="iddatefrom" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
+                          
+                          <input type="date" id="iddatefrom1" ClientIDMode="Static" class="form-control" name="iddatefrom1" runat="server" />
                      </div>
 
                  </div>
                  <div class="row">
                      <div class="col-md-6">
                          <label for="ID">Date To</label>
-                         <asp:TextBox ID="iddateto" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                         <%--<asp:TextBox ID="iddateto" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>--%>
+                         <input type="date" id="iddateto1" ClientIDMode="Static" class="form-control" name="iddateto1" runat="server" />
+                         
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-6" style="display:none">
                          <label for="ID">Week</label>
-                         <asp:TextBox ID="idweek" CssClass="form-control" placeholder="" runat="server"></asp:TextBox>
+                         <asp:TextBox ID="idweek" CssClass="form-control" ClientIDMode="Static" placeholder="" runat="server"></asp:TextBox>
                      </div>
                  </div>
                  <!-- Lặp lại thêm các dòng -->
@@ -323,10 +323,14 @@
 
     });
 
-    function openEditModal3(id, Datefrom, Dateto,tuan) {
+    function openEditModal3(id, Datefrom, Dateto, tuan) {
+        //console.log("Datefrom:", Datefrom);  // Xem format đang là gì
+        //console.log("Dateto:", Dateto);
         $("#IDedit").val(id);
-        $("#iddatefrom").val(Datefrom);
-        $("#iddateto").val(Dateto);
+        //$("#iddatefrom1").val(Datefrom);
+        //$("#iddateto1").val(Dateto);
+        $("#iddatefrom1").val(formatDate(Datefrom));
+        $("#iddateto1").val(formatDate(Dateto));
         $("#idweek").val(tuan);
 
         $('#myModal3').modal('show');
@@ -339,7 +343,14 @@
         $('#myModal4').modal('show');
     }
 
-
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);  // new Date() parse được format này
+        var yyyy = d.getFullYear();
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var dd = String(d.getDate()).padStart(2, '0');
+        return yyyy + '-' + mm + '-' + dd;  // yyyy-MM-dd
+    }
 
 </script>
 
