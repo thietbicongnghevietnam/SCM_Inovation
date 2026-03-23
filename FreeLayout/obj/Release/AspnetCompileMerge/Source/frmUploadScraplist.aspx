@@ -113,6 +113,10 @@
                     <button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="export_craplist_Click"><i class="fa fa-download"></i>&nbsp; Export Scarp List</button>&nbsp;&nbsp;&nbsp;   
                     <button class="btn btn-success" type="button" runat="server" style="margin-left: 20px;" onserverclick="Confirm_Issue_Out"><i class="fa fa-check-circle"></i>&nbsp; Confirm E-IsssueOut</button>&nbsp;&nbsp;&nbsp;   
                     <%--<button class="btn btn-primary" type="button" runat="server" style="margin-left: 20px;" onserverclick="Dongbo_craplist_Click"><i class="fa fa-sync"></i>&nbsp; Sys Data Covnert</button>--%>
+
+                    <input class="btn btn-primary" id="btnGet" type="button" value="Print Partcard" style="margin-left: 20px;margin-right:5px;" />
+                    Select Print All : <input type="checkbox" value="1" id="test-select-all" />
+
                 </div>
 
                 <div class="col-sm-12">
@@ -150,6 +154,7 @@
                             <th>CreatedDate</th>
 
                             <th>Action</th>
+                            <th>Print</th>
                         </tr>
                     </tr>
                 </thead>
@@ -196,7 +201,9 @@
                                 '<%= rows["NameCost"].ToString() %>')"><i class="fas fa-edit"></i></a>
                             <a href="#" title="delete item" onclick="openEditModal5('<%= rows["Id"].ToString() %>','<%= rows["Material"].ToString() %>')"><i class="fas fa-trash"></i></a>
                         </td>
-
+                        <td>
+                             <input type="checkbox" id="<%= rows["Id"].ToString() %>" value="<%= rows["Id"].ToString() %>" />
+                        </td>
                     </tr>
                     <%}
                     }%>
@@ -405,6 +412,26 @@
                 //"info": true,                    
             });
 
+        });
+
+        $("#btnGet").click(function () {
+            var message = "";
+            var ketqua = "";
+            debugger;
+            //Loop through all checked CheckBoxes in GridView.
+            $("#example input[type=checkbox]:checked").each(function () {
+                message += $(this).closest('tr').find('input:checkbox').val() + ",";
+                //message += "\n";                
+            });
+            ketqua = message.substr(0, message.length - 1)
+
+            window.location.href = "PrintpartcardQC.aspx?data=" + ketqua;
+            return false;
+        });
+
+        $('#test-select-all').click(function () {
+            //alert('asdfas')
+            $("#example input[type=checkbox]").prop('checked', this.checked);
         });
 
         function openEditModal3(Id, Material, Qty, QtyActual, UnitPrice, Sloc, NameCost) {

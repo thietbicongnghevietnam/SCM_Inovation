@@ -1836,6 +1836,7 @@
     <Content Include="plugins\toastr\toastr.js" />
     <Content Include="plugins\toastr\toastr.min.css" />
     <Content Include="plugins\toastr\toastr.min.js" />
+    <Content Include="PrintpartcardQC.aspx" />
     <Content Include="ReportBorrowReturn.aspx" />
     <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Textfile\kitting_droplist.txt" />
@@ -1998,6 +1999,13 @@
     </Compile>
     <Compile Include="Main_test2.aspx.designer.cs">
       <DependentUpon>Main_test2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PrintpartcardQC.aspx.cs">
+      <DependentUpon>PrintpartcardQC.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PrintpartcardQC.aspx.designer.cs">
+      <DependentUpon>PrintpartcardQC.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportBorrowReturn.aspx.cs">
