@@ -67,13 +67,17 @@
 
                     <div style="clear: both;"></div>
 
+                    
+
                     <!-- import file excel -->
                     <!-- ADD A FILE UPLOAD CONTROL AND A BUTTON TO EXECUTE. -->
-                    <div style="font: 14px Verdana; float: right">
+                    <div style="font: 14px Verdana; float: right">              
+
                         <p style="margin-top: 0px; margin-left: 20px;">
                             Chọn file để upload:
  <asp:FileUpload ID="FileUpload" Width="450px" runat="server" />
                         </p>
+
                         <p style="margin-top: 0px; margin-left: 20px;">
                             <input type="button" value="Import Plan" runat="server" onserverclick="ImportFromExcel" class="btn btn-primary" />
 
@@ -84,6 +88,10 @@
                          
                          <i class="fas fa-download"></i>Tải file mẫu upload
                      </button>
+
+                                                    <!-- ========== CHECKBOX MỚI ========== -->
+<asp:CheckBox ID="chkmater_new" runat="server" Text="AddListNew" Checked="true" />
+
                         </p>
                         <p>
                             <asp:Label ID="Label1" runat="server"></asp:Label>

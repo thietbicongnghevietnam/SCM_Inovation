@@ -51,7 +51,8 @@
 }
 
 .card {
-    width: 24%; /* 4 card / dòng */
+    /*width: 24%;*/ /* 4 card / dòng */
+    width: 48%; /* 2 card / dòng */
     box-sizing: border-box;
 }
 
@@ -84,30 +85,31 @@
      {%>
  <%i++;%>
     <div class="card">
+        <!-- 4partcard 1 row : for ...-->
         <table>
             <tr>
                 <td style="text-align:center;"><b></b></td>
-                <td colspan="2" style="text-align:center;"><b>Part card</b></td>
+                <td colspan="2" style="text-align:center;"><b style="font-size:18px;">Part card</b></td>
             </tr>
             <tr>
                 <td>STT</td>
-                <td colspan="2"><%= rows["Noid"].ToString() %></td>
+                <td colspan="2"><b style="font-size:20px;"><%= rows["Noid"].ToString() %></b></td>
             </tr>
             <tr>
                 <td>Part NO</td>
-                <td colspan="2"><%= rows["Material"].ToString() %></td>
+                <td colspan="2"><b style="font-size:24px;"><%= rows["Material"].ToString() %></b></td>
             </tr>
             <tr>
                 <td>Part Name</td>
-                <td colspan="2"><%= rows["partname"].ToString() %></td>
+                <td colspan="2"><b style="font-size:20px;"><%= rows["partname"].ToString() %></b></td>
             </tr>
             <tr>
                 <td>Qty</td>
-                <td colspan="2" style="text-align:right"><%= rows["Qty"].ToString() %></td>
+                <td colspan="2" style="text-align:right;"><b style="font-size:24px;"><%= rows["Qty"].ToString() %></b></td>
             </tr>
             <tr>
                 <td>PalletNO</td>
-                <td colspan="2" style="text-align:center"><%= rows["Pallet"].ToString() %></td>
+                <td colspan="2" style="text-align:center"><b style="font-size:20px;"><%= rows["Pallet"].ToString() %></b></td>
             </tr>
             <tr>
                 <td>Box</td>
