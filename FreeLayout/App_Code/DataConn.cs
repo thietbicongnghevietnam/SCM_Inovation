@@ -163,6 +163,25 @@ namespace FreeLayout.App_Code
             return ds.Tables[0];
         }
 
+        public static DataTable StoreFillDS_issueout(string query_object, CommandType type, params object[] obj)
+        {
+            SqlConnection conn = new SqlConnection(source3);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(query_object, conn);
+            cmd.CommandType = type;
+            SqlCommandBuilder.DeriveParameters(cmd);
+            for (int i = 1; i <= obj.Length; i++)
+            {
+                cmd.Parameters[i].Value = obj[i - 1];
+            }
+            SqlDataAdapter dap = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            dap.Fill(ds);
+            conn.Dispose();
+            conn.Close();
+            return ds.Tables[0];
+        }
+
         /*Nguyen Hien*/
         //Store Procedure tra ve datatable
         public static int ExecuteStore(string query_object, CommandType type, params object[] obj)

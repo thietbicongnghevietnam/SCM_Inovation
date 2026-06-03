@@ -28,6 +28,8 @@ namespace FreeLayout
         public DataTable dt_update = new DataTable();
         public DataTable dtsanction = new DataTable();
         public DataTable dtIssueOut = new DataTable();
+
+        public DataTable dttypesap_PMS = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -55,6 +57,7 @@ namespace FreeLayout
 
                 Date1.Value = DateTime.Now.ToString("yyyy-MM-dd");
                 ngaychiid.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                Voucherid.Value = DateTime.Now.ToString("dd/MM/yyyy");  //dd/MM/yyyy
 
                 dt_plan = DataConn.StoreFillDS2("Select_Mater_ScrapList", System.Data.CommandType.StoredProcedure);
                 //Date1.Value = DateTime.Now.ToString("dd-MM-yyyy");
@@ -76,7 +79,15 @@ namespace FreeLayout
                 dtsanction.Rows.InsertAt(newRow2, 0);
                 dr_filter_Sanction.DataSource = dtsanction;
                 dr_filter_Sanction.DataBind();
-                         
+
+                //18.Type_SAP_PMS
+                dttypesap_PMS = DataConn.StoreFillDS_issueout("pro_get_typesapPMS", System.Data.CommandType.StoredProcedure);
+                DataRow newRow3 = dttypesap_PMS.NewRow();
+                newRow3["NameTypeSap"] = "==TypeSapPMS==";
+                dttypesap_PMS.Rows.InsertAt(newRow3, 0);
+                dr_filter_TYPE_SAP_PMS.DataSource = dttypesap_PMS;
+                dr_filter_TYPE_SAP_PMS.DataBind();
+
             }
         }
 
@@ -371,7 +382,7 @@ namespace FreeLayout
 
             string UserID = Session["UserId"]?.ToString();// "2015597_1"; //user send request phe duyet    : 2010919 -pham huong gian
 
-            //string UserID = "2000519";  //PUS
+            //string UserID = "2000519";  //PUS - RIEM
 
             //string userId = Session["UserId"]?.ToString();
             //string section = Session["Section"]?.ToString();
@@ -468,6 +479,9 @@ namespace FreeLayout
 
                                     }
 
+                                    string TypeOutSap = ""; //MCS //PMS  //loc theo mater sloc MCS
+                                    string Type_SAP_PMS = "";
+
                                     for (int i = 0; i < dt.Rows.Count; i++)
                                     {
                                         //check type request co trong mater cua ke toan : tbl_MV_Master_ACC
@@ -487,7 +501,8 @@ namespace FreeLayout
                                         //Max_ID = 1;
                                         //TypeRQ = "7";
 
-                                        Request_NO = "RQB-" + bophan + "-" + DateTime.Now.ToString("MMyy") + "-" + Max_ID.ToString();
+                                        //Request_NO = "RQB-" + bophan + "-" + DateTime.Now.ToString("MMyy") + "-" + Max_ID.ToString();
+                                        Request_NO = "RQ"+ tenform + "-" + bophan + "-" + DateTime.Now.ToString("MMyy") + "-" + Max_ID.ToString();
 
                                         if (dt.Rows[i]["Material"].ToString() != "")
                                         {
@@ -499,15 +514,45 @@ namespace FreeLayout
                                             return;
                                         }
 
+                                        // chan sloc => 1 request khong cho phep cac kho MCS va ca Kho PMS
                                         if (dt.Rows[i]["Sloc"].ToString() != "")
                                         {
                                             Sloc = dt.Rows[i]["Sloc"].ToString();
+                                            DataTable dt_sloc_mcs = new DataTable();
+                                            dt_sloc_mcs = DataConn.StoreFillDS_issueout("SP_get_slockMCS", CommandType.StoredProcedure, Sloc);
+
+                                            if (dt_sloc_mcs.Rows[0][0].ToString() == "1")
+                                            {
+                                                if (i >= 1)
+                                                {
+                                                    if (TypeOutSap == "PMS")
+                                                    {
+                                                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Sloc MCS_ALL NG check again :(" + (i + 1).ToString() + ") is null');", true);
+                                                        return;
+                                                    }
+                                                }
+                                                TypeOutSap = "MCS";
+                                            }
+                                            else
+                                            {
+                                                //check_sloc_mcs = check_sloc_mcs + 1;                                
+                                                if (i >= 1)
+                                                {
+                                                    if (TypeOutSap == "MCS")
+                                                    {
+                                                        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Sloc MCS_ALL NG check again :(" + (i + 1).ToString() + ") is null');", true);
+                                                        return;
+                                                    }
+                                                }
+                                                TypeOutSap = "PMS";
+                                            }
                                         }
                                         else
                                         {
                                             Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Sloc at row :(" + (i + 1).ToString() + ") is null');", true);
                                             return;
                                         }
+
 
                                         if (dt.Rows[i]["Qty"].ToString() != "")
                                         {
@@ -532,6 +577,7 @@ namespace FreeLayout
                                             return;
                                         }
 
+                                        //mac dinh scrap la Out khong bat trong mater  ==> ben issue out moi bat dieu kien
                                         if (dt.Rows[i]["MVT"].ToString() != "")
                                         {
                                             Mvtype = dt.Rows[i]["MVT"].ToString();
@@ -541,23 +587,9 @@ namespace FreeLayout
                                             Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data MVType at row :(" + (i + 1).ToString() + ") is null');", true);
                                             return;
                                         }
-
+                                        //SP_Issue_Material_Check_MVType2  ==> stored chan ben Issue
                                         //**** tam thoi chua check ***** ben issue out  ==> Lay ra trong mater: [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode='201' and TypeID=7  => MVContent
-                                        // van phai dung bang :
-                                        //select ContentMV FROM [ScrapSystem].[dbo].[tbl_MV_Master_ACC] where MVTypeCode=@Mvtype and TypeID=@TypeRQ
-
-                                        //dtCheckMV = DataConn.StoreFillDS2("get_IssueOut_MVType", CommandType.StoredProcedure, Mvtype.Trim(), TypeRQ);
-                                        //// Kiểm tra MV-TypeName không đúng Mv TypeID`
-                                        //if (dtCheckMV.Rows.Count > 0)
-                                        //{
-                                        //    MVContent = dtCheckMV.Rows[0][0].ToString();
-                                        //}
-                                        //else
-                                        //{
-                                        //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('MVContent khong co trong mater!');", true);
-                                        //    return;
-                                        //}
-
+                                        
                                         //mac dinh scrap la Out khong bat trong mater
                                         MVContent = "Out";
 
@@ -582,29 +614,41 @@ namespace FreeLayout
                                         }
 
                                         string TypeCheck = TypeRQ;
-                                        string[] stringTypeID = { "2", "3", "4", "5", "8", "9", "19" }; // Những Type sẽ phải điền Vendorcode
+                                        string[] stringTypeID = { "2", "3", "4", "5", "8", "9", "19" }; // Những Type sẽ phải điền Vendorcode  ***=> khong bat vendor
 
 
                                         //*****check lai phan vendor code nay ==> insert la vendor code => khong phai vendor name
-                                        foreach (string x in stringTypeID)
+                                        //khong bat vendorcode
+                                        //foreach (string x in stringTypeID)
+                                        //{
+                                        //    int CheckTrung = string.Compare(TypeCheck.ToString().ToUpper().Trim(), x.ToUpper().Trim());
+
+                                        //    if (CheckTrung == 0)
+                                        //    {
+                                        //        if (dt.Rows[i]["Vendor"].ToString() != "")
+                                        //        {
+                                        //            VendorCode = dt.Rows[i]["Vendor"].ToString();
+                                        //        }
+                                        //        else
+                                        //        {
+                                        //            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Vendor code at row :(" + (i + 1).ToString() + ") is null');", true);
+                                        //            return;
+                                        //        }
+                                        //        break;
+                                        //    }
+                                        //}
+
+                                        VendorCode = dt.Rows[i]["Vendor"].ToString();
+
+                                        //18.Type_SAP_PMS  ==> PMS yeu cau them cac loai out SAP
+                                        Type_SAP_PMS = dr_filter_TYPE_SAP_PMS.SelectedValue.ToString();
+                                        if (Type_SAP_PMS == "==TypeSapPMS==")
                                         {
-                                            int CheckTrung = string.Compare(TypeCheck.ToString().ToUpper().Trim(), x.ToUpper().Trim());
-
-                                            if (CheckTrung == 0)
-                                            {
-                                                if (dt.Rows[i]["Vendor"].ToString() != "")
-                                                {
-                                                    VendorCode = dt.Rows[i]["Vendor"].ToString();
-                                                }
-                                                else
-                                                {
-                                                    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('This data Vendor code at row :(" + (i + 1).ToString() + ") is null');", true);
-                                                    return;
-                                                }
-                                                break;
-                                            }
-
+                                            //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('NG, Bạn chưa chọn TYPE SAP PMS!", true);
+                                            Page.ClientScript.RegisterStartupScript(Page.GetType(),"Message","alert('NG, Bạn chưa chọn TYPE SAP PMS!');",true);
+                                            return;
                                         }
+
 
                                         CountryOfOrgin = "";// chua co thong tin *** bo phan cung cap (ke toan) **** // dt.Rows[i][11].ToString();
                                         ItemDescription = "";//chua co thong tin *** bo phan cung cap (ke toan) **** // dt.Rows[i][12].ToString();
@@ -626,55 +670,44 @@ namespace FreeLayout
                                         //******
                                         Amount_Actual = (Decimal)Math.Round((UnitActual * Qty), 5);    //UnitPrice_AC,Amount_AC
                                         Note = "";
-                                        DateVoucher = "";
-                                        string stringToCheck = Sloc; // Stock in excel file upload
-                                        string StockUser = "";// Session["Stock"].ToString().Trim();    //**** confirm lai bo phan 
-                                        string DateInsert = DateTime.Now.ToString("dd/MM/yyyy");
-                                        string Public_Dept = bophan;  //****check lai   //ten bo phan
+                                        string DateVoucher_input = Request.Form[Voucherid.UniqueID];                                        
+                                        if (DateVoucher_input == "")
+                                        {
+                                            //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('NG, bạn chưa chon Date voucher! ');", true);
+                                            Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "alert('NG, bạn chưa chon Date voucher!');", true);
+                                            return;
+                                        }
+                                        else 
+                                        {
+                                            DateTime dt_input = DateTime.Parse(DateVoucher_input);
+                                            DateVoucher = dt_input.ToString("dd/MM/yyyy");
+                                        }
 
-                                        //if (bophan != "PUR") // Nếu Phòng PUR có thể upload tất cả các kho bộ phận khác vẫn phải theo danh sách kho.
-                                        //{
-                                        //    if (!StockUser.Contains(stringToCheck))
-                                        //    {
-                                        //        Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.warning('Upload NG... You can not upload Stock (" + Sloc + ") in  list stock (" + StockUser + ") you control.');", true);
-                                        //        return;
-                                        //    }
-                                        //}
+                                        string stringToCheck = Sloc; // Stock in excel file upload
+                                        //string StockUser = "";// Session["Stock"].ToString().Trim();    //**** confirm lai bo phan 
+                                        string DateInsert = DateTime.Now.ToString("dd/MM/yyyy");
+                                        string Public_Dept = bophan;  //****check lai   //ten bo phan                                        
+
+                                        string Type_Rosh_Halb = dt.Rows[i]["MoveType"].ToString();
+                                        string Reason = dt.Rows[i]["Reason"].ToString();
+                                        string Namecode = dt.Rows[i]["NameCost"].ToString();
+                                        
+
 
                                         if (TypeRQ != "" || Material != "" || Sloc != "" || Mvtype != "" || Plant != "" || CostCenter != "")
-                                        {
-                                            //sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription) ";
-                                            //sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + Session["UserName"].ToString() + "'," + UnitPriceST + " ,'" + MVContent + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Amount + "," + UnitActual + "," + Amount_Actual + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "') ";
-                                            //Session["RQ_UploadB"] = Request_NO;
-                                            //dt_insert = DataConn.StoreFillDS2("Insert_Issue_InOut_FromB", System.Data.CommandType.StoredProcedure, Request_NO, Material, TypeRQ, Qty, UserID, Math.Truncate(UnitPriceST * 100000) / 100000, MVContent, Plant, Note, DateVoucher, Math.Truncate(Amount * 100000) / 100000, Math.Truncate(UnitActual * 100000) / 100000, Math.Truncate(Amount_Actual * 100000) / 100000, VendorCode, CostCenter, Sloc, Public_Dept, CountryOfOrgin, ItemDescription, tenform);
-
+                                        {                                            
                                             if (tenform =="B")
                                             {
-                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription,SanctionName) ";
-                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + UserID + "'," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + "," + Math.Truncate(UnitActual * 100000) / 100000 + "," + Math.Truncate(Amount_Actual * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "') ";
+                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssueB ([RequestNo],[Material],[TypeID], [IssueQty],UserCreate,[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST,UnitPrice_AC,Amount_AC , VendorCode,CostCenter,Sloc,MvName,RQDeptID,CountryofOrigin,ItemDescription,SanctionName,Type_Rosh_Halb,Reason,NameCode,TypeSapPMS,TypeOutSap) ";
+                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + ",'" + UserID + "'," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + "," + Math.Truncate(UnitActual * 100000) / 100000 + "," + Math.Truncate(Amount_Actual * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + MVContent + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "','"+ Type_Rosh_Halb + "','"+ Reason + "','"+ Namecode + "','"+ Type_SAP_PMS + "','"+ TypeOutSap + "') ";
                                             }
                                             else 
                                             {
                                                 //tenform=="A"
-                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssue ([RequestNo],[Material],[TypeID], [IssueQty],[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST , VendorCode,CostCenter,Sloc,UserCreate,RQDeptID,CountryofOrigin,ItemDescription,SanctionName,MvName) ";
-                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + "," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + UserID + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "','" + MVContent + "') ";
+                                                sql_ = sql_ + " INSERT INTO tbl_RQ_MaterialIssue ([RequestNo],[Material],[TypeID], [IssueQty],[UnitPrice_ST],[MvType],[Plant],Note,DateVoucher,Amount_ST , VendorCode,CostCenter,Sloc,UserCreate,RQDeptID,CountryofOrigin,ItemDescription,SanctionName,MvName,Type_Rosh_Halb,Reason,NameCode,TypeSapPMS,TypeOutSap) ";
+                                                sql_ = sql_ + " VALUES( '" + Request_NO + "','" + Material + "','" + TypeRQ + "'," + Qty + "," + Math.Truncate(UnitPriceST * 100000) / 100000 + " ,'" + Mvtype + "','" + Plant + "' ,N'" + Note + "', '" + DateVoucher + "'," + Math.Truncate(Amount * 100000) / 100000 + ",'" + VendorCode + "','" + CostCenter + "','" + Sloc + "','" + UserID + "','" + Public_Dept + "','" + CountryOfOrgin + "','" + ItemDescription + "','" + _sanction + "','" + MVContent + "','"+ Type_Rosh_Halb + "','"+ Reason + "','"+Namecode+"','"+ Type_SAP_PMS + "','"+ TypeOutSap + "') ";
                                             }
-
-                                            //if (dt_insert.Rows[0][0].ToString() == "1")
-                                            //{
-                                            //    ketqua = true;
-                                            //    dongloi = dongloi + 1;
-                                            //    //Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.success('Create Issue Out successful ....');", true);
-                                            //}
-                                            //else
-                                            //{
-                                            //    ketqua = false;
-                                            //    dongloi = i;
-                                            //    VMT_err = _MVT;
-                                            //    Page.ClientScript.RegisterStartupScript(Page.GetType(), "Message", "toastr.error('NG, kiem tra lai !'); ", true);
-                                            //    return;
-                                            //}
-
+                                            
                                             //ketqua = true;
                                             dongloi = i;
                                             VMT_err = _MVT;

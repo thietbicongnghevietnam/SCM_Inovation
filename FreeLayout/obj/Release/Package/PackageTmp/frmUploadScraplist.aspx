@@ -57,9 +57,9 @@
                     <div style="float: left;">
                         From Date:
                              <%--<input type="text" id="datepicker" runat="server">--%>
-                        <input type="date" id="Date1" name="date" runat="server">
+                        <input type="date" id="Date1" name="date" runat="server" />
                         To Date:                                    
-                             <input type="date" id="ngaychiid" name="date" runat="server">
+                             <input type="date" id="ngaychiid" name="date" runat="server" />
                     </div>
                     <div class="col-md-1" style="float: left">
                         <div class="form-group">
@@ -93,13 +93,19 @@
                         </div>
                     </div>
 
-                    <%--<div style="float: left; padding-right: 10px;">
-                        <input type="text" id="filterSanction" runat="server" placeholder="Nhập Sacntion" style="height: 34px;" />
-                    </div>--%>
+                    <div class="col-md-1" style="float: left">
+                    <div class="form-group">
+                        <%-- <label for="Group">Filter Cate</label>--%>
+                        <asp:DropDownList ID="dr_filter_TYPE_SAP_PMS" runat="server"
+                            AppendDataBoundItems="true"
+                            DataTextField="NameTypeSap"
+                            DataValueField="NameTypeSap"
+                            CssClass="custom-select custom-select-sm form-control form-control-sm" />
+                        <%--OnSelectedIndexChanged="dr_filter_Plan_SelectedIndexChanged" AutoPostBack="True"--%>
+                    </div>
+                </div>
 
-                    <%--<div style="float: left; padding-right: 10px;">
-                        <input type="text" id="filterIssueout" runat="server" placeholder="Nhập IusseOut" style="height: 34px;" />                        
-                    </div>--%>
+                   
 
                     <span style="padding-left: 20px;"></span>
                     <button class="btn btn-primary" type="button" runat="server" onserverclick="Search_Date_Click">
@@ -120,6 +126,8 @@
                 </div>
 
                 <div class="col-sm-12">
+                    <b style="float:left; margin-left: 10px; margin-right:10px; margin-top:5px;">Date Voucher:</b>                                    
+                    <input type="date" id="Voucherid" name="Voucherid" runat="server" style="float:left; margin-top:5px;" />
                 </div>
 
             </div>

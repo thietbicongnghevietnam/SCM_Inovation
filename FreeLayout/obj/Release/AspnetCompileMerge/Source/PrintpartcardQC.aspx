@@ -42,18 +42,33 @@
         size: A4;
         margin: 10mm;
     }
+
+     .page-break{
+        page-break-after: always;
+    }
+
 }
 
-.container {
+/*.container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+}*/
+.container {
+    display: table;
+    width: 100%;
 }
 
-.card {
+/*.card {*/
     /*width: 24%;*/ /* 4 card / dòng */
-    width: 48%; /* 2 card / dòng */
-    box-sizing: border-box;
+    /*width: 48%;*/ /* 2 card / dòng */
+    /*box-sizing: border-box;
+}*/
+.card {
+    display: inline-block;
+    width: 49%;
+    vertical-align: top;
+    margin-bottom: 10px;
 }
 
 .card table {
@@ -117,6 +132,11 @@
             </tr>
         </table>
     </div>
+
+                <% if (i % 10 == 0 && i < dt_scrap.Rows.Count) { %>
+        <div class="page-break"></div>
+    <% } %>
+
                 <%} %>
                <div class="row" style="margin-top: 20px; margin-left:100px;">   </div>
 

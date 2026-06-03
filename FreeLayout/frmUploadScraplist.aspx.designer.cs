@@ -78,6 +78,24 @@ namespace FreeLayout
         protected global::System.Web.UI.WebControls.DropDownList dr_filter_IssueOut;
 
         /// <summary>
+        /// dr_filter_TYPE_SAP_PMS control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dr_filter_TYPE_SAP_PMS;
+
+        /// <summary>
+        /// Voucherid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Voucherid;
+
+        /// <summary>
         /// hdSanction control.
         /// </summary>
         /// <remarks>
