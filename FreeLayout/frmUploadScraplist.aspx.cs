@@ -898,18 +898,21 @@ namespace FreeLayout
                             worksheet.Cells[row, 9].Value = dataRow["Material"];      //Model /Partno
 
                             worksheet.Cells[row, 10].Value = dataRow["Vendor"];    //suplier
-                            worksheet.Cells[row, 11].Value = dataRow["UnitPrice"];       //price
-                            worksheet.Cells[row, 12].Value = dataRow["Amount"];         //total asset
-                            worksheet.Cells[row, 12].Value = dataRow["BookValue"];         //book value
-                            worksheet.Cells[row, 12].Value = dataRow["Currency"];         //currency
-                            worksheet.Cells[row, 12].Value = dataRow["FaTool"];         //FA/Tool
-                            worksheet.Cells[row, 12].Value = "";                        //INV No
-                            worksheet.Cells[row, 12].Value = dataRow["SoTK"];         //CD No
-                            worksheet.Cells[row, 12].Value = dataRow["NgayTK"];         //CD Date
+                            //worksheet.Cells[row, 11].Value = dataRow["UnitPrice"];       //price  //UnitPriceAC
+                            worksheet.Cells[row, 11].Value = dataRow["UnitPriceAC"];       //price  //UnitPriceAC
+                            //worksheet.Cells[row, 12].Value = dataRow["Amount"];         
+                            worksheet.Cells[row, 12].Value = dataRow["AmountAC"];         //AmountAC
+                            worksheet.Cells[row, 13].Value = dataRow["BookValue"];         //book value
+                            worksheet.Cells[row, 14].Value = dataRow["Currency"];         //currency
+                            //worksheet.Cells[row, 15].Value = dataRow["FaTool"];         //FA/Tool  //Sotaisan
+                            worksheet.Cells[row, 15].Value = dataRow["Sotaisan"];         //FA/Tool  //Sotaisan
+                            worksheet.Cells[row, 16].Value = "";                        //INV No
+                            worksheet.Cells[row, 17].Value = dataRow["SoTK"];         //CD No
+                            worksheet.Cells[row, 18].Value = dataRow["NgayTK"];         //CD Date
 
-                            worksheet.Cells[row, 12].Value = "";                     //CD's Item No
-                            worksheet.Cells[row, 12].Value = dataRow["Reason"];         //Reson 
-                            worksheet.Cells[row, 12].Value = dataRow["Pallet"];         //Palet No
+                            worksheet.Cells[row, 19].Value = "";                     //CD's Item No
+                            worksheet.Cells[row, 20].Value = dataRow["Reason"];         //Reson 
+                            worksheet.Cells[row, 21].Value = dataRow["Pallet"];         //Palet No
 
                             row++;
                         }
