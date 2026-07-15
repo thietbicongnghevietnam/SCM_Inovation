@@ -266,9 +266,9 @@ namespace FreeLayout
                                 // 1️ Tạo bảng tạm
                                 using (SqlCommand cmdCreateTemp = new SqlCommand(@"
                     CREATE TABLE #TempMaterial (
-                        Material NVARCHAR(50),
-                        EnglishName NVARCHAR(255),
-                        VietNameseName NVARCHAR(255),
+                        Material NVARCHAR(200),
+                        EnglishName NVARCHAR(500),
+                        VietNameseName NVARCHAR(500),
                         CreatedDate DATETIME,
                         CreatedId NVARCHAR(50),
                         UpdatedDate DATETIME,
